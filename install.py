@@ -28,6 +28,7 @@ tasks = {
         '~/.zprofile' : 'zsh/zprofile',
         '~/.zshenv'   : 'zsh/zshenv',
         '~/.zshrc'    : 'zsh/zshrc',
+        '~/.LS_COLORS' : 'zsh/LS_COLORS'
 
         # Bins
         #	'~/.local/bin/fasd' : 'zsh/fasd/fasd',
@@ -76,6 +77,8 @@ for target, source in tasks.items():
 # if --force option is given, delete the previously existing symlink
     if os.path.lexists(target) and os.path.islink(target) and options.force == True:
         os.unlink(target)
+    if os.path.lexists(target) and options.force == True:
+        os.remove(target)
 
 # make a symbolic link!
     if os.path.lexists(target):
