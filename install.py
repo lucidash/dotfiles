@@ -12,8 +12,8 @@ tasks = {
         #	'~/.screenrc' : 'screenrc',
 
         # VIM
-        #	'~/.vimrc' : 'vim/vimrc',
-        #	'~/.vim' : 'vim',
+        '~/.vimrc' : 'vim/vimrc',
+        '~/.vim' : 'vim',
 
         # GIT
         #	'~/.gitconfig' : 'git/gitconfig',
