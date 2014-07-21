@@ -50,6 +50,7 @@ tasks = {
 
 
 import glob, os
+import shutil
 from optparse import OptionParser
 from sys import stderr
 
@@ -77,6 +78,8 @@ for target, source in tasks.items():
 # if --force option is given, delete the previously existing symlink
     if os.path.lexists(target) and os.path.islink(target) and options.force == True:
         os.unlink(target)
+    if os.path.lexists(target) and os.path.isdir(target) and options.force == True:
+        shutil.rmtree(target)
     if os.path.lexists(target) and options.force == True:
         os.remove(target)
 
