@@ -92,3 +92,7 @@ export VIRTUALENVWRAPPER_PYTHON='/usr/bin/python'
 export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
 
 source $HOME/.LS_COLORS/ls_colors.zsh
+
+
+alias bit='ssh lucidash@bit.sparcs.org'
+alias toy2='ssh user2@172.16.101.205'
