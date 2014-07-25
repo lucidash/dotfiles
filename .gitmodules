@@ -14,10 +14,6 @@
 	path = vim/bundle/ctrlp.vim
 	url = https://github.com/kien/ctrlp.vim
 
-[submodule "vim/bundle/vim-surround.vim"]
-	path = vim/bundle/vim-surround.vim
-	url = https://github.com/tpope/vim-surround.git
-
 [submodule "vim/bundle/nerdcommenter"]
 	path = vim/bundle/nerdcommenter
 	url = https://github.com/scrooloose/nerdcommenter.git

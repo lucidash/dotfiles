@@ -1,5 +1,6 @@
 "" lifthrasiir's .vimrc file (r16, 2007-07-29)
 "" written by Kang Seonghoon <lifthrasiir@gmail.com>
+"" Kim SangHoon <lucidash@gmail.com>
 "" This file is placed in the public domain.
 "" =========================================================
 set nocompatible
@@ -85,12 +86,12 @@ endif
 
 
 " immediate buffer configuration
-map <silent> <Leader>n :let &nu = 1 - &nu<CR>
-map <silent> <Leader>l :let &list = 1 - &list<CR>
-map <silent> <Leader>p :let &paste = 1 - &paste<CR>
-map <silent> <Leader>w :let &wrap = 1 - &wrap<CR>
-nmap <silent> <Leader>4 :set ts=4 sw=4<CR>
-nmap <silent> <Leader>8 :set ts=8 sw=8<CR>
+"map <silent> <Leader>n :let &nu = 1 - &nu<CR>
+"map <silent> <Leader>l :let &list = 1 - &list<CR>
+"map <silent> <Leader>p :let &paste = 1 - &paste<CR>
+"map <silent> <Leader>w :let &wrap = 1 - &wrap<CR>
+"nmap <silent> <Leader>4 :set ts=4 sw=4<CR>
+"nmap <silent> <Leader>8 :set ts=8 sw=8<CR>
 
 " editing and applying .vimrc
 if has("win32")
@@ -210,5 +211,4 @@ endif
 
 " ----- Key mappings 
 "
-
 map <C-_> <leader>ci
