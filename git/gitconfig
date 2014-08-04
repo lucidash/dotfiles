@@ -1,0 +1,43 @@
+# vim: set ft=gitconfig:
+
+[include]
+	# include external gitconfig file (requires git 1.7.10+)
+	# typically, user.name and user.email is configured.
+	path = ~/.gitconfig_secret
+
+[core]
+	excludesfile = ~/.gitignore
+	pager = less -F
+
+[alias]
+	history = log --graph --pretty=format:'%C(yellow)%h%Creset \
+		-%C(yellow)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset' \
+		--abbrev-commit --date=short --date-order -n30
+
+	co = checkout
+	unstage = reset HEAD --
+	discard = checkout --
+	update-branch = branch -f --no-track
+
+	assume-unchanged = update-index --assume-unchanged
+	unassume-unchanged = update-index --no-assume-unchanged
+	list-assume-unchanged = !sh -c 'git ls-files -v | grep "^[a-z]" | sed "s/^..//"'
+
+[color]
+	status = auto
+	diff = auto
+	branch = auto
+	interactive = auto
+	ui = auto
+
+[format]
+	pretty = fuller
+
+[push]
+	# Adopt the new default in Git 2.x
+	default = simple
+
+[credential]
+	# Enable HTTP(S) auth credential caching
+	# for 60 seconds (requires git 1.7.9+)
+	helper = cache --timeout 60
