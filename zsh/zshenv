@@ -91,8 +91,6 @@ export VIRTUALENVWRAPPER_PYTHON='/usr/bin/python'
 # ensure that all new virtual environments are isolated from the system site-packages.
 export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
 
-source $HOME/.LS_COLORS/ls_colors.zsh
-
 
 alias bit='ssh lucidash@bit.sparcs.org'
 alias toy2='ssh user2@172.16.100.158'

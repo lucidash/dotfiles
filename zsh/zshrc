@@ -16,6 +16,6 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
-for config_file ($HOME/.zsh/*.zsh(N)) source $config_file
+for config_file ($HOME/.zsh/zsh.d/*.zsh) source $config_file
 
-source $HOME/.LS_COLORS/ls_colors.zsh
+#source $HOME/.LS_COLORS/ls_colors.zsh
