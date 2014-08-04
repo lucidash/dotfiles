@@ -28,10 +28,10 @@ tasks = {
         '~/.zprofile' : 'zsh/zprofile',
         '~/.zshenv'   : 'zsh/zshenv',
         '~/.zshrc'    : 'zsh/zshrc',
-        '~/.LS_COLORS' : 'zsh/LS_COLORS'
+        '~/.LS_COLORS' : 'zsh/LS_COLORS',
 
         # Bins
-                '~/.local/bin/fasd' : 'zsh/fasd/fasd',
+        '~/.local/bin/fasd' : 'zsh/fasd/fasd',
 
         # X
         #	'~/.Xmodmap' : 'Xmodmap',
