@@ -208,6 +208,14 @@ endif
 
 
 
+" Switch between window splits using big J or K and expand the split to its 
+" " full size. 
+" " Move vertically in the window through the horizontal splits... 
+map <C-J> <C-w>j
+map <C-K> <C-w>k
+" " Move horizontally in the window through the vertical splits... 
+map <C-H> <C-w>h
+map <C-L> <C-w>l
 
 " ----- Key mappings 
 "
