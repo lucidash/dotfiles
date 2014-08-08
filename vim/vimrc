@@ -207,6 +207,9 @@ endif
 
 
 
+" ----- Key mappings 
+"
+map <C-_> <leader>ci
 
 " Switch between window splits using big J or K and expand the split to its 
 " " full size. 
@@ -217,6 +220,3 @@ map <C-K> <C-w>k
 map <C-H> <C-w>h
 map <C-L> <C-w>l
 
-" ----- Key mappings 
-"
-map <C-_> <leader>ci
