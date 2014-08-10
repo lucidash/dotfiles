@@ -2,8 +2,8 @@
 	path = zsh/zprezto
 	url = https://github.com/sorin-ionescu/prezto
 [submodule "zsh/fasd"]
-		path = zsh/fasd
-			url = https://github.com/clvv/fasd.git
+	path = zsh/fasd
+	url = https://github.com/clvv/fasd.git
 
 [submodule "vim/bundle/vim-pathogen"]
 	path = vim/bundle/vim-pathogen

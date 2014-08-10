@@ -224,3 +224,11 @@ map <C-K> <C-w>k
 map <C-H> <C-w>h
 map <C-L> <C-w>l
 
+" Tab navigations
+nnoremap <C-t>     :tabnew<CR>
+nnoremap <C-h> :tabprevious<CR>
+nnoremap <C-l>   :tabnext<CR>
+" " Tab alternative navigations
+" " (terminals might capture <Ctrl-t> or something else)
+nnoremap <leader>tn  :tabnext<CR>
+nnoremap <leader>tp  :tabprev<CR>
