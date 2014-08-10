@@ -209,6 +209,10 @@ endif
 
 " ----- Key mappings 
 "
+"
+"the leader key
+let mapleader=","			" comma is the <Leader> key now.
+
 map <C-_> <leader>ci
 
 " Switch between window splits using big J or K and expand the split to its 

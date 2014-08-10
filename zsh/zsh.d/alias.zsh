@@ -10,3 +10,6 @@ alias l='ls -G'
 # screen aliasing
 alias sls='screen -ls'
 alias snew='screen -S'
+
+#tail -f to tailf
+alias tailf='tail -f'
