@@ -9,7 +9,7 @@
 tasks = {
         # SHELLS
         #	'~/.bashrc' : 'bashrc',
-        #	'~/.screenrc' : 'screenrc',
+        '~/.screenrc' : 'screenrc',
 
         # VIM
         '~/.vimrc' : 'vim/vimrc',
