@@ -21,6 +21,7 @@ alias l='ls -G'
 # screen aliasing
 alias sls='screen -ls'
 alias snew='screen -S'
+alias sdr='screen -d -r'
 
 #tail -f to tailf
 alias tailf='tail -f'
