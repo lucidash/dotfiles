@@ -16,8 +16,8 @@ tasks = {
         '~/.vim' : 'vim',
 
         # GIT
-        #	'~/.gitconfig' : 'git/gitconfig',
-        #	'~/.gitignore' : 'git/gitignore',
+        '~/.gitconfig' : 'git/gitconfig',
+        '~/.gitignore' : 'git/gitignore',
 
         # ZSH
         '~/.zprezto'  : 'zsh/zprezto',
