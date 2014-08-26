@@ -91,6 +91,7 @@ function prompt_wook_setup {
     PROMPT_HOST_COLOR='blue'
   fi
 
+#${ruby_info[version]}\
   # Define prompts.
   PROMPT='\
 %B%F{green}[\
@@ -101,7 +102,6 @@ function prompt_wook_setup {
 %B%F{red}${PWD}%f%b\
 ${git_info:+${(e)git_info[prompt]}}\
 %B%F{green}]\
-${ruby_info[version]}\
 ${python_info[virtualenv]}\
 ${node_info[version]}\
 
