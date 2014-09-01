@@ -237,7 +237,31 @@ nnoremap <leader>tp  :tabprev<CR>
 highlight Pmenu ctermfg=black ctermbg=yellow
 highlight PmenuSel ctermfg=red ctermbg=white gui=bold
 
-highlight BookmarkSign ctermbg=NONE ctermfg=160
-highlight BookmarkLine ctermbg=194 ctermfg=NONE
-let g:bookmark_sign = '♥'
-let g:bookmark_highlight_lines = 1
+"" {{{{{{{{{{
+"" ----- You Complte Me -------
+""
+""
+
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py' 
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_use_ultisnips_completer = 1
+
+""
+""
+"" ----- You Complte Me -------
+"" }}}}}}}}}}
+
+
+
+"" {{{{{{{{{{
+"" ----- SnipMate -------
+""
+""
+let g:UltiSnipsExpandTrigger="<c-j>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+""
+""
+"" ----- SnipMate -------
+"" }}}}}}}}}}
