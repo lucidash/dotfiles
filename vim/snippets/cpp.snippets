@@ -35,6 +35,9 @@ snippet #include
 
 snippet main
 	int main() {
+		cin.sync_with_stdio(false);
+		freopen("${1:input.txt}", "rt", stdin);
+		freopen("${2:output.txt}", "wt", stdout);
 		${1}
 		return 0;
 	}
@@ -55,3 +58,119 @@ snippet ONLINE_JUDGE
 snippet freopen
 	freopen("${1:input.txt}", "rt", stdin);
 	freopen("${2:output.txt}", "wt", stdout);
+
+
+
+snippet Hopcroft_Karp
+	class Hopcroft_Karp
+	{
+		//  G(V,E) 
+
+		const static  int V = 30000;
+		const static  int E = 10101;
+		const static  int infinite = 0x7ffffff;
+		private : 
+		//int v, e;
+		int dist[V];
+		int Pair_G1[V];
+		int Pair_G2[V];
+
+		queue< int > Q;
+		vector< vector< int > > adj;
+		vector< int > G1;
+		vector< int > G2;
+
+
+		public : 
+		Hopcroft_Karp(vector< vector<int> >  newadj, vector<int> newG1, vector<int> newG2 )
+		{
+			adj = newadj;
+			G1 = newG1;
+			G2 = newG2;
+		}
+
+		bool BFS()
+		{
+			int size = G1.size();
+
+			for(int i = 0; i < size; ++i) 
+			{
+				int v = G1[i];
+
+				if ( Pair_G1[v] == 0 )
+				{
+					dist[v] = 0;
+					Q.push(v);
+				}
+				else
+					dist[v] = infinite ;
+			}
+
+			dist[0] = infinite;
+
+			while ( !Q.empty() )
+			{
+				int v = Q.front();
+				Q.pop();
+				if ( dist[v] < dist[0] )
+				{
+					size = adj[v].size();
+					for(int i = 0; i < size; ++i) 
+					{
+						int u = adj[v][i];
+						if ( dist[ Pair_G2[u] ] == infinite )
+						{
+							dist[ Pair_G2[u] ] = dist[v] + 1;
+							Q.push( Pair_G2[u] ) ;
+						}
+					}
+				}
+			}
+			return dist[0] != infinite;
+		}
+
+		bool DFS( int v )
+		{
+			if ( v != 0 )
+			{
+				int size = adj[v].size();
+				for(int i = 0; i < size; ++i) 
+				{
+					int u = adj[v][i];
+					if ( dist[ Pair_G2[u]] == dist[v] + 1 )
+					{
+						if ( DFS(Pair_G2[u] ) == true )
+						{
+							Pair_G2[u] = v;
+							Pair_G1[v] = u;
+							return true;
+						}
+					}
+				}
+				return false;
+			}
+			return true;
+		}
+
+		public : int matching()
+		{
+			int matchings = 0;
+			memset(Pair_G1, 0, sizeof(Pair_G1));
+			memset(Pair_G2, 0, sizeof(Pair_G2));
+
+			while( BFS() == true )
+			{
+				int size;
+				size = G1.size();
+				for(int i = 0; i < size; ++i) 
+				{
+					int v = G1[i];
+					if ( Pair_G1[v] == 0 )
+						if ( DFS(v) == true )
+							matchings ++;
+				}
+			}
+			return matchings;
+		}
+
+	};

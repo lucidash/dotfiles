@@ -5,7 +5,7 @@ alias bit='ssh lucidash@bit.sparcs.org'
 alias toy2='ssh user2@172.16.100.158'
 alias toy3='ssh user3@172.16.101.87'
 #alias sw='ssh user2@61.43.139.132'
-alias sw='ssh user2@61.43.139.100'
+alias sw='ssh user2@61.43.139.142'
 alias sparcs='ssh lucidash@sparcs.org'
 
 alias tmdrb='ssh lucidash@14.63.218.219'
