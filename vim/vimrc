@@ -265,3 +265,19 @@ let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 ""
 "" ----- SnipMate -------
 "" }}}}}}}}}}
+
+
+
+"" {{{{{{{{{{
+"" ----- Vim-bookmarks -------
+let g:bookmark_auto_close = 1	
+"" ----- Vim-bookmarks -------
+"" }}}}}}}}}}
+
+"" {{{{{{{{{{{
+"" Arrow No map
+nnoremap <Up> <silent>
+nnoremap <Down> <silent>
+nnoremap <Left> <silent>
+nnoremap <Right> <silent>
+"" }}}}}}}}}}
