@@ -5,6 +5,7 @@
 "" =========================================================
 set nocompatible
 
+nnoremap <leader>src :source ~/.vimrc<CR>
 ""
 set rtp+=~/.vim/bundle/vim-pathogen
 execute pathogen#infect()
@@ -96,7 +97,7 @@ endif
 " editing and applying .vimrc
 if has("win32")
 	nmap <silent> <Leader>R :so $HOME/_vimrc<CR>
-	nmap <silent> <Leader>rc :e $HOME/_vimrc<CR>
+	nmap <silent> <Leader>rc :ek$HOME/_vimrc<CR>
 else
 	nmap <silent> <Leader>R :so $HOME/.vimrc<CR>
 	nmap <silent> <Leader>rc :e $HOME/.vimrc<CR>
@@ -246,7 +247,7 @@ let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_use_ultisnips_completer = 1
-
+let g:ycm_enable_diagnostic_signs = 0
 ""
 ""
 "" ----- You Complte Me -------
@@ -271,6 +272,9 @@ let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 "" {{{{{{{{{{
 "" ----- Vim-bookmarks -------
 let g:bookmark_auto_close = 1	
+highlight BookmarkLine ctermbg=194 ctermfg=NONE
+"let g:bookmark_highlight_lines = 1
+let g:bookmark_center = 1
 "" ----- Vim-bookmarks -------
 "" }}}}}}}}}}
 
@@ -280,4 +284,12 @@ nnoremap <Up> <silent>
 nnoremap <Down> <silent>
 nnoremap <Left> <silent>
 nnoremap <Right> <silent>
+"" }}}}}}}}}}
+
+
+
+"" -- Dummy Sign for SignColumn to be shown always 
+"" {{{{{{{{{{{
+autocmd BufEnter * sign define dummy 
+autocmd BufEnter * execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('')
 "" }}}}}}}}}}
