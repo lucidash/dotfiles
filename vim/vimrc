@@ -256,6 +256,13 @@ let g:ycm_enable_diagnostic_signs = 0
 
 
 "" {{{{{{{{{{
+"" ----- You Complte Me -------
+let g:jedi#popup_select_first = 0
+let g:jedi#popup_on_dot = 0
+"" ----- You Complte Me -------
+"" }}}}}}}}}}
+
+"" {{{{{{{{{{
 "" ----- SnipMate -------
 ""
 ""
