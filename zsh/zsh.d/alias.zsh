@@ -54,3 +54,8 @@ alias tailf='tail -f'
 #others
 alias jj='python manage.py'
 alias l='ls -G'
+
+
+
+
+alias boj='python submit.py'

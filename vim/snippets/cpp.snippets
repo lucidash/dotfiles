@@ -62,9 +62,9 @@ snippet freopen
 
 
 snippet Hopcroft_Karp
-	class Hopcroft_Karp
-	{
+	class Hopcroft_Karp {
 		//  G(V,E) 
+		//  V = { 1, 2, 3, .... V }
 
 		const static  int V = 30000;
 		const static  int E = 10101;
@@ -77,28 +77,23 @@ snippet Hopcroft_Karp
 
 		queue< int > Q;
 		vector< vector< int > > adj;
+		// G1 U G2 = V
 		vector< int > G1;
 		vector< int > G2;
 
-
 		public : 
-		Hopcroft_Karp(vector< vector<int> >  newadj, vector<int> newG1, vector<int> newG2 )
-		{
+		Hopcroft_Karp(vector< vector<int> >  newadj, vector<int> newG1, vector<int> newG2 ) {
 			adj = newadj;
 			G1 = newG1;
 			G2 = newG2;
 		}
 
-		bool BFS()
-		{
+		bool BFS() {
 			int size = G1.size();
 
-			for(int i = 0; i < size; ++i) 
-			{
+			for(int i = 0; i < size; ++i) {
 				int v = G1[i];
-
-				if ( Pair_G1[v] == 0 )
-				{
+				if ( Pair_G1[v] == 0 ) {
 					dist[v] = 0;
 					Q.push(v);
 				}
@@ -108,18 +103,14 @@ snippet Hopcroft_Karp
 
 			dist[0] = infinite;
 
-			while ( !Q.empty() )
-			{
+			while ( !Q.empty() ) {
 				int v = Q.front();
 				Q.pop();
-				if ( dist[v] < dist[0] )
-				{
+				if ( dist[v] < dist[0] ) {
 					size = adj[v].size();
-					for(int i = 0; i < size; ++i) 
-					{
+					for(int i = 0; i < size; ++i) {
 						int u = adj[v][i];
-						if ( dist[ Pair_G2[u] ] == infinite )
-						{
+						if ( dist[ Pair_G2[u] ] == infinite ) {
 							dist[ Pair_G2[u] ] = dist[v] + 1;
 							Q.push( Pair_G2[u] ) ;
 						}
@@ -129,18 +120,13 @@ snippet Hopcroft_Karp
 			return dist[0] != infinite;
 		}
 
-		bool DFS( int v )
-		{
-			if ( v != 0 )
-			{
+		bool DFS( int v ) {
+			if ( v != 0 ) {
 				int size = adj[v].size();
-				for(int i = 0; i < size; ++i) 
-				{
+				for(int i = 0; i < size; ++i) {
 					int u = adj[v][i];
-					if ( dist[ Pair_G2[u]] == dist[v] + 1 )
-					{
-						if ( DFS(Pair_G2[u] ) == true )
-						{
+					if ( dist[ Pair_G2[u]] == dist[v] + 1 ) {
+						if ( DFS(Pair_G2[u] ) == true ) {
 							Pair_G2[u] = v;
 							Pair_G1[v] = u;
 							return true;
@@ -152,18 +138,15 @@ snippet Hopcroft_Karp
 			return true;
 		}
 
-		public : int matching()
-		{
+		public : int matching() {
 			int matchings = 0;
 			memset(Pair_G1, 0, sizeof(Pair_G1));
 			memset(Pair_G2, 0, sizeof(Pair_G2));
 
-			while( BFS() == true )
-			{
+			while( BFS() == true ) {
 				int size;
 				size = G1.size();
-				for(int i = 0; i < size; ++i) 
-				{
+				for(int i = 0; i < size; ++i) {
 					int v = G1[i];
 					if ( Pair_G1[v] == 0 )
 						if ( DFS(v) == true )
