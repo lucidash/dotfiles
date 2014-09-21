@@ -1,14 +1,25 @@
-"" lifthrasiir's .vimrc file (r16, 2007-07-29)
-"" written by Kang Seonghoon <lifthrasiir@gmail.com>
+"" Personal vimrc
+"" Author : 
 "" Kim SangHoon <lucidash@gmail.com>
-"" This file is placed in the public domain.
 "" =========================================================
+
 set nocompatible
 
-nnoremap <leader>src :source ~/.vimrc<CR>
+"" {{{{{{{{{{{
+"" Arrow No map
+map <leader>src :source ~/.vimrc<CR>
+map <Up> <silent>
+map <Down> <silent>
+map <Left> <silent>
+map <Right> <silent>
+
+map <CR> :noh<CR>
+"" }}}}}}}}}}
+
 ""
 set rtp+=~/.vim/bundle/vim-pathogen
 execute pathogen#infect()
+
 
 ""
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
@@ -132,75 +143,75 @@ let html_wrong_comments = 1
 " AUTOCMD {{{ ----------------------------------------------
 if has("autocmd")
 	aug vimrc
-	au!
+		au!
 
-	" filetype-specific configurations
-	au FileType python setl ts=8 sw=4 sts=4 et
-	au FileType html setl ts=8 sw=4 sts=4 et
-	au FileType php setl ts=8 sw=4 sts=4 et
-	au FileType cpp setl ts=8 sw=4 sts=4 et
-	au FileType c setl ts=8 sw=4 sts=4 et
-	au Filetype text setl tw=80
-	au FileType javascript,jsp setl cin
-	au FileType ruby setl ts=8 sw=2 sts=0 tw=0 et
-	au BufNewFile,BufRead *.phps,*.php3s setf php
+		" filetype-specific configurations
+		au FileType python setl ts=4 sw=4 sts=4 et
+		au FileType html setl ts=4 sw=4 sts=4 et
+		au FileType php setl ts=4 sw=4 sts=4 et
+		au FileType cpp setl ts=4 sw=4 sts=4 et
+		au FileType c setl ts=4 sw=4 sts=4 et
+		au Filetype text setl tw=80
+		au FileType javascript,jsp setl cin
+		au FileType ruby setl ts=4 sw=2 sts=0 tw=0 et
+		au BufNewFile,BufRead *.phps,*.php3s setf php
 
-	" restore cursor position when the file has been read
-	au BufReadPost *
-		\ if line("'\"") > 0 && line("'\"") <= line("$") |
-		\   exe "norm g`\"" |
-		\ endif
+		" restore cursor position when the file has been read
+		au BufReadPost *
+					\ if line("'\"") > 0 && line("'\"") <= line("$") |
+					\   exe "norm g`\"" |
+					\ endif
 
-	" fix window position for mac os x
-	if has("gui_running") && has("macunix")
-		au GUIEnter *
-			\ if getwinposx() < 50 |
-			\   exe ':winp 50 ' . (getwinposy() + 22) |
-			\ endif
-	endif
+		" fix window position for mac os x
+		if has("gui_running") && has("macunix")
+			au GUIEnter *
+						\ if getwinposx() < 50 |
+						\   exe ':winp 50 ' . (getwinposy() + 22) |
+						\ endif
+		endif
 
-	" fix window size if window size has been changed
-	if has("gui_running")
-		fu! s:ResizeWindows()
-			let l:nwins = winnr("$") | let l:num = 1
-			let l:curtop = 0 | let l:curleft = 0
-			let l:lines = &lines - &cmdheight
-			let l:prevlines = s:prevlines - &cmdheight
-			let l:cmd = ""
-			while l:num < l:nwins
-				if l:curleft == 0
-					let l:adjtop = l:curtop * l:lines / l:prevlines
-					let l:curtop = l:curtop + winheight(l:num) + 1
-					if l:curtop < l:lines
-						let l:adjheight = l:curtop * l:lines / l:prevlines - l:adjtop - 1
-						let l:cmd = l:cmd . l:num . "resize " . l:adjheight . "|"
+		" fix window size if window size has been changed
+		if has("gui_running")
+			fu! s:ResizeWindows()
+				let l:nwins = winnr("$") | let l:num = 1
+				let l:curtop = 0 | let l:curleft = 0
+				let l:lines = &lines - &cmdheight
+				let l:prevlines = s:prevlines - &cmdheight
+				let l:cmd = ""
+				while l:num < l:nwins
+					if l:curleft == 0
+						let l:adjtop = l:curtop * l:lines / l:prevlines
+						let l:curtop = l:curtop + winheight(l:num) + 1
+						if l:curtop < l:lines
+							let l:adjheight = l:curtop * l:lines / l:prevlines - l:adjtop - 1
+							let l:cmd = l:cmd . l:num . "resize " . l:adjheight . "|"
+						endif
 					endif
-				endif
-				let l:adjleft = l:curleft * &columns / s:prevcolumns
-				let l:curleft = l:curleft + winwidth(l:num) + 1
-				if l:curleft < &columns
-					let l:adjwidth = l:curleft * &columns / s:prevcolumns - l:adjleft - 1
-					let l:cmd = l:cmd . "vert " . l:num . "resize " . l:adjwidth . "|"
+					let l:adjleft = l:curleft * &columns / s:prevcolumns
+					let l:curleft = l:curleft + winwidth(l:num) + 1
+					if l:curleft < &columns
+						let l:adjwidth = l:curleft * &columns / s:prevcolumns - l:adjleft - 1
+						let l:cmd = l:cmd . "vert " . l:num . "resize " . l:adjwidth . "|"
+					else
+						let l:curleft = 0
+					endif
+					let l:num = l:num + 1
+				endw
+				exe l:cmd
+			endf
+			fu! s:ResizeAllWindows()
+				if v:version >= 700
+					let l:tabnum = tabpagenr()
+					tabdo call s:ResizeWindows()
+					exe "norm " . l:tabnum . "gt"
 				else
-					let l:curleft = 0
+					call s:ResizeWindows()
 				endif
-				let l:num = l:num + 1
-			endw
-			exe l:cmd
-		endf
-		fu! s:ResizeAllWindows()
-			if v:version >= 700
-				let l:tabnum = tabpagenr()
-				tabdo call s:ResizeWindows()
-				exe "norm " . l:tabnum . "gt"
-			else
-				call s:ResizeWindows()
-			endif
-			let s:prevlines = &lines | let s:prevcolumns = &columns
-		endf
-		au GUIEnter * let s:prevlines = &lines | let s:prevcolumns = &columns
-		au VimResized * call s:ResizeAllWindows()
-	endif
+				let s:prevlines = &lines | let s:prevcolumns = &columns
+			endf
+			au GUIEnter * let s:prevlines = &lines | let s:prevcolumns = &columns
+			au VimResized * call s:ResizeAllWindows()
+		endif
 
 	aug END
 endif
@@ -285,14 +296,6 @@ let g:bookmark_center = 1
 "" ----- Vim-bookmarks -------
 "" }}}}}}}}}}
 
-"" {{{{{{{{{{{
-"" Arrow No map
-nnoremap <Up> <silent>
-nnoremap <Down> <silent>
-nnoremap <Left> <silent>
-nnoremap <Right> <silent>
-"" }}}}}}}}}}
-
 
 
 "" -- Dummy Sign for SignColumn to be shown always 
@@ -300,3 +303,8 @@ nnoremap <Right> <silent>
 autocmd BufEnter * sign define dummy 
 autocmd BufEnter * execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('')
 "" }}}}}}}}}}
+
+map <F5> <ESC>:w<CR>:!g++ %<CR><CR>:!./a.out<CR>
+imap <F5> <ESC>:w<CR>:!g++ %<CR><CR>:!./a.out<CR>
+imap <F2> <ESC>:w<CR>
+map <F3> <ESC>:!cat %\|pbcopy<CR>

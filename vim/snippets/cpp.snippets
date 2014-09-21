@@ -36,8 +36,6 @@ snippet #include
 snippet main
 	int main() {
 		cin.sync_with_stdio(false);
-		freopen("${1:input.txt}", "rt", stdin);
-		freopen("${2:output.txt}", "wt", stdout);
 		${1}
 		return 0;
 	}
@@ -47,7 +45,8 @@ snippet MACROS
 	#define FOR(i, b, e) for(auto i = b; i < e; ++ i)
 	#define all(x) (x).begin(), (x).end()
 
-	#define DEBUG(x) cerr << #x << " = " << x << endl;
+	#define CASET int ___T, case_n = 1; scanf("%d ", &___T); while (___T-- > 0)
+	#define DEBUG(x) cerr << #x << " = " << x << endl
 	#define DEBUGALL(x) { cerr << #x << " = "; for(const auto &e: x) cerr << e << " "; cerr << endl; }
 
 snippet ONLINE_JUDGE
@@ -157,3 +156,22 @@ snippet Hopcroft_Karp
 		}
 
 	};
+
+snippet unionfind
+	int parent[N];
+	int get_root( int v )
+	{
+		if ( parent[v] == v )
+			return v;
+		return parent[v] = get_root( parent[v] );
+	}
+
+	bool Find( int u ,int v )
+	{
+		return get_root(u) == get_root(v);
+	}
+
+	void Union( int u , int v )
+	{
+		parent[ get_root(u) ] = get_root(v);
+	}

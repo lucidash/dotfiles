@@ -11,6 +11,8 @@ alias sparcs='ssh lucidash@sparcs.org'
 alias tmdrb='ssh lucidash@14.63.218.219'
 alias tmdrb2='ssh lucidash@14.63.218.219'
 alias tmdrb3='ssh lucidash@14.63.218.54'
+
+alias vm='ssh 10.211.55.4'
 #alias tmdrb3='ssh lucidash@14.63.218.219 -p 24'
 
 
