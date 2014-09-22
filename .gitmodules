@@ -39,3 +39,6 @@
 [submodule "vim/bundle/vim-bookmarks "]
 	path = vim/bundle/vim-bookmarks
 	url = https://github.com/MattesGroeger/vim-bookmarks
+[submodule "vim/bundle/gundo.vim"]
+	path = vim/bundle/gundo.vim
+	url = https://github.com/sjl/gundo.vim

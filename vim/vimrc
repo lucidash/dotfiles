@@ -297,6 +297,14 @@ let g:bookmark_center = 1
 "" }}}}}}}}}}
 
 
+"" {{{{{{{{{{
+"" ----- Vim-bookmarks -------
+nnoremap <F6> :GundoToggle<CR>
+"" ----- Vim-bookmarks -------
+"" }}}}}}}}}}
+
+
+
 
 "" -- Dummy Sign for SignColumn to be shown always 
 "" {{{{{{{{{{{
@@ -304,7 +312,11 @@ autocmd BufEnter * sign define dummy
 autocmd BufEnter * execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('')
 "" }}}}}}}}}}
 
-map <F5> <ESC>:w<CR>:!g++ %<CR><CR>:!./a.out<CR>
-imap <F5> <ESC>:w<CR>:!g++ %<CR><CR>:!./a.out<CR>
+
+au FileType ruby map <F5> <ESC>:w<CR>:!ruby %<CR>
+au FileType python map <F5> <ESC>:w<CR>:!python %<CR>
+au FileType cpp map <F5> <ESC>:w<CR>:!g++ %<CR><CR>:!./a.out<CR>
+au FileType c map <F5> <ESC>:w<CR>:!g++ %<CR><CR>:!./a.out<CR>
 imap <F2> <ESC>:w<CR>
 map <F3> <ESC>:!cat %\|pbcopy<CR>
+
