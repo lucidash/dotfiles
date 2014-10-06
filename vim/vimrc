@@ -230,16 +230,16 @@ map <C-_> <leader>ci
 " Switch between window splits using big J or K and expand the split to its 
 " " full size. 
 " " Move vertically in the window through the horizontal splits... 
-map <C-J> <C-w>j
-map <C-K> <C-w>k
+nnoremap <C-J> <C-w>j
+nnoremap <C-K> <C-w>k
 " " Move horizontally in the window through the vertical splits... 
-map <C-H> <C-w>h
-map <C-L> <C-w>l
+nnoremap <C-H> <C-w>h
+nnoremap <C-L> <C-w>l
 
 " Tab navigations
 nnoremap <C-t>     :tabnew<CR>
-nnoremap <C-h> :tabprevious<CR>
-nnoremap <C-l>   :tabnext<CR>
+"nnoremap <C-h> :tabprevious<CR>
+"nnoremap <C-l>   :tabnext<CR>
 " " Tab alternative navigations
 " " (terminals might capture <Ctrl-t> or something else)
 nnoremap <leader>tn  :tabnext<CR>
@@ -315,8 +315,9 @@ autocmd BufEnter * execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('
 
 au FileType ruby map <F5> <ESC>:w<CR>:!ruby %<CR>
 au FileType python map <F5> <ESC>:w<CR>:!python %<CR>
-au FileType cpp map <F5> <ESC>:w<CR>:!g++ %<CR><CR>:!./a.out<CR>
-au FileType c map <F5> <ESC>:w<CR>:!g++ %<CR><CR>:!./a.out<CR>
+au FileType cpp map <F4> <ESC>:w<CR>:!g++ -O2 -std=gnu++11 % && ./a.out 
+au FileType cpp map <F5> <ESC>:w<CR>:!g++ -O2 -std=gnu++11 % && ./a.out < input.txt <CR>
+au FileType c map <F5> <ESC>:w<CR>:!gcc %<CR><CR>:!./a.out < input.txt<CR>
 imap <F2> <ESC>:w<CR>
 map <F3> <ESC>:!cat %\|pbcopy<CR>
 

@@ -46,6 +46,7 @@ typeset -gU cdpath fpath mailpath path
 path=(
 $HOME/.local/bin
 /usr/local/{bin,sbin}
+/usr/local/Cellar/gcc/4.9.1/bin
 $path
 )
 
@@ -90,5 +91,3 @@ export VIRTUALENVWRAPPER_PYTHON='/usr/bin/python'
 
 # ensure that all new virtual environments are isolated from the system site-packages.
 export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
-
-
