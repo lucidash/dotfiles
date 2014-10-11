@@ -8,18 +8,19 @@ set nocompatible
 "" {{{{{{{{{{{
 "" Arrow No map
 map <leader>src :source ~/.vimrc<CR>
-map <Up> <silent>
-map <Down> <silent>
-map <Left> <silent>
-map <Right> <silent>
+"nnoremap <Up> <silent>
+"nnoremap <Down> <silent>
+"nnoremap <Left> <silent>
+"nnoremap <Right> <silent>
 
-map <CR> :noh<CR>
+set mouse=a
+
+nnoremap <CR> :noh<CR>
 "" }}}}}}}}}}
 
 ""
 set rtp+=~/.vim/bundle/vim-pathogen
 execute pathogen#infect()
-
 
 ""
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
@@ -146,11 +147,11 @@ if has("autocmd")
 		au!
 
 		" filetype-specific configurations
-		au FileType python setl ts=4 sw=4 sts=4 et
+		au FileType python setl ts=4 sw=4 sts=4 noet
 		au FileType html setl ts=4 sw=4 sts=4 et
 		au FileType php setl ts=4 sw=4 sts=4 et
-		au FileType cpp setl ts=4 sw=4 sts=4 et
-		au FileType c setl ts=4 sw=4 sts=4 et
+		au FileType cpp setl ts=4 sw=4 sts=4 noet
+		au FileType c setl ts=4 sw=4 sts=4 noet
 		au Filetype text setl tw=80
 		au FileType javascript,jsp setl cin
 		au FileType ruby setl ts=4 sw=2 sts=0 tw=0 et
@@ -316,7 +317,7 @@ autocmd BufEnter * execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('
 au FileType ruby map <F5> <ESC>:w<CR>:!ruby %<CR>
 au FileType python map <F5> <ESC>:w<CR>:!python %<CR>
 au FileType cpp map <F4> <ESC>:w<CR>:!g++ -O2 -std=gnu++11 % && ./a.out 
-au FileType cpp map <F5> <ESC>:w<CR>:!g++ -O2 -std=gnu++11 % && ./a.out < input.txt <CR>
+au FileType cpp map <F5> <ESC>:w<CR>:!g++ -O2 -std=gnu++11 % && ./a.out < in <CR>
 au FileType c map <F5> <ESC>:w<CR>:!gcc %<CR><CR>:!./a.out < input.txt<CR>
 imap <F2> <ESC>:w<CR>
 map <F3> <ESC>:!cat %\|pbcopy<CR>
