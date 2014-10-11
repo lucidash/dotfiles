@@ -14,6 +14,8 @@ map <leader>src :source ~/.vimrc<CR>
 "nnoremap <Right> <silent>
 
 set mouse=a
+colorscheme desert256
+"colorscheme xoria256
 
 nnoremap <CR> :noh<CR>
 "" }}}}}}}}}}
@@ -29,7 +31,6 @@ scripte utf-8
 "set nocp all&
 
 " TERMINAL {{{ ---------------------------------------------
-colorscheme desert256
 if &term =~ "xterm"
 	set t_Co=256
 	if has("terminfo")
