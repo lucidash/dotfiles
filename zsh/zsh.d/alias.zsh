@@ -8,7 +8,7 @@ alias toy3='ssh user3@172.16.101.87'
 alias sw='ssh user2@61.43.139.142'
 alias sparcs='ssh lucidash@sparcs.org'
 
-alias tmdrb='ssh lucidash@14.63.218.219'
+alias tmdrb4='ssh lucidash@14.63.218.169'
 alias tmdrb2='ssh lucidash@14.63.218.219'
 alias tmdrb3='ssh lucidash@14.63.218.54'
 

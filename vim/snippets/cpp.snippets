@@ -35,6 +35,12 @@ snippet #include
 
 	#define DEBUG(x) cerr << #x << " = " << x << endl
 	#define DEBUGALL(x) { cerr << #x << " = "; for(const auto &e: x) cerr << e << " "; cerr << endl; }
+	#define sz(a) (a).size()
+	#define REP(i, n) for(int i = 0; i < (int)(n); ++ i)
+	#define FOR(i, b, e) for(int i = b; i <= e; ++ i)
+	#define FORR(i, b, e) for(int i=b; i>=e; --i)
+	#define all(x) (x).begin(), (x).end()
+	#define UNIQ(x) ( (x).erase( unique( (x).begin() , (x).end()) , (x).end())) 
 
 snippet main
 	int main() {
@@ -44,17 +50,12 @@ snippet main
 	}
 
 snippet MACROS
+	#define sz(a) (a).size()
 	#define REP(i, n) for(int i = 0; i < (int)(n); ++ i)
 	#define FOR(i, b, e) for(int i = b; i <= e; ++ i)
 	#define FORR(i, b, e) for(int i=b; i>=e; --i)
 	#define all(x) (x).begin(), (x).end()
 	#define UNIQ(x) ( (x).erase( unique( (x).begin() , (x).end()) , (x).end())) 
-	#define max( a, b ) ( (a) > (b)  ? (a) : (b) )
-	#define min( a, b ) ( (a) > (b)  ? (b) : (a) )
-	#define CASET int ___T; scanf("%d ", &___T); while (___T-- > 0)
-	#define MP make_pair
-	#define PB push_back
-	#define SZ(a) (a).size()
 
 snippet ONLINE_JUDGE
 	#ifndef ONLINE_JUDGE

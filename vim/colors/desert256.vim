@@ -261,7 +261,7 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
     call <SID>X("NonText", "addbe7", "000000", "bold")
     call <SID>X("Question", "00ff7f", "", "")
     call <SID>X("Search", "f5deb3", "cd853f", "")
-    call <SID>X("SpecialKey", "9acd32", "", "")
+    call <SID>X("SpecialKey", "5f5f5f", "", "")
     call <SID>X("StatusLine", "c2bfa5", "000000", "reverse")
     call <SID>X("StatusLineNC", "c2bfa5", "7f7f7f", "reverse")
     call <SID>X("Title", "cd5c5c", "", "")
@@ -299,7 +299,7 @@ if has("gui_running") || &t_Co == 88 || &t_Co == 256
     " }}}
 else
     " color terminal definitions
-    hi SpecialKey    ctermfg=darkgreen
+    hi SpecialKey    ctermfg=darkgrey
     hi NonText       cterm=bold ctermfg=darkblue
     hi Directory     ctermfg=darkcyan
     hi ErrorMsg      cterm=bold ctermfg=7 ctermbg=1
@@ -325,7 +325,7 @@ else
     hi DiffText      cterm=bold ctermbg=1
     hi Comment       ctermfg=darkcyan
     hi Constant      ctermfg=brown
-    hi Special       ctermfg=5
+    hi Special       ctermfg=darkgrey
     hi Identifier    ctermfg=6
     hi Statement     ctermfg=3
     hi PreProc       ctermfg=5

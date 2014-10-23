@@ -8,12 +8,35 @@ set nocompatible
 "" {{{{{{{{{{{
 "" Arrow No map
 map <leader>src :source ~/.vimrc<CR>
-"nnoremap <Up> <silent>
-"nnoremap <Down> <silent>
-"nnoremap <Left> <silent>
-"nnoremap <Right> <silent>
+map <Up> <silent>
+map <Down> <silent>
+map <Left> <silent>
+map <Right> <silent>
 
+" EDITOR {{{ -----------------------------------------------
+set nu ru sc wrap ls=2 lz                " -- appearance
+set noet bs=2 ts=4 sw=4 sts=4            " -- tabstop
+set noai nosi hls is ic cf ws scs magic  " -- search
+set sol sel=inclusive mps+=<:>           " -- moving around
+set ut=10 uc=200                         " -- swap control
+set report=0 lpl wmnu                    " -- misc.
 set mouse=a
+
+set list
+set listchars=tab:»\ ,trail:·,extends:>,precedes:<
+
+" encoding and file format
+set fenc=utf-8 ff=unix ffs=unix,dos,mac
+set fencs=utf-8,cp949,cp932,euc-jp,shift-jis,big5,latin2,ucs2-le
+
+" list mode
+"set nolist lcs=extends:>,precedes:<
+"if &tenc ==? "utf-8"
+	"set lcs+=tab:»\ ,trail:·
+"else
+	"set lcs+=tab:\|\ 
+"endif
+" }}} ------------------------------------------------------
 colorscheme desert256
 "colorscheme xoria256
 
@@ -59,26 +82,7 @@ endif
 "
 
 
-" EDITOR {{{ -----------------------------------------------
-set nu ru sc wrap ls=2 lz                " -- appearance
-set noet bs=2 ts=4 sw=4 sts=0            " -- tabstop
-set noai nosi hls is ic cf ws scs magic  " -- search
-set sol sel=inclusive mps+=<:>           " -- moving around
-set ut=10 uc=200                         " -- swap control
-set report=0 lpl wmnu                    " -- misc.
 
-" encoding and file format
-set fenc=utf-8 ff=unix ffs=unix,dos,mac
-set fencs=utf-8,cp949,cp932,euc-jp,shift-jis,big5,latin2,ucs2-le
-
-" list mode
-set nolist lcs=extends:>,precedes:<
-if &tenc ==? "utf-8"
-	set lcs+=tab:»\ ,trail:·
-else
-	set lcs+=tab:\|\ 
-endif
-" }}} ------------------------------------------------------
 
 " TEMPORARY/BACKUP DIRECTORY {{{ ---------------------------
 set swf nobk bex=.bak
@@ -300,12 +304,17 @@ let g:bookmark_center = 1
 
 
 "" {{{{{{{{{{
-"" ----- Vim-bookmarks -------
+"" ----- Gundo Toggle -------
 nnoremap <F6> :GundoToggle<CR>
-"" ----- Vim-bookmarks -------
+"" ----- Gundo Toggle -------
 "" }}}}}}}}}}
 
 
+"" {{{{{{{{{{
+"" ----- Tagbar  -------
+nnoremap <leader>t :TagbarToggle<CR>
+"" ----- Tagbar  -------
+"" }}}}}}}}}}
 
 
 "" -- Dummy Sign for SignColumn to be shown always 
