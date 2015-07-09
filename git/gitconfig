@@ -33,3 +33,6 @@
 [format]
 	pretty = fuller
 
+[user]
+	name = lucidash
+	email = lucidash@gmail.com
