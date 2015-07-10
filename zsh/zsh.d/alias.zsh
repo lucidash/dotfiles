@@ -61,3 +61,9 @@ alias l='ls -G'
 
 
 alias boj='python submit.py'
+
+
+
+############ frientrip project ###############
+alias gul='/usr/local/bin/gulp'
+############ frientrip project ###############
