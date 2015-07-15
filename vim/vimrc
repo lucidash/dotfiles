@@ -162,6 +162,12 @@ if has("autocmd")
 		au FileType ruby setl ts=4 sw=2 sts=0 tw=0 et
 		au BufNewFile,BufRead *.phps,*.php3s setf php
 
+        """""""""""""" frientrip convention
+        au FileType html set sw=2 et
+        au FileType javascript set sw=2 et
+        au FileType coffee set sw=2 et
+        """""""""""""" frientrip convention
+
 		" restore cursor position when the file has been read
 		au BufReadPost *
 					\ if line("'\"") > 0 && line("'\"") <= line("$") |
