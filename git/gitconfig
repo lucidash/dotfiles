@@ -36,3 +36,5 @@
 [user]
 	name = lucidash
 	email = lucidash@gmail.com
+[credential]
+	helper = osxkeychain
