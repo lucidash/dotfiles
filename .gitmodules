@@ -1,6 +1,7 @@
 [submodule "zsh/zprezto"]
 	path = zsh/zprezto
 	url = https://github.com/sorin-ionescu/prezto
+	ignore = dirty
 [submodule "zsh/fasd"]
 	path = zsh/fasd
 	url = https://github.com/clvv/fasd.git
