@@ -13,6 +13,15 @@ map <Down> <silent>
 map <Left> <silent>
 map <Right> <silent>
 
+
+nnoremap j gj
+nnoremap k gk
+
+" Easier to indent with < and > keys.
+vnoremap < <gv
+vnoremap > >gv
+
+
 " EDITOR {{{ -----------------------------------------------
 set nu ru sc wrap ls=2 lz                " -- appearance
 set noet bs=2 ts=4 sw=4 sts=4            " -- tabstop
@@ -235,7 +244,8 @@ endif
 "
 "
 "the leader key
-let mapleader=","			" comma is the <Leader> key now.
+let mapleader=","
+" comma is the <Leader> key now.
 
 map <C-_> <leader>ci
 
@@ -249,13 +259,16 @@ nnoremap <C-H> <C-w>h
 nnoremap <C-L> <C-w>l
 
 " Tab navigations
-nnoremap <C-t>     :tabnew<CR>
-"nnoremap <C-h> :tabprevious<CR>
-"nnoremap <C-l>   :tabnext<CR>
-" " Tab alternative navigations
-" " (terminals might capture <Ctrl-t> or something else)
-nnoremap <leader>tn  :tabnext<CR>
-nnoremap <leader>tp  :tabprev<CR>
+nnoremap <C-t>     :tabnext<CR>
+nnoremap <leader>l  :tabnext<CR>
+nnoremap <leader>h  :tabprev<CR>
+
+"" tabline plugin settings 
+"" {{{{{
+hi TabLine      ctermfg=Black  ctermbg=Gray     cterm=NONE
+hi TabLineFill  ctermfg=Black  ctermbg=Gray     cterm=NONE
+hi TabLineSel   ctermfg=White  ctermbg=DarkBlue  cterm=NONE
+"" }}}}}
 
 
 highlight Pmenu ctermfg=black ctermbg=yellow
@@ -281,7 +294,7 @@ let g:ycm_enable_diagnostic_signs = 0
 "" {{{{{{{{{{
 "" ----- You Complte Me -------
 let g:jedi#popup_select_first = 0
-let g:jedi#popup_on_dot = 0
+let g:jedi#popup_on_dot = 1
 "" ----- You Complte Me -------
 "" }}}}}}}}}}
 
@@ -331,6 +344,11 @@ autocmd BufEnter * sign define dummy
 autocmd BufEnter * execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('')
 "" }}}}}}}}}}
 
+"" -- Nerdtree settings 
+"" {{{{{{{{{{{
+let g:nerdtree_tabs_focus_on_files = 1
+let g:nerdtree_tabs_open_on_console_startup=1
+"" }}}}}}}}}}
 
 au FileType ruby map <F5> <ESC>:w<CR>:!ruby %<CR>
 au FileType python map <F5> <ESC>:w<CR>:!python %<CR>
