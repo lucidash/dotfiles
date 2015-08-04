@@ -61,10 +61,3 @@ alias l='ls -G'
 
 
 alias boj='python submit.py'
-
-
-
-############ frientrip project ###############
-alias gul='/usr/local/bin/gulp'
-alias deploy.st='z api && slc build && slc deploy -s Frientrip http://ec2-52-69-124-242.ap-northeast-1.compute.amazonaws.com:8701'
-############ frientrip project ###############
