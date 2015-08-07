@@ -22,6 +22,7 @@
 	assume-unchanged = update-index --assume-unchanged
 	unassume-unchanged = update-index --no-assume-unchanged
 	list-assume-unchanged = !sh -c 'git ls-files -v | grep "^[a-z]" | sed "s/^..//"'
+	dt = difftool
 
 [color]
 	status = auto
@@ -38,3 +39,11 @@
 	email = lucidash@gmail.com
 [credential]
 	helper = osxkeychain
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
+[mergetool "fugitive"]
+	cmd = vim -f -c \"Gdiff\" \"$MERGED\"
+[merge]
+	tool = fugitive

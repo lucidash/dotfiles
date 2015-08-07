@@ -59,3 +59,6 @@
 [submodule "vim/bundle/tabline.vim"]
 	path = vim/bundle/tabline.vim
 	url = https://github.com/mkitt/tabline.vim
+[submodule "vim/bundle/vim-fugitive"]
+	path = vim/bundle/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive
