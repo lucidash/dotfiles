@@ -180,6 +180,10 @@ alias gwC='git clean -f'
 alias gwx='git rm -r'
 alias gwX='git rm -rf'
 
+
+
+# Additional Alias
 alias gs='git status'
 alias gl='git log --topo-order --pretty=format:${_git_log_medium_format}'
 alias gaa='git add .'
+alias gdt='git difftool'
