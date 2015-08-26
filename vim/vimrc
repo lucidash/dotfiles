@@ -24,7 +24,7 @@ vnoremap > >gv
 
 " EDITOR {{{ -----------------------------------------------
 set nu ru sc wrap ls=2 lz                " -- appearance
-set noet bs=2 ts=4 sw=4 sts=4            " -- tabstop
+set et bs=2 ts=2 sw=2 sts=2            " -- tabstop
 set noai nosi hls is ic cf ws scs magic  " -- search
 set sol sel=inclusive mps+=<:>           " -- moving around
 set ut=10 uc=200                         " -- swap control
@@ -41,9 +41,9 @@ set fencs=utf-8,cp949,cp932,euc-jp,shift-jis,big5,latin2,ucs2-le
 " list mode
 "set nolist lcs=extends:>,precedes:<
 "if &tenc ==? "utf-8"
-	"set lcs+=tab:»\ ,trail:·
+"set lcs+=tab:»\ ,trail:·
 "else
-	"set lcs+=tab:\|\ 
+"set lcs+=tab:\|\ 
 "endif
 " }}} ------------------------------------------------------
 colorscheme desert256
@@ -64,28 +64,28 @@ scripte utf-8
 
 " TERMINAL {{{ ---------------------------------------------
 if &term =~ "xterm"
-	set t_Co=256
-	if has("terminfo")
-		let &t_Sf = "\<Esc>[3%p1%dm"
-		let &t_Sb = "\<Esc>[4%p1%dm"
-	else
-		let &t_Sf = "\<Esc>[3%dm"
-		let &t_Sb = "\<Esc>[4%dm"
-	endif
+  set t_Co=256
+  if has("terminfo")
+    let &t_Sf = "\<Esc>[3%p1%dm"
+    let &t_Sb = "\<Esc>[4%p1%dm"
+  else
+    let &t_Sf = "\<Esc>[3%dm"
+    let &t_Sb = "\<Esc>[4%dm"
+  endif
 endif
 
 
 " terminal encoding (always use utf-8 if possible)
 if !has("win32") || has("gui_running")
-	set enc=utf-8 tenc=utf-8
-	if has("win32")
-		set tenc=cp949
-		let $LANG = substitute($LANG, '\(\.[^.]\+\)\?$', '.utf-8', '')
-	endif
+  set enc=utf-8 tenc=utf-8
+  if has("win32")
+    set tenc=cp949
+    let $LANG = substitute($LANG, '\(\.[^.]\+\)\?$', '.utf-8', '')
+  endif
 endif
 
 if &enc ==? "euc-kr"
-	set enc=cp949
+  set enc=cp949
 endif
 " }}} ------------------------------------------------------
 "
@@ -96,18 +96,18 @@ endif
 " TEMPORARY/BACKUP DIRECTORY {{{ ---------------------------
 set swf nobk bex=.bak
 if exists("$HOME")
-	" makes various files written into ~/.vim/ or ~/_vim/
-	let s:home_dir = substitute($HOME, '[/\\]$', '', '')
-	if has("win32")
-		let s:home_dir = s:home_dir . '/_vim'
-	else
-		let s:home_dir = s:home_dir . '/.vim'
-	endif
-	if isdirectory(s:home_dir)
-		let &dir = s:home_dir . '/tmp,' . &dir
-		let &bdir = s:home_dir . '/backup,' . &bdir
-		let &vi = &vi . ',n' . s:home_dir . '/viminfo'
-	endif
+  " makes various files written into ~/.vim/ or ~/_vim/
+  let s:home_dir = substitute($HOME, '[/\\]$', '', '')
+  if has("win32")
+    let s:home_dir = s:home_dir . '/_vim'
+  else
+    let s:home_dir = s:home_dir . '/.vim'
+  endif
+  if isdirectory(s:home_dir)
+    let &dir = s:home_dir . '/tmp,' . &dir
+    let &bdir = s:home_dir . '/backup,' . &bdir
+    let &vi = &vi . ',n' . s:home_dir . '/viminfo'
+  endif
 endif
 " }}} ------------------------------------------------------
 
@@ -122,22 +122,22 @@ endif
 
 " editing and applying .vimrc
 if has("win32")
-	nmap <silent> <Leader>R :so $HOME/_vimrc<CR>
-	nmap <silent> <Leader>rc :ek$HOME/_vimrc<CR>
+  nmap <silent> <Leader>R :so $HOME/_vimrc<CR>
+  nmap <silent> <Leader>rc :ek$HOME/_vimrc<CR>
 else
-	nmap <silent> <Leader>R :so $HOME/.vimrc<CR>
-	nmap <silent> <Leader>rc :e $HOME/.vimrc<CR>
+  nmap <silent> <Leader>R :so $HOME/.vimrc<CR>
+  nmap <silent> <Leader>rc :e $HOME/.vimrc<CR>
 endif
 
 " inserting matching quotes
 fu! s:InputQuotes()
-	if mode() == "R"
-		exe "normal \<Esc>" | return ""   " -- beep
-	elseif match(getline("."), '\%u2018\%'.col('.').'c\%u2019') < 0
-		return "\u2018\u2019\<Insert>\<BS>\<Insert>"
-	else
-		return "\<Del>\<BS>\u201c\u201d\<Insert>\<BS>\<Insert>"
-	endif
+  if mode() == "R"
+    exe "normal \<Esc>" | return ""   " -- beep
+  elseif match(getline("."), '\%u2018\%'.col('.').'c\%u2019') < 0
+    return "\u2018\u2019\<Insert>\<BS>\<Insert>"
+  else
+    return "\<Del>\<BS>\u201c\u201d\<Insert>\<BS>\<Insert>"
+  endif
 endf
 imap <silent> <C-'> <C-R>=<SID>InputQuotes()<CR>
 
@@ -157,84 +157,84 @@ let html_wrong_comments = 1
 
 " AUTOCMD {{{ ----------------------------------------------
 if has("autocmd")
-	aug vimrc
-		au!
+  aug vimrc
+    au!
 
-		" filetype-specific configurations
-		au FileType python setl ts=4 sw=4 sts=4 noet
-		au FileType html setl ts=4 sw=4 sts=4 et
-		au FileType php setl ts=4 sw=4 sts=4 et
-		au FileType cpp setl ts=4 sw=4 sts=4 noet
-		au FileType c setl ts=4 sw=4 sts=4 noet
-		au Filetype text setl tw=80
-		au FileType javascript,jsp setl cin
-		au FileType ruby setl ts=4 sw=2 sts=0 tw=0 et
-		au BufNewFile,BufRead *.phps,*.php3s setf php
+    " filetype-specific configurations
+    au FileType python setl ts=2 sw=2 sts=2 noet
+    au FileType html setl ts=4 sw=4 sts=4 et
+    au FileType php setl ts=4 sw=4 sts=4 et
+    au FileType cpp setl ts=4 sw=4 sts=4 noet
+    au FileType c setl ts=4 sw=4 sts=4 noet
+    au Filetype text setl tw=80
+    au FileType javascript,jsp setl cin
+    au FileType ruby setl ts=2 sw=2 sts=0 tw=0 et
+    au BufNewFile,BufRead *.phps,*.php3s setf php
 
-        """""""""""""" frientrip convention
-        au FileType html set sw=2 et
-        au FileType javascript set sw=2 et
-        au FileType coffee set sw=2 et
-        """""""""""""" frientrip convention
+    """""""""""""" frientrip convention
+    au FileType html set sw=2 et
+    au FileType javascript set sw=2 et
+    au FileType coffee set sw=2 et
+    """""""""""""" frientrip convention
 
-		" restore cursor position when the file has been read
-		au BufReadPost *
-					\ if line("'\"") > 0 && line("'\"") <= line("$") |
-					\   exe "norm g`\"" |
-					\ endif
+    " restore cursor position when the file has been read
+    au BufReadPost *
+          \ if line("'\"") > 0 && line("'\"") <= line("$") |
+          \   exe "norm g`\"" |
+          \ endif
 
-		" fix window position for mac os x
-		if has("gui_running") && has("macunix")
-			au GUIEnter *
-						\ if getwinposx() < 50 |
-						\   exe ':winp 50 ' . (getwinposy() + 22) |
-						\ endif
-		endif
+    " fix window position for mac os x
+    if has("gui_running") && has("macunix")
+      au GUIEnter *
+            \ if getwinposx() < 50 |
+            \   exe ':winp 50 ' . (getwinposy() + 22) |
+            \ endif
+    endif
 
-		" fix window size if window size has been changed
-		if has("gui_running")
-			fu! s:ResizeWindows()
-				let l:nwins = winnr("$") | let l:num = 1
-				let l:curtop = 0 | let l:curleft = 0
-				let l:lines = &lines - &cmdheight
-				let l:prevlines = s:prevlines - &cmdheight
-				let l:cmd = ""
-				while l:num < l:nwins
-					if l:curleft == 0
-						let l:adjtop = l:curtop * l:lines / l:prevlines
-						let l:curtop = l:curtop + winheight(l:num) + 1
-						if l:curtop < l:lines
-							let l:adjheight = l:curtop * l:lines / l:prevlines - l:adjtop - 1
-							let l:cmd = l:cmd . l:num . "resize " . l:adjheight . "|"
-						endif
-					endif
-					let l:adjleft = l:curleft * &columns / s:prevcolumns
-					let l:curleft = l:curleft + winwidth(l:num) + 1
-					if l:curleft < &columns
-						let l:adjwidth = l:curleft * &columns / s:prevcolumns - l:adjleft - 1
-						let l:cmd = l:cmd . "vert " . l:num . "resize " . l:adjwidth . "|"
-					else
-						let l:curleft = 0
-					endif
-					let l:num = l:num + 1
-				endw
-				exe l:cmd
-			endf
-			fu! s:ResizeAllWindows()
-				if v:version >= 700
-					let l:tabnum = tabpagenr()
-					tabdo call s:ResizeWindows()
-					exe "norm " . l:tabnum . "gt"
-				else
-					call s:ResizeWindows()
-				endif
-				let s:prevlines = &lines | let s:prevcolumns = &columns
-			endf
-			au GUIEnter * let s:prevlines = &lines | let s:prevcolumns = &columns
-			au VimResized * call s:ResizeAllWindows()
-		endif
+    " fix window size if window size has been changed
+    if has("gui_running")
+      fu! s:ResizeWindows()
+        let l:nwins = winnr("$") | let l:num = 1
+        let l:curtop = 0 | let l:curleft = 0
+        let l:lines = &lines - &cmdheight
+        let l:prevlines = s:prevlines - &cmdheight
+        let l:cmd = ""
+        while l:num < l:nwins
+          if l:curleft == 0
+            let l:adjtop = l:curtop * l:lines / l:prevlines
+            let l:curtop = l:curtop + winheight(l:num) + 1
+            if l:curtop < l:lines
+              let l:adjheight = l:curtop * l:lines / l:prevlines - l:adjtop - 1
+              let l:cmd = l:cmd . l:num . "resize " . l:adjheight . "|"
+            endif
+          endif
+          let l:adjleft = l:curleft * &columns / s:prevcolumns
+          let l:curleft = l:curleft + winwidth(l:num) + 1
+          if l:curleft < &columns
+            let l:adjwidth = l:curleft * &columns / s:prevcolumns - l:adjleft - 1
+            let l:cmd = l:cmd . "vert " . l:num . "resize " . l:adjwidth . "|"
+          else
+            let l:curleft = 0
+          endif
+          let l:num = l:num + 1
+        endw
+        exe l:cmd
+      endf
+      fu! s:ResizeAllWindows()
+        if v:version >= 700
+          let l:tabnum = tabpagenr()
+          tabdo call s:ResizeWindows()
+          exe "norm " . l:tabnum . "gt"
+        else
+          call s:ResizeWindows()
+        endif
+        let s:prevlines = &lines | let s:prevcolumns = &columns
+      endf
+      au GUIEnter * let s:prevlines = &lines | let s:prevcolumns = &columns
+      au VimResized * call s:ResizeAllWindows()
+    endif
 
-	aug END
+  aug END
 endif
 " }}} ------------------------------------------------------
 
@@ -337,7 +337,6 @@ nnoremap <leader>t :TagbarToggle<CR>
 "" ----- Tagbar  -------
 "" }}}}}}}}}}
 
-
 "" -- Dummy Sign for SignColumn to be shown always 
 "" {{{{{{{{{{{
 autocmd BufEnter * sign define dummy 
@@ -348,6 +347,15 @@ autocmd BufEnter * execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('
 "" {{{{{{{{{{{
 let g:nerdtree_tabs_focus_on_files = 1
 let g:nerdtree_tabs_open_on_console_startup=1
+"" }}}}}}}}}}
+
+
+"" IndentGuides
+"" {{{{{{{{{{{
+let g:indent_guides_enable_on_vim_startup = 0
+let g:indent_guides_auto_colors = 0
+hi IndentGuidesOdd  ctermbg=black
+hi IndentGuidesEven ctermbg=darkgrey
 "" }}}}}}}}}}
 
 au FileType ruby map <F5> <ESC>:w<CR>:!ruby %<CR>
