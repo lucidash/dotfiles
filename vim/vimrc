@@ -22,6 +22,12 @@ vnoremap < <gv
 vnoremap > >gv
 
 
+set mouse+=a
+if &term =~ '^screen'
+  "tmux knows the extended mouse mode
+  set ttymouse=xterm2
+endif
+
 " EDITOR {{{ -----------------------------------------------
 set nu ru sc wrap ls=2 lz                " -- appearance
 set et bs=2 ts=2 sw=2 sts=2            " -- tabstop
