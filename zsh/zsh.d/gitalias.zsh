@@ -107,6 +107,12 @@ alias glo='git log --topo-order --pretty=format:"${_git_log_oneline_format}"'
 alias glg='git log --topo-order --all --graph --pretty=format:"${_git_log_oneline_format}"'
 alias glb='git log --topo-order --pretty=format:"${_git_log_brief_format}"'
 alias glc='git shortlog --summary --numbered'
+alias gh="git log --graph --pretty=format:'%C(yellow)%h%Creset \
+        -%C(yellow)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset' \
+            --abbrev-commit --date=short 
+      ;--date-order -n100"
+
+
 
 # Merge (m)
 alias gm='git merge'
