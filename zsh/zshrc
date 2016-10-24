@@ -19,3 +19,6 @@ fi
 for config_file ($HOME/.zsh/zsh.d/*.zsh) source $config_file
 
 #source $HOME/.LS_COLORS/ls_colors.zsh
+
+
+nvm use 4.6.0

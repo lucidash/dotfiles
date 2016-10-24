@@ -5,6 +5,14 @@
 
 set nocompatible
 
+" plug
+call plug#begin('~/.vim/bundle')
+Plug 'vim-airline/vim-airline'
+call plug#end()
+
+
+
+
 "" {{{{{{{{{{{
 "" Arrow No map
 map <leader>src :source ~/.vimrc<CR>
@@ -20,6 +28,13 @@ nnoremap k gk
 " Easier to indent with < and > keys.
 vnoremap < <gv
 vnoremap > >gv
+
+
+" buffer nav {{{{{
+map <s-w> <ESC>:bp <bar> sp <bar> bn <bar> bd <CR>
+map <c-l> :bn<CR>
+map <c-h> :bN<CR>
+" }}}}}}}}
 
 
 set mouse+=a
@@ -58,10 +73,9 @@ colorscheme desert256
 nnoremap <CR> :noh<CR>
 "" }}}}}}}}}}
 
-""
+"" vimppathogen
 set rtp+=~/.vim/bundle/vim-pathogen
 execute pathogen#infect()
-
 ""
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
 
@@ -261,8 +275,8 @@ map <C-_> <leader>ci
 nnoremap <C-J> <C-w>j
 nnoremap <C-K> <C-w>k
 " " Move horizontally in the window through the vertical splits... 
-nnoremap <C-H> <C-w>h
-nnoremap <C-L> <C-w>l
+"nnoremap <C-H> <C-w>h
+"nnoremap <C-L> <C-w>l
 
 " Tab navigations
 nnoremap <C-n>     :tabnew<CR>
@@ -346,6 +360,11 @@ nnoremap <F6> :GundoToggle<CR>
 "" ----- Gundo Toggle -------
 "" }}}}}}}}}}
 
+"" {{{{{{{{{{
+"" ----- CtrlP -------
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)|node_modules|venv$'
+"" ----- CtrlP -------
+"" }}}}}}}}}}
 
 "" {{{{{{{{{{
 "" ----- Tagbar  -------
@@ -374,6 +393,14 @@ hi IndentGuidesOdd  ctermbg=black
 hi IndentGuidesEven ctermbg=darkgrey
 "" }}}}}}}}}}
 
+
+" {{{{{{ vim airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+"}}}}
+
+
 au FileType ruby map <F5> <ESC>:w<CR>:!ruby %<CR>
 au FileType python map <F5> <ESC>:w<CR>:!python %<CR>
 au FileType cpp map <F4> <ESC>:w<CR>:!g++ -O2 -std=gnu++11 % && ./a.out 
@@ -382,3 +409,22 @@ au FileType c map <F5> <ESC>:w<CR>:!gcc %<CR><CR>:!./a.out < input.txt<CR>
 imap <F2> <ESC>:w<CR>
 map <F3> <ESC>:!cat %\|pbcopy<CR>
 
+
+function! BufferDelete()
+    if &modified
+        echohl ErrorMsg
+        echomsg "No write since last change. Not closing buffer."
+        echohl NONE
+    else
+        let s:total_nr_buffers = len(filter(range(1, bufnr('$')), 'buflisted(v:val)'))
+
+        if s:total_nr_buffers == 1
+            bdelete
+            echo "Buffer deleted. Created new buffer."
+        else
+            bprevious
+            bdelete #
+            echo "Buffer deleted."
+        endif
+    endif
+endfunction
