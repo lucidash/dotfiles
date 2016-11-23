@@ -7,3 +7,6 @@
 [submodule "vim/bundle/vim-plug"]
   path = vim/bundle/vim-plug
   url = https://github.com/junegunn/vim-plug
+[submodule "zsh/prezto"]
+	path = zsh/prezto
+	url = https://github.com/sorin-ionescu/prezto
