@@ -8,6 +8,18 @@ set nocompatible
 " plug
 call plug#begin('~/.vim/bundle')
 Plug 'vim-airline/vim-airline'
+Plug 'scrooloose/nerdtree'
+Plug 'davidhalter/jedi-vim'
+Plug 'scrooloose/nerdcommenter'
+Plug 'kien/ctrlp.vim'
+Plug 'mkitt/tabline.vim'
+Plug 'godlygeek/tabular'
+Plug 'tomtom/tlib_vim'
+Plug 'SirVer/ultisnips'
+Plug 'tpope/vim-fugitive'
+Plug 'jistr/vim-nerdtree-tabs'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'pangloss/vim-javascript'
 call plug#end()
 
 
@@ -73,10 +85,6 @@ colorscheme desert256
 nnoremap <CR> :noh<CR>
 "" }}}}}}}}}}
 
-"" vimppathogen
-set rtp+=~/.vim/bundle/vim-pathogen
-execute pathogen#infect()
-""
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
 
 scripte utf-8
