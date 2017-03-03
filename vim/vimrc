@@ -301,6 +301,10 @@ map <leader>8 8gt
 map <leader>9 9gt
 map <leader>0 :tablast<CR>
 
+hi! Normal ctermbg=NONE guibg=NONE
+hi! NonText ctermbg=NONE guibg=NONE
+
+
 "" tabline plugin settings 
 "" {{{{{
 hi TabLine      ctermfg=Black  ctermbg=Gray     cterm=NONE
