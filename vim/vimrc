@@ -189,7 +189,7 @@ if has("autocmd")
     au!
 
     " filetype-specific configurations
-    au FileType python setl ts=2 sw=2 sts=2 noet
+    au FileType python setl ts=4 sw=4 sts=4 et
     au FileType html setl ts=4 sw=4 sts=4 et
     au FileType php setl ts=4 sw=4 sts=4 et
     au FileType cpp setl ts=4 sw=4 sts=4 noet
@@ -276,6 +276,9 @@ let mapleader=","
 " comma is the <Leader> key now.
 
 map <C-_> <leader>ci
+
+
+map <C-r> :rewind<CR>G
 
 " Switch between window splits using big J or K and expand the split to its 
 " " full size. 
