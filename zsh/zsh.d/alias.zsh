@@ -17,6 +17,10 @@ alias vm='ssh 10.211.55.4'
 
 
 
+# git-number ======= {{{{{{{
+alias git='git number'
+# ======= }}}}}}}
+
 
 
 # VirtualEnv ========================================= {{{
@@ -56,8 +60,4 @@ alias tailf='tail -f'
 #others
 alias jj='python manage.py'
 alias l='ls -G'
-
-
-
-
 alias boj='python submit.py'
