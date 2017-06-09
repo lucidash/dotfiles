@@ -3,6 +3,8 @@
 "" Kim SangHoon <lucidash@gmail.com>
 "" =========================================================
 
+"set clipboard=unnamed
+
 set nocompatible
 
 " plug
@@ -20,10 +22,11 @@ Plug 'tpope/vim-fugitive'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'pangloss/vim-javascript'
+Plug 'shawncplus/phpcomplete.vim'
+Plug 'Valloric/YouCompleteMe'
 call plug#end()
 
-
-
+au FileType python so ~/.vim/autoload/python_fn.vim
 
 "" {{{{{{{{{{{
 "" Arrow No map
@@ -327,8 +330,9 @@ highlight PmenuSel ctermfg=red ctermbg=white gui=bold
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py' 
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_use_ultisnips_completer = 1
+let g:ycm_use_ultisnips_completer = 0
 let g:ycm_enable_diagnostic_signs = 0
+let g:ycm_python_binary_path = 'python'
 ""
 ""
 "" ----- You Complte Me -------
@@ -337,10 +341,10 @@ let g:ycm_enable_diagnostic_signs = 0
 
 
 "" {{{{{{{{{{
-"" ----- You Complte Me -------
-let g:jedi#popup_select_first = 0
-let g:jedi#popup_on_dot = 1
-"" ----- You Complte Me -------
+"" ----- jedi -------
+"let g:jedi#popup_select_first = 0
+"let g:jedi#popup_on_dot = 1
+"" ----- jedi -------
 "" }}}}}}}}}}
 
 "" {{{{{{{{{{
@@ -414,6 +418,10 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 "}}}}
+"
+" {{{{{{ php
+"let g:phpcomplete_add_function_extensions = [...]
+" }}}}}} php
 
 
 au FileType ruby map <F5> <ESC>:w<CR>:!ruby %<CR>
