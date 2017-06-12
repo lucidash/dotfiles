@@ -23,6 +23,7 @@ Plug 'jistr/vim-nerdtree-tabs'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'pangloss/vim-javascript'
 Plug 'shawncplus/phpcomplete.vim'
+Plug 'mileszs/ack.vim'
 Plug 'Valloric/YouCompleteMe'
 call plug#end()
 
@@ -422,6 +423,13 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 " {{{{{{ php
 "let g:phpcomplete_add_function_extensions = [...]
 " }}}}}} php
+
+
+" {{{{{ ack.vim
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+" }}}}
 
 
 au FileType ruby map <F5> <ESC>:w<CR>:!ruby %<CR>
