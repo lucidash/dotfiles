@@ -25,6 +25,7 @@ Plug 'pangloss/vim-javascript'
 Plug 'shawncplus/phpcomplete.vim'
 Plug 'mileszs/ack.vim'
 Plug 'Valloric/YouCompleteMe'
+Plug 'Chiel92/vim-autoformat'
 call plug#end()
 
 au FileType python so ~/.vim/autoload/python_fn.vim
@@ -282,7 +283,7 @@ let mapleader=","
 map <C-_> <leader>ci
 
 
-map <C-r> :rewind<CR>G
+map <C-=> :rewind<CR>G
 
 " Switch between window splits using big J or K and expand the split to its 
 " " full size. 
@@ -327,6 +328,9 @@ highlight PmenuSel ctermfg=red ctermbg=white gui=bold
 "" ----- You Complte Me -------
 ""
 ""
+
+autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+
 
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py' 
 let g:ycm_autoclose_preview_window_after_insertion = 1
@@ -425,18 +429,24 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 " }}}}}} php
 
 
-" {{{{{ ack.vim
+"{{{{{ ack.vim
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
+nnoremap <leader>a :Ack! 
 " }}}}
 
 
 au FileType ruby map <F5> <ESC>:w<CR>:!ruby %<CR>
-au FileType python map <F5> <ESC>:w<CR>:!python %<CR>
+au FileType python map <F5> <ESC>:w<CR>:!source %:h/.venv/bin/activate; python %<CR>
 au FileType cpp map <F4> <ESC>:w<CR>:!g++ -O2 -std=gnu++11 % && ./a.out 
 au FileType cpp map <F5> <ESC>:w<CR>:!g++ -O2 -std=gnu++11 % && ./a.out < in <CR>
 au FileType c map <F5> <ESC>:w<CR>:!gcc %<CR><CR>:!./a.out < input.txt<CR>
+au FileType ruby map <leader>! <ESC>:w<CR>:!ruby %<CR>
+au FileType python map <leader>! <ESC>:w<CR>:!source %:h/.venv/bin/activate; python %<CR>
+au FileType python map <leader>@ <ESC>:w<CR>:!source %:h/.venv/bin/activate; python % < in<CR>
+au FileType cpp map <leader>! <ESC>:w<CR>:!g++ -O2 -std=gnu++11 % && ./a.out<CR>
+au FileType cpp map <leader>@ <ESC>:w<CR>:!g++ -O2 -std=gnu++11 % && ./a.out < in <CR>
 imap <F2> <ESC>:w<CR>
 map <F3> <ESC>:!cat %\|pbcopy<CR>
 
