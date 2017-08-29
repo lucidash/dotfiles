@@ -100,4 +100,5 @@ for target, source in tasks.items():
     print >> stderr, ("%s : symlink created from '%s'" % (target, source))
 
 # install vim-plug
-os.system("curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim");
+os.system("curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim")
+zsh = os.system("which zsh")
