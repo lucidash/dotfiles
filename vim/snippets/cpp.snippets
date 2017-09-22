@@ -2,21 +2,24 @@
 
 snippet REP
 	for(int ${1:i} = 0; $1 < ${2:n}; ++$1) ${3}
+
 snippet FOR
 	for(int ${1:i} = ${2:0}; $1 < ${3:n}; ++$1) ${4}
+
 snippet all
 	${1:container}.begin(), $1.end()${2}
+
 snippet unique
 	${1:container}.erase(unique($1.begin(), $1.end()), $1.end());${2}
+
 snippet memset
 	memset(${1:array}, ${2:0}, sizeof($1));
+
 snippet cin.sync
 	cin.sync_with_stdio(false);
 
 snippet pu
 	push_back(${1})
-snippet using namespace
-	using namespace std;
 
 snippet #include
 	#include <cassert>
@@ -65,8 +68,6 @@ snippet ONLINE_JUDGE
 snippet freopen
 	freopen("${1:input.txt}", "rt", stdin);
 	freopen("${2:output.txt}", "wt", stdout);
-
-
 
 snippet Hopcroft_Karp
 	class Hopcroft_Karp {
@@ -184,7 +185,6 @@ snippet unionfind
 		parent[ get_root(u) ] = get_root(v);
 	}
 
-
 snippet KMP
 	namespace kmp
 	{
@@ -220,7 +220,34 @@ snippet KMP
 		}
 	} // namespace kmp
 
-snippet itree
+snippet "bit|BIT|fenwick_tree"
+	class fenwick_tree {
+		private:
+			int size;
+			vector<int> BIT;
+
+		public:
+			void init(int n) {
+				size = n;
+				BIT.resize(n+1);
+			}
+			int query(int i) {
+				int answer = 0;
+				while(i > 0){
+					answer += BIT[i];
+					i -= i & -i;
+				}
+				return answer;
+			}
+			void update(int i, int delta) {
+				while(i <= size){
+					BIT[i] += delta;
+					i += i & -i;
+				}
+			}
+	};
+
+snippet "itree|index_tree"
 	class  itree
 	{
 		typedef long long val_t;
@@ -367,7 +394,6 @@ snippet itree_adv
 		}
 	} // namespace itree
 
-
 snippet euler_totient
 	long long euler_totient2(long long n, long long ps) {
 		for (long long i = ps ; i * i <= n ; i++) {
@@ -387,6 +413,7 @@ snippet euler_totient
 	long long euler_totient(long long n) {
 		return euler_totient2(n, 2);
 	}
+
 
 snippet convec_hull
 	const double eps = 1e-9;
@@ -444,7 +471,6 @@ snippet convec_hull
 		}
 		return ans;
 	}
-
 
 snippet scc
 	namespace cc
@@ -544,7 +570,6 @@ snippet scc
 		}
 	} // namespace cc 
 
-
 snippet mcmf_bellmanford
 	namespace mcmf
 	{
@@ -624,7 +649,6 @@ snippet mcmf_bellmanford
 			return make_pair( total_flow , total_cost );
 		}
 	} // namesapce mcmf
-
 
 snippet mcmf_dijkstra
 	struct edge {
@@ -719,8 +743,6 @@ snippet mcmf_dijkstra
 			return make_pair(total_flow, total_cost);
 		}
 	} // namespace mcmf
-
-
 
 snippet bridges
 	// A class that represents an undirected graph
@@ -886,4 +908,58 @@ snippet Dijkstra
 				}
 			}
 		}
+	}
+
+snippet histogram
+	// The main function to find the maximum rectangular area under given
+	// histogram with n bars
+	int getMaxArea(vector<int> hist)
+	{
+		int hist_size = hist.size();
+		// Create an empty stack. The stack holds indexes of hist
+		// The bars stored in stack are always in increasing order of their
+		// heights.
+		stack<int> s;
+
+		int max_area = 0; // Initalize max area
+		int tp;  // To store top of stack
+		int area_with_top; // To store area with top bar as the smallest bar
+
+		// Run through all bars of given histogram
+		int i = 0;
+		while (i < hist_size)
+		{
+			// If this bar is higher than the bar on top stack, push it to stack
+			if (s.empty() || hist[s.top()] <= hist[i])
+				s.push(i++);
+
+			// If this bar is lower than top of stack, then calculate area of rectangle
+			// with stack top as the smallest (or minimum height) bar. 'i' is
+			// 'right index' for the top and element before top in stack is 'left index'
+			else
+			{
+				tp = s.top();  // store the top index
+				s.pop();  // pop the top
+
+				// Calculate the area with hist[tp] stack as smallest bar
+				area_with_top = hist[tp] * (s.empty() ? i : i - s.top() - 1);
+
+				// update max area, if needed
+				if (max_area < area_with_top)
+					max_area = area_with_top;
+			}
+		}
+
+		// Now pop the remaining bars from stack and calculate area with every
+		// popped bar as the smallest bar
+		while (s.empty() == false)
+		{
+			tp = s.top();
+			s.pop();
+			area_with_top = hist[tp] * (s.empty() ? i : i - s.top() - 1);
+
+			if (max_area < area_with_top)
+				max_area = area_with_top;
+		}
+		return max_area;
 	}
