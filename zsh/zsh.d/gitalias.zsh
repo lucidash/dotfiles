@@ -188,8 +188,11 @@ alias gwX='git rm -rf'
 
 
 
-# Additional Alias
+# Additional Alias for lucidash
 alias gs='git status'
 alias gl='git log --topo-order --pretty=format:${_git_log_medium_format}'
 alias gaa='git add .'
 alias gdt='git difftool'
+alias gsgp='git submodule foreach git pull'
+alias gtr='lTMP=$(git branch | grep "*")&&git_branch=${lTMP:2}&&gco master && gfm && gco $git_branch && gr master'
+
