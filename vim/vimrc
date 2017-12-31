@@ -26,6 +26,7 @@ Plug 'shawncplus/phpcomplete.vim'
 Plug 'mileszs/ack.vim'
 Plug 'Valloric/YouCompleteMe'
 Plug 'Chiel92/vim-autoformat'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } | Plug 'junegunn/fzf.vim'
 call plug#end()
 
 au FileType python so ~/.vim/autoload/python_fn.vim
