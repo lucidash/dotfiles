@@ -17,19 +17,18 @@ Plug 'kien/ctrlp.vim'
 Plug 'mkitt/tabline.vim'
 Plug 'godlygeek/tabular'
 Plug 'tomtom/tlib_vim'
-Plug 'SirVer/ultisnips'
 Plug 'tpope/vim-fugitive'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'pangloss/vim-javascript'
 Plug 'shawncplus/phpcomplete.vim'
 Plug 'mileszs/ack.vim'
-Plug 'Valloric/YouCompleteMe'
 Plug 'Chiel92/vim-autoformat'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } | Plug 'junegunn/fzf.vim'
 call plug#end()
 
 au FileType python so ~/.vim/autoload/python_fn.vim
+
 
 "" {{{{{{{{{{{
 "" Arrow No map
