@@ -461,7 +461,8 @@ let g:bookmark_center = 1
 
 "" {{{{{{{{{{
 "" ----- Gundo Toggle -------
-nnoremap <F6> :GundoToggle<CR>
+nnoremap <leader>G :GundoToggle<CR>
+let g:gundo_right = 1   " show at right
 "" ----- Gundo Toggle -------
 "" }}}}}}}}}}
 
