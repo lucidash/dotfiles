@@ -113,8 +113,6 @@ command! -nargs=* Plugs call fzf#run
             \ 'sink':    'NERDTree'
             \})
 
-" Leader key mappings for vim-fzf commands
-
 
 " buffer nav {{{{{
 "map <s-w> <ESC>:bp <bar> sp <bar> bn <bar> bd <CR>
@@ -526,11 +524,40 @@ autocmd BufEnter * sign define dummy
 autocmd BufEnter * execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('')
 "" }}}}}}}}}}
 
+
+" ---------------------------------------------------------------- }}}
+" SuperTab {{{
+
+" Use 'omnicomplete' as the default completion type.
+" It may fallback to default keyword completion (<C-P>).
+let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
+
+" sometimes we may want to insert tabs or spaces for indentation.
+" no tab completion at the start of line or after whitespace.
+let g:SuperTabNoCompleteAfter = ['^', '\s']
+
+
 "" -- Nerdtree settings 
 "" {{{{{{{{{{{
 let g:nerdtree_tabs_focus_on_files = 1
-let g:nerdtree_tabs_open_on_console_startup=1
+"let g:nerdtree_tabs_open_on_console_startup=1
 "" }}}}}}}}}}
+
+" ---------------------------------------------------------------- }}}
+" NerdTree {{{
+
+" change CWD when the NERDtree is first loaded to the directory initialized in
+" (e.g. change CWD to the directory hitted by CtrlPZ)
+let g:NERDTreeChDirMode = 1
+
+" <Leader>N toggles NERDTree (across tab)
+map <Leader>N <plug>NERDTreeTabsToggle<CR>
+" Startup Options (do NOT show automatically)
+let g:nerdtree_tabs_open_on_console_startup = 1
+let g:nerdtree_tabs_open_on_gui_startup = 1
+
+" filter out some files, by extension
+let NERDTreeIgnore = ['\.pyc$', '\.class$', '\.o$', '\.orig$']
 
 
 "" IndentGuides
