@@ -479,6 +479,32 @@ nnoremap <leader>t :TagbarToggle<CR>
 "" ----- Tagbar  -------
 "" }}}}}}}}}}
 
+" ---------------------------------------------------------------- }}}
+" vim-asterisk (enhanced *) {{{
+
+"' Use z (stay) behavior as default
+map *  <Plug>(asterisk-z*)
+map #  <Plug>(asterisk-z#)
+map g* <Plug>(asterisk-gz*)
+map g# <Plug>(asterisk-gz#)
+
+" Keep cursor position across matches
+let g:asterisk#keeppos = 1
+
+" ---------------------------------------------------------------- }}}
+" incsearch {{{
+" incsearch.vim
+if has_key(g:plugs, 'incsearch.vim')
+  map /  <Plug>(incsearch-forward)
+  map ?  <Plug>(incsearch-backward)
+  map g/ <Plug>(incsearch-stay)
+endif
+
+" incsearch-fuzzy.vim
+map z/ <Plug>(incsearch-fuzzy-/)
+map z? <Plug>(incsearch-fuzzy-?)
+map zg/ <Plug>(incsearch-fuzzy-stay)
+
 "" -- Dummy Sign for SignColumn to be shown always 
 "" {{{{{{{{{{{
 autocmd BufEnter * sign define dummy 
