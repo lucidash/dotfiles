@@ -3,31 +3,40 @@
 "" Kim SangHoon <lucidash@gmail.com>
 "" =========================================================
 
-"set clipboard=unnamed
-
+syntax on
+scriptencoding utf-8
 set nocompatible
 
-" plug
-call plug#begin('~/.vim/bundle')
-Plug 'vim-airline/vim-airline'
-Plug 'scrooloose/nerdtree'
-Plug 'davidhalter/jedi-vim'
-Plug 'scrooloose/nerdcommenter'
-Plug 'kien/ctrlp.vim'
-Plug 'mkitt/tabline.vim'
-Plug 'godlygeek/tabular'
-Plug 'tomtom/tlib_vim'
-Plug 'tpope/vim-fugitive'
-Plug 'jistr/vim-nerdtree-tabs'
-Plug 'nathanaelkane/vim-indent-guides'
-Plug 'pangloss/vim-javascript'
-Plug 'shawncplus/phpcomplete.vim'
-Plug 'mileszs/ack.vim'
-Plug 'Chiel92/vim-autoformat'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } | Plug 'junegunn/fzf.vim'
-call plug#end()
+set noswapfile
+set nobackup
 
-au FileType python so ~/.vim/autoload/python_fn.vim
+set visualbell
+set history=1000
+set undolevels=1000
+set lazyredraw              " no redrawing during macro execution
+
+" when launching files via quickfix, FZF, or something else,
+" first switch to existing tab (if any) that contains the target buffer,
+" or open a new buffer by splitting window in the current tab otherwise.
+set switchbuf+=usetab,split
+
+" diff: ignore whitespaces
+set diffopt+=iwhite
+
+" All the vim plugins, powered by 'vim-plug', are
+" listed up in the separate file 'plugins.vim'.
+" It is for making this vimrc could also work out-of-box
+" even if not managed by dotfiles.
+if filereadable(expand("\~/.vim/plugins.vim"))
+  source \~/.vim/plugins.vim
+endif
+
+if filereadable('/bin/zsh')
+  set shell=/bin/zsh
+endif
+
+" use path '~/.vim' even on non-unix machine
+set runtimepath+=~/.vim
 
 
 "" {{{{{{{{{{{
@@ -37,20 +46,80 @@ map <Up> <silent>
 map <Down> <silent>
 map <Left> <silent>
 map <Right> <silent>
-
+"" }}}}}}}}}}}
+"" Arrow No map
 
 nnoremap j gj
 nnoremap k gk
 
 " Easier to indent with < and > keys.
+" do not exit from visual mode when shifting
 vnoremap < <gv
 vnoremap > >gv
 
+" mouse behaviour
+if has('mouse')
+    set mouse=nvc
+endif
+if ! has('nvim')
+    " vim only (not in neovim)
+    set ttymouse=xterm2
+endif
+
+
+" ---------------------------------------------------------------- }}}
+" FZF {{{
+
+" Inside vim, set environment variable FZF_DEFAULT_COMMAND
+" so that it can list the files by 'git ls-files' or 'ag'.
+if executable("ag")
+    "let $FZF_DEFAULT_COMMAND = '(git ls-files ":/" || ag -l -g "") | LC_COLLATE=C sort | uniq  2> /dev/null'
+    let $FZF_DEFAULT_COMMAND = 'ag -l -g "" 2> /dev/null'
+endif
+
+" :F is a shortcut for :GFiles or :FZF
+function! s:fzf_smart()
+    let l:git_dir = fugitive#extract_git_dir(expand('%:p'))
+    " in a git repo, invoke :GFiles (plus untracked files)
+    if ! empty(l:git_dir) | GFiles -c -o --exclude-standard
+    " not in git repo, invoke :FZF by fallback
+    else | FZF
+    endif
+endfunction
+command! -nargs=0 F call s:fzf_smart()
+
+" Invoke F (FZF) Using Ctrl-P
+nmap <C-P> :F<CR>
+
+
+" custom commands using fzf
+
+" :Z -- cd to recent working directories using fasd
+command! -nargs=* Z call fzf#run
+            \({
+            \ 'source':  printf('fasd -Rdl "%s"',
+            \                   escape(empty(<q-args>) ? '' : <q-args>, '"\')),
+            \ 'options': '-1 -0 --no-sort +m',
+            \ 'down':    '~33%',
+            \ 'sink':    'NERDTree'
+            \})
+
+" :Plugs -- list all vim plugins and open the directory of the selected
+command! -nargs=* Plugs call fzf#run
+            \({
+            \ 'source':  map(sort(keys(g:plugs)), 'g:plug_home . "/" . v:val'),
+            \ 'options': '--delimiter "/" --nth -1' . printf(' --query "%s"', <q-args>),
+            \ 'down':    '~33%',
+            \ 'sink':    'NERDTree'
+            \})
+
+" Leader key mappings for vim-fzf commands
+
 
 " buffer nav {{{{{
-map <s-w> <ESC>:bp <bar> sp <bar> bn <bar> bd <CR>
-map <c-l> :bn<CR>
-map <c-h> :bN<CR>
+"map <s-w> <ESC>:bp <bar> sp <bar> bn <bar> bd <CR>
+"map <c-l> :bn<CR>
+"map <c-h> :bN<CR>
 " }}}}}}}}
 
 
@@ -84,8 +153,8 @@ set fencs=utf-8,cp949,cp932,euc-jp,shift-jis,big5,latin2,ucs2-le
 "set lcs+=tab:\|\ 
 "endif
 " }}} ------------------------------------------------------
-colorscheme desert256
-"colorscheme xoria256
+"colorscheme desert256
+colorscheme xoria256
 
 nnoremap <CR> :noh<CR>
 "" }}}}}}}}}}
@@ -277,12 +346,12 @@ endif
 "
 "
 "the leader key
-let mapleader=","
+let mapleader=","           " comma is the <Leader> key.
+let maplocalleader=","      " comma : <LocalLeader>
+
 " comma is the <Leader> key now.
 
 map <C-_> <leader>ci
-
-
 map <C-=> :rewind<CR>G
 
 " Switch between window splits using big J or K and expand the split to its 
@@ -296,8 +365,10 @@ nnoremap <C-K> <C-w>k
 
 " Tab navigations
 nnoremap <C-n>     :tabnew<CR>
-nnoremap <leader>l  :tabnext<CR>
-nnoremap <leader>h  :tabprev<CR>
+nnoremap <C-S-tab> :tabprevious<CR>
+nnoremap <C-tab>   :tabnext<CR>
+nnoremap [t  :tabprevious<CR>
+nnoremap ]t  :tabnext<CR>
 map <leader>1 1gt
 map <leader>2 2gt
 map <leader>3 3gt
@@ -308,6 +379,18 @@ map <leader>7 7gt
 map <leader>8 8gt
 map <leader>9 9gt
 map <leader>0 :tablast<CR>
+
+" Locations
+nnoremap [l :lprevious<CR>
+nnoremap ]l :lnext<CR>
+
+" Plugin ag.vim
+" <leader>ag (or rg): Ag (search file contents)
+nnoremap <leader>ag :Ag! -i ""<Left>
+xnoremap <silent> <leader>ag y:Ag <C-R>"<CR>
+nnoremap <leader>rg :Ag! -i ""<Left>
+xnoremap <silent> <leader>rg y:Ag <C-R>"<CR>
+
 
 hi! Normal ctermbg=NONE guibg=NONE
 hi! NonText ctermbg=NONE guibg=NONE
@@ -429,13 +512,11 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 " }}}}}} php
 
 
-"{{{{{ ack.vim
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
-endif
-nnoremap <leader>a :Ack! 
-" }}}}
+autocmd FileType c,cpp,java,javascript,html,ruby,python,pandoc
+    \ autocmd BufWritePre <buffer> :call StripTrailingWhitespaces()
 
+filetype plugin on
+filetype indent on
 
 au FileType ruby map <F5> <ESC>:w<CR>:!ruby %<CR>
 au FileType python map <F5> <ESC>:w<CR>:!source %:h/.venv/bin/activate; python %<CR>
