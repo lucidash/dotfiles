@@ -114,11 +114,6 @@ command! -nargs=* Plugs call fzf#run
             \})
 
 
-" buffer nav {{{{{
-"map <s-w> <ESC>:bp <bar> sp <bar> bn <bar> bd <CR>
-"map <c-l> :bn<CR>
-"map <c-h> :bN<CR>
-" }}}}}}}}
 
 
 set mouse+=a
@@ -211,14 +206,6 @@ if exists("$HOME")
 endif
 " }}} ------------------------------------------------------
 
-
-" immediate buffer configuration
-"map <silent> <Leader>n :let &nu = 1 - &nu<CR>
-"map <silent> <Leader>l :let &list = 1 - &list<CR>
-"map <silent> <Leader>p :let &paste = 1 - &paste<CR>
-"map <silent> <Leader>w :let &wrap = 1 - &wrap<CR>
-"nmap <silent> <Leader>4 :set ts=4 sw=4<CR>
-"nmap <silent> <Leader>8 :set ts=8 sw=8<CR>
 
 " editing and applying .vimrc
 if has("win32")
@@ -360,6 +347,10 @@ nnoremap <C-K> <C-w>k
 " " Move horizontally in the window through the vertical splits... 
 "nnoremap <C-H> <C-w>h
 "nnoremap <C-L> <C-w>l
+"" Buffer navigations
+map <s-w> <ESC>:bp <bar> sp <bar> bn <bar> bd <CR>
+nnoremap [b  :bprevious<CR>
+nnoremap ]b  :bnext<CR>
 
 " Tab navigations
 nnoremap <C-n>     :tabnew<CR>
