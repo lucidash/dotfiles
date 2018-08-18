@@ -1,4 +1,8 @@
 #!/usr/bin/python
+import os
+import shutil
+from optparse import OptionParser
+from sys import stderr
 
 
 ################# BEGIN OF FIXME #################
@@ -7,52 +11,53 @@
 # (path of target symlink) : (location of source file in the repository)
 
 tasks = {
-        # SHELLS
-        #	'~/.bashrc' : 'bashrc',
-        '~/.screenrc' : 'screenrc',
+    # SHELLS
+    #	'~/.bashrc' : 'bashrc',
+    '~/.screenrc' : 'screenrc',
 
-        # VIM
-        '~/.vimrc' : 'vim/vimrc',
-        '~/.vim' : 'vim',
+    # VIM
+    '~/.vimrc' : 'vim/vimrc',
+    '~/.vim' : 'vim',
+    '~/.vim/autoload/plug.vim' : 'vim/bundle/vim-plug/plug.vim',
 
-        # GIT
-        '~/.gitconfig' : 'git/gitconfig',
-        '~/.gitignore' : 'git/gitignore',
+    # NeoVIM
+    '~/.config/nvim' : 'nvim',
 
-        # ZSH
-        '~/.zprezto'  : 'zsh/zprezto',
-        '~/.zsh'      : 'zsh',
-        '~/.zlogin'   : 'zsh/zlogin',
-        '~/.zlogout'  : 'zsh/zlogout',
-        '~/.zpreztorc': 'zsh/zpreztorc',
-        '~/.zprofile' : 'zsh/zprofile',
-        '~/.zshenv'   : 'zsh/zshenv',
-        '~/.zshrc'    : 'zsh/zshrc',
-        '~/.LS_COLORS' : 'zsh/LS_COLORS',
+    # GIT
+    '~/.gitconfig' : 'git/gitconfig',
+    '~/.gitignore' : 'git/gitignore',
 
-        # Bins
-        '~/.local/bin/fasd' : 'zsh/fasd/fasd',
+    # ZSH
+    '~/.zprezto'  : 'zsh/zprezto',
+    '~/.zsh'      : 'zsh',
+    '~/.zlogin'   : 'zsh/zlogin',
+    '~/.zlogout'  : 'zsh/zlogout',
+    '~/.zpreztorc': 'zsh/zpreztorc',
+    '~/.zprofile' : 'zsh/zprofile',
+    '~/.zshenv'   : 'zsh/zshenv',
+    '~/.zshrc'    : 'zsh/zshrc',
+    '~/.LS_COLORS' : 'zsh/LS_COLORS',
 
-        # X
-        #	'~/.Xmodmap' : 'Xmodmap',
+    # Bins
+    '~/.local/bin/fasd' : 'zsh/fasd/fasd',
 
-        # GTK
-        #	'~/.gtkrc-2.0' : 'gtkrc-2.0',
+    # X
+    #	'~/.Xmodmap' : 'Xmodmap',
 
-        # tmux
-        '~/.tmux.conf' : 'tmux.conf',
+    # GTK
+    #	'~/.gtkrc-2.0' : 'gtkrc-2.0',
 
-        # .config
-        #	'~/.config/terminator' : 'config/terminator',
-        }
+    # tmux
+    '~/.tmux.conf' : 'tmux.conf',
+
+    # .config
+    #	'~/.config/terminator' : 'config/terminator',
+}
 
 ################# END OF FIXME #################
 
 
-import glob, os
-import shutil
-from optparse import OptionParser
-from sys import stderr
+
 
 # command line arguments
 def option():
