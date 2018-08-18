@@ -1,5 +1,5 @@
 "" Personal vimrc
-"" Author : 
+"" Author :
 "" Kim SangHoon <lucidash@gmail.com>
 "" =========================================================
 
@@ -38,10 +38,10 @@ endif
 " use path '~/.vim' even on non-unix machine
 set runtimepath+=~/.vim
 
+nnoremap <CR> :noh<CR>
 
 "" {{{{{{{{{{{
 "" Arrow No map
-map <leader>src :source ~/.vimrc<CR>
 map <Up> <silent>
 map <Down> <silent>
 map <Left> <silent>
@@ -138,25 +138,12 @@ set listchars=tab:»\ ,trail:·,extends:>,precedes:<
 set fenc=utf-8 ff=unix ffs=unix,dos,mac
 set fencs=utf-8,cp949,cp932,euc-jp,shift-jis,big5,latin2,ucs2-le
 
-" list mode
-"set nolist lcs=extends:>,precedes:<
-"if &tenc ==? "utf-8"
-"set lcs+=tab:»\ ,trail:·
-"else
-"set lcs+=tab:\|\ 
-"endif
-" }}} ------------------------------------------------------
-"colorscheme desert256
-colorscheme xoria256
 
-nnoremap <CR> :noh<CR>
-"" }}}}}}}}}}
 
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip
-
-scripte utf-8
-"set nocp all&
-
+"""""""""""""""""""""""""""""""""""""""""
+" 4. Appearance (e.g. Colors, Syntax) {{{
+"""""""""""""""""""""""""""""""""""""""""
+" color settings
 " TERMINAL {{{ ---------------------------------------------
 if &term =~ "xterm"
   set t_Co=256
@@ -168,6 +155,78 @@ if &term =~ "xterm"
     let &t_Sb = "\<Esc>[4%dm"
   endif
 endif
+set bg=dark
+if &term =~ '256color'
+    " Disable Background Color Erase (BCE) so that color schemes
+    " work properly when Vim is used inside tmux and GNU screen.
+    set t_ut=
+endif
+
+" 24-bit true color: neovim 0.1.5+ / vim 7.4.1799+
+" enable ONLY if TERM is set valid and it is NOT under mosh
+function! s:is_mosh()
+  let output = system("is_mosh -v")
+  if v:shell_error
+    return 0
+  endif
+  return !empty(l:output)
+endfunction
+
+function s:auto_termguicolors()
+  if !(has("termguicolors"))
+    return
+  endif
+
+  if (&term == 'xterm-256color' || &term == 'nvim') && !s:is_mosh()
+    set termguicolors
+  else
+    set notermguicolors
+  endif
+endfunction
+call s:auto_termguicolors()
+
+
+" apply base theme
+silent! colorscheme xoria256
+"colorscheme desert256
+
+" airline theme: status line and tab line
+if has("termguicolors") && &termguicolors
+  let g:airline_theme='deus'
+else
+  let g:airline_theme='bubblegum'
+endif
+"" }}}}}}}}}}
+
+" override more customized colors
+highlight StatusLine    ctermfg=LightGreen
+highlight ColorColumn   ctermbg=52 guibg=#5f0000
+
+highlight LineNr        ctermfg=248 ctermbg=233 guifg=#a8a8a8 guibg=#121212
+highlight SignColumn    ctermfg=248 ctermbg=233 guifg=#a8a8a8 guibg=#121212
+
+highlight Normal        ctermfg=255 guifg=white
+highlight Comment       ctermfg=035 guifg=#38B04A
+highlight Constant      ctermfg=204 guifg=#ff5f87
+highlight PreProc       ctermfg=219 guifg=#ffafff
+highlight SpecialKey    ctermfg=242 guifg=#666666
+
+" colors for gui/24bit mode {{
+" DiffAdd - inserted lines (dark green)
+highlight DiffAdd       guibg=#103a05 guifg=NONE
+" DiffDelete - deleted/filler lines (gray 246)
+highlight DiffDelete    guibg=#949494
+" DiffChange - changed lines (dark red)
+highlight DiffChange    guibg=#471515 guifg=NONE
+" DiffChange - changed 'text'(brighter red)
+highlight DiffText      guibg=#721b1b guifg=NONE
+" }}
+
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+
+scripte utf-8
+"set nocp all&
+
 
 
 " terminal encoding (always use utf-8 if possible)
@@ -207,39 +266,11 @@ endif
 " }}} ------------------------------------------------------
 
 
-" editing and applying .vimrc
-if has("win32")
-  nmap <silent> <Leader>R :so $HOME/_vimrc<CR>
-  nmap <silent> <Leader>rc :ek$HOME/_vimrc<CR>
-else
-  nmap <silent> <Leader>R :so $HOME/.vimrc<CR>
-  nmap <silent> <Leader>rc :e $HOME/.vimrc<CR>
-endif
-
-" inserting matching quotes
-fu! s:InputQuotes()
-  if mode() == "R"
-    exe "normal \<Esc>" | return ""   " -- beep
-  elseif match(getline("."), '\%u2018\%'.col('.').'c\%u2019') < 0
-    return "\u2018\u2019\<Insert>\<BS>\<Insert>"
-  else
-    return "\<Del>\<BS>\u201c\u201d\<Insert>\<BS>\<Insert>"
-  endif
-endf
-imap <silent> <C-'> <C-R>=<SID>InputQuotes()<CR>
-
-" misc. mapping
-nmap <silent> <Leader>cd :cd %:p:h<CR>
-nmap <silent> <Leader><Space> :noh<CR>
-" }}} ------------------------------------------------------
-
-
 " SYNTAX {{{ -----------------------------------------------
 syn enable
 syn sync maxlines=1000
 filet plugin indent on
 let php_sync_method = 0
-let html_wrong_comments = 1
 " }}} ------------------------------------------------------
 
 " AUTOCMD {{{ ----------------------------------------------
@@ -327,24 +358,24 @@ endif
 
 
 
-" ----- Key mappings 
+" ----- Key mappings
 "
 "
 "the leader key
 let mapleader=","           " comma is the <Leader> key.
 let maplocalleader=","      " comma : <LocalLeader>
 
-" comma is the <Leader> key now.
 
-map <C-_> <leader>ci
-map <C-=> :rewind<CR>G
-
-" Switch between window splits using big J or K and expand the split to its 
-" " full size. 
-" " Move vertically in the window through the horizontal splits... 
+" Switch between window splits using big J or K and expand the split to its
+" " full size.
+" " Move vertically in the window through the horizontal splits...
 nnoremap <C-J> <C-w>j
 nnoremap <C-K> <C-w>k
-" " Move horizontally in the window through the vertical splits... 
+
+" zoom and unzoom (like tmux) -- by 'vim-maximizer'
+nnoremap <C-w>z :MaximizerToggle<CR>
+
+" " Move horizontally in the window through the vertical splits...
 "nnoremap <C-H> <C-w>h
 "nnoremap <C-L> <C-w>l
 "" Buffer navigations
@@ -373,6 +404,13 @@ map <leader>0 :tablast<CR>
 nnoremap [l :lprevious<CR>
 nnoremap ]l :lnext<CR>
 
+hi! Normal ctermbg=NONE guibg=NONE
+hi! NonText ctermbg=NONE guibg=NONE
+
+" Plugin NerdCommenter.vim
+" comma is the <Leader> key now.
+map <C-_> <leader>ci
+
 " Plugin ag.vim
 " <leader>ag (or rg): Ag (search file contents)
 nnoremap <leader>ag :Ag! -i ""<Left>
@@ -380,31 +418,28 @@ xnoremap <silent> <leader>ag y:Ag <C-R>"<CR>
 nnoremap <leader>rg :Ag! -i ""<Left>
 xnoremap <silent> <leader>rg y:Ag <C-R>"<CR>
 
-
-hi! Normal ctermbg=NONE guibg=NONE
-hi! NonText ctermbg=NONE guibg=NONE
-
-
-"" tabline plugin settings 
+"" tabline plugin settings
 "" {{{{{
 hi TabLine      ctermfg=Black  ctermbg=Gray     cterm=NONE
 hi TabLineFill  ctermfg=Black  ctermbg=Gray     cterm=NONE
 hi TabLineSel   ctermfg=White  ctermbg=DarkBlue  cterm=NONE
 "" }}}}}
 
-
 highlight Pmenu ctermfg=black ctermbg=yellow
 highlight PmenuSel ctermfg=red ctermbg=white gui=bold
+
+"" omnifunction settings
+" <Ctrl-Space> invokes <C-X><C-O> (omni-completion)
+inoremap <C-Space> <C-x><C-o>
+inoremap <C-@> <C-x><C-o>
+autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+
 
 "" {{{{{{{{{{
 "" ----- You Complte Me -------
 ""
 ""
-
-autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-
-
-let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py' 
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_use_ultisnips_completer = 1
@@ -437,12 +472,28 @@ let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 "" }}}}}}}}}}
 
 
+"" {{{{{{{{{{
+"" vim-startify
+let g:startify_bookmarks = [
+    \ '~/.vim/vimrc',
+    \ '~/.vim/plugins.vim',
+    \ ]
+
+let g:startify_skiplist = [
+    \ 'COMMIT_EDITMSG',
+    \ $VIMRUNTIME .'/doc',
+    \ 'plugged/.*/doc',
+    \ 'bundle/.*/doc',
+    \ ]
+"" vim-startify
+"" }}}}}}}}}}
+
 
 "" {{{{{{{{{{
 "" ----- Vim-bookmarks -------
 let g:bookmark_save_per_working_dir = 1
 let g:bookmark_auto_save = 1
-let g:bookmark_auto_close = 1	
+let g:bookmark_auto_close = 1
 highlight BookmarkLine ctermbg=194 ctermfg=NONE
 "let g:bookmark_highlight_lines = 1
 let g:bookmark_center = 1
@@ -455,12 +506,6 @@ let g:bookmark_center = 1
 nnoremap <leader>G :GundoToggle<CR>
 let g:gundo_right = 1   " show at right
 "" ----- Gundo Toggle -------
-"" }}}}}}}}}}
-
-"" {{{{{{{{{{
-"" ----- CtrlP -------
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)|node_modules|venv$'
-"" ----- CtrlP -------
 "" }}}}}}}}}}
 
 "" {{{{{{{{{{
@@ -510,9 +555,9 @@ if has_key(g:plugs, 'vim-highlightedundo')
 endif
 
 
-"" -- Dummy Sign for SignColumn to be shown always 
+"" -- Dummy Sign for SignColumn to be shown always
 "" {{{{{{{{{{{
-autocmd BufEnter * sign define dummy 
+autocmd BufEnter * sign define dummy
 autocmd BufEnter * execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('')
 "" }}}}}}}}}}
 
@@ -529,14 +574,10 @@ let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
 let g:SuperTabNoCompleteAfter = ['^', '\s']
 
 
-"" -- Nerdtree settings 
+"" -- Nerdtree settings
 "" {{{{{{{{{{{
 let g:nerdtree_tabs_focus_on_files = 1
-"let g:nerdtree_tabs_open_on_console_startup=1
-"" }}}}}}}}}}
 
-" ---------------------------------------------------------------- }}}
-" NerdTree {{{
 
 " change CWD when the NERDtree is first loaded to the directory initialized in
 " (e.g. change CWD to the directory hitted by CtrlPZ)
@@ -550,7 +591,8 @@ let g:nerdtree_tabs_open_on_gui_startup = 1
 
 " filter out some files, by extension
 let NERDTreeIgnore = ['\.pyc$', '\.class$', '\.o$', '\.orig$']
-
+"" }}}}}}}}}}
+"" -- Nerdtree settings
 
 "" IndentGuides
 "" {{{{{{{{{{{
@@ -579,7 +621,7 @@ let g:airline#extensions#tabline#show_buffers = 1
 let g:airline#extensions#whitespace#mixed_indent_algo = 1
 
 
-autocmd FileType c,cpp,java,javascript,html,ruby,python,pandoc
+autocmd FileType c,cpp,java,javascript,html,ruby,python,pandoc,vim,php
     \ autocmd BufWritePre <buffer> :call StripTrailingWhitespaces()
 
 filetype plugin on
@@ -587,7 +629,7 @@ filetype indent on
 
 au FileType ruby map <F5> <ESC>:w<CR>:!ruby %<CR>
 au FileType python map <F5> <ESC>:w<CR>:!source %:h/.venv/bin/activate; python %<CR>
-au FileType cpp map <F4> <ESC>:w<CR>:!g++ -O2 -std=gnu++11 % && ./a.out 
+au FileType cpp map <F4> <ESC>:w<CR>:!g++ -O2 -std=gnu++11 % && ./a.out
 au FileType cpp map <F5> <ESC>:w<CR>:!g++ -O2 -std=gnu++11 % && ./a.out < in <CR>
 au FileType c map <F5> <ESC>:w<CR>:!gcc %<CR><CR>:!./a.out < input.txt<CR>
 au FileType ruby map <leader>! <ESC>:w<CR>:!ruby %<CR>
@@ -598,6 +640,12 @@ au FileType cpp map <leader>@ <ESC>:w<CR>:!g++ -O2 -std=gnu++11 % && ./a.out < i
 imap <F2> <ESC>:w<CR>
 map <F3> <ESC>:!cat %\|pbcopy<CR>
 
+" <leader>R : screen sucks, redraw everything
+function! Redraw()
+  redraw!
+  call s:auto_termguicolors()   " re-detect true colors
+endfunction
+nnoremap <leader>R :call Redraw()<CR>
 
 function! BufferDelete()
     if &modified
@@ -617,3 +665,54 @@ function! BufferDelete()
         endif
     endif
 endfunction
+
+
+map <leader>src :source ~/.vimrc<CR>
+" <leader>cd : switch to the directory of the current buffer
+nmap <leader>cd :cd %:p:h<CR>
+
+autocmd FileType git setlocal foldlevel=1
+
+" remove trailing whitespaces on save
+fun! StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endfun
+
+" <leader>S : Strip trailing whitespaces
+command! -nargs=0 Strip call StripTrailingWhitespaces()
+nnoremap <leader>S :Strip<CR>
+
+" <leader>w : save
+nnoremap <leader>w :w!<CR>
+
+" <leader>{y,x,p} : {yank,cut,paste} wrt the system clipboard
+map <leader>y "*y
+noremap <leader>x "*x
+noremap <leader>p "*p
+
+
+" ---------------------------------------------------------------- }}}
+" fugitive {{{
+
+" key mappings
+nnoremap <leader>gd :Gvdiff<CR>
+nnoremap <leader>gD :Gvdiff HEAD<CR>
+nnoremap <leader>gs :Gstatus<CR>:20wincmd +<CR>
+nnoremap <leader>gw :Gwrite<CR>
+nnoremap <leader>gb :Gblame -w<CR>:vertical resize 10<CR>
+nnoremap <leader>gci :Gcommit --verbose<CR>
+nnoremap <leader>gcA :Gcommit --amend --verbose<CR>
+
+" on commit, type 'cA' to enter in amend mode
+au FileType gitcommit nnoremap <buffer> <silent>
+            \ cA :bd<CR>:<C-U>Gcommit --verbose --amend<CR>
+
+" ---------------------------------------------------------------- }}}
+" gitgutter {{{
+
+" another alias for adding or staging hunk (same as <leader>ga)
+nmap <leader>ha  <Plug>GitGutterStageHunk
+
