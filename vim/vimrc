@@ -705,9 +705,10 @@ nnoremap <leader>gw :Gwrite<CR>
 nnoremap <leader>gb :Gblame -w<CR>:vertical resize 10<CR>
 nnoremap <leader>gci :Gcommit --verbose<CR>
 nnoremap <leader>gcA :Gcommit --amend --verbose<CR>
+nnoremap <leader>gp :Gpush<CR>
 
 " on commit, type 'cA' to enter in amend mode
-au FileType gitcommit nnoremap <buffer> <silent>
+au FileType gitcommit nnorema <buffer> <silent>
             \ cA :bd<CR>:<C-U>Gcommit --verbose --amend<CR>
 
 " ---------------------------------------------------------------- }}}
