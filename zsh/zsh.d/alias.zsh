@@ -18,7 +18,7 @@ alias vm='ssh 10.211.55.4'
 
 
 # git-number ======= {{{{{{{
-alias git='git number'
+#alias git='git number'
 # ======= }}}}}}}
 
 
