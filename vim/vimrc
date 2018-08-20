@@ -608,7 +608,7 @@ hi IndentGuidesEven ctermbg=darkgrey
 " Note: for airline theme, see the 'appearance' section
 
 " use airline, with powerline-ish theme
-let g:airline_powerline_fonts=1
+"let g:airline_powerline_fonts=1
 
 " enable tabline feature
 let g:airline#extensions#tabline#enabled = 1
