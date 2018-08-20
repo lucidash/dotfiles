@@ -83,6 +83,11 @@ Plug 'klen/python-mode', { 'branch': 'develop' }
 Plug 'davidhalter/jedi-vim'
 Plug 'wookayin/vim-python-enhanced-syntax'
 
+
+Plug 'dsawardekar/wordpress.vim'
+Plug 'shawncplus/phpcomplete.vim'
+Plug 'StanAngeloff/php.vim'
+
 Plug 'artur-shaik/vim-javacomplete2'
 
 Plug 'vim-pandoc/vim-pandoc'
