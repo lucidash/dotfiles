@@ -15,9 +15,12 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
+# Additional  from ~/.zshrc.local
+if [[ -s "${ZDOTDIR:-$HOME}/.zshrc.local" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zshrc.local"
+fi
+
 # Customize to your needs...
 for config_file ($HOME/.zsh/zsh.d/*.zsh) source $config_file
 
 #source $HOME/.LS_COLORS/ls_colors.zsh
-
-
