@@ -404,8 +404,8 @@ map <leader>0 :tablast<CR>
 nnoremap [l :lprevious<CR>
 nnoremap ]l :lnext<CR>
 
-hi! Normal ctermbg=NONE guibg=NONE
-hi! NonText ctermbg=NONE guibg=NONE
+"hi! Normal ctermbg=NONE guibg=NONE
+"hi! NonText ctermbg=NONE guibg=NONE
 
 " Plugin NerdCommenter.vim
 " comma is the <Leader> key now.
@@ -643,6 +643,7 @@ let g:SuperTabNoCompleteAfter = ['^', '\s']
 "" -- Nerdtree settings
 "" {{{{{{{{{{{
 let g:nerdtree_tabs_focus_on_files = 1
+let g:nerdtree_tabs_autofind = 1
 
 
 " change CWD when the NERDtree is first loaded to the directory initialized in
