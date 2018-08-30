@@ -774,6 +774,7 @@ nnoremap <leader>gb :Gblame -w<CR>:vertical resize 10<CR>
 nnoremap <leader>gci :Gcommit --verbose<CR>
 nnoremap <leader>gcA :Gcommit --amend --verbose<CR>
 nnoremap <leader>gp :Gpush<CR>
+nnoremap <leader>gf :GF?<CR>
 
 " on commit, type 'cA' to enter in amend mode
 au FileType gitcommit nnorema <buffer> <silent>
