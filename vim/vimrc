@@ -23,6 +23,12 @@ set switchbuf+=usetab,split
 " diff: ignore whitespaces
 set diffopt+=iwhite
 
+" no fucking swap and backup files
+set noswapfile
+set nobackup
+
+
+
 " All the vim plugins, powered by 'vim-plug', are
 " listed up in the separate file 'plugins.vim'.
 " It is for making this vimrc could also work out-of-box
@@ -226,7 +232,6 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip
 
 scripte utf-8
 "set nocp all&
-
 
 
 " terminal encoding (always use utf-8 if possible)
@@ -779,6 +784,24 @@ nnoremap <leader>gf :GF?<CR>
 " on commit, type 'cA' to enter in amend mode
 au FileType gitcommit nnorema <buffer> <silent>
             \ cA :bd<CR>:<C-U>Gcommit --verbose --amend<CR>
+
+
+" Surround a word with quotes, single quotes, parens, brackets, braces, etc.
+"   requires and powered by the plugin surround.vim :-)
+" (Note) for visual blocks, use S command from surround.vim
+map  <leader>s" ysiw"
+map  <leader>s' ysiw'
+map  <leader>s` ysiw`
+map  <leader>s* ysiw*l
+map  <leader>s_ ysiw_l
+map  <leader>s~ ysiw~l
+map  <leader>s$ ysiw$
+map  <leader>s( ysiw(
+map  <leader>s) ysiw)
+map  <leader>s[ ysiw[
+map  <leader>s] ysiw]
+map  <leader>s{ ysiw{
+map  <leader>s} ysiw}
 
 " ---------------------------------------------------------------- }}}
 " gitgutter {{{
