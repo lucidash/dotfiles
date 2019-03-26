@@ -7,9 +7,6 @@ syntax on
 scriptencoding utf-8
 set nocompatible
 
-set noswapfile
-set nobackup
-
 set visualbell
 set history=1000
 set undolevels=1000
@@ -24,8 +21,9 @@ set switchbuf+=usetab,split
 set diffopt+=iwhite
 
 " no fucking swap and backup files
-set noswapfile
+set dir=~/.vim/
 set nobackup
+set nowritebackup  "only in case you don't want a backup file while editing
 
 
 
@@ -36,6 +34,26 @@ set nobackup
 if filereadable(expand("\~/.vim/plugins.vim"))
   source \~/.vim/plugins.vim
 endif
+
+let g:ft = ''
+function! NERDCommenter_before()
+  if &ft == 'vue'
+    let g:ft = 'vue'
+    let stack = synstack(line('.'), col('.'))
+    if len(stack) > 0
+      let syn = synIDattr((stack)[0], 'name')
+      if len(syn) > 0
+        exe 'setf ' . substitute(tolower(syn), '^vue_', '', '')
+      endif
+    endif
+  endif
+endfunction
+function! NERDCommenter_after()
+  if g:ft == 'vue'
+    setf vue
+    let g:ft = ''
+  endif
+endfunction
 
 if filereadable('/bin/zsh')
   set shell=/bin/zsh
@@ -700,6 +718,7 @@ filetype plugin on
 filetype indent on
 
 au FileType ruby map <F5> <ESC>:w<CR>:!ruby %<CR>
+au FileType javascript map <F5> <ESC>:w<CR>:!node %<CR>
 au FileType python map <F5> <ESC>:w<CR>:!source %:h/.venv/bin/activate; python %<CR>
 au FileType cpp map <F4> <ESC>:w<CR>:!g++ -O2 -std=gnu++11 % && ./a.out
 au FileType cpp map <F5> <ESC>:w<CR>:!g++ -O2 -std=gnu++11 % && ./a.out < in <CR>
@@ -777,6 +796,7 @@ nnoremap <leader>gs :Gstatus<CR>:20wincmd +<CR>
 nnoremap <leader>gw :Gwrite<CR>
 nnoremap <leader>gb :Gblame -w<CR>:vertical resize 10<CR>
 nnoremap <leader>gci :Gcommit --verbose<CR>
+nnoremap <leader>gcf :Gcommit --amend --reuse-message HEAD<CR>
 nnoremap <leader>gcA :Gcommit --amend --verbose<CR>
 nnoremap <leader>gp :Gpush<CR>
 nnoremap <leader>gf :GF?<CR>
