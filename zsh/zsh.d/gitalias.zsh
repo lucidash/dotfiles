@@ -108,7 +108,7 @@ alias glg='git log --topo-order --all --graph --pretty=format:"${_git_log_onelin
 alias glb='git log --topo-order --pretty=format:"${_git_log_brief_format}"'
 alias glc='git shortlog --summary --numbered'
 alias gh="git log --graph --pretty=format:'%C(yellow)%h%Creset \
-        -%C(yellow)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset' \
+        -%C(yellow)%d%Creset %s %Cgreen(%ar::%ai) %C(bold blue)<%an>%Creset' \
             --abbrev-commit --date=short 
       ;--date-order -n100"
 

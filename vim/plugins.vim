@@ -74,6 +74,9 @@ Plug 'rizzatti/dash.vim',   { 'on': 'Dash' }
 Plug 'wookayin/vim-typora', { 'on': 'Typora' }
 
 " Syntax, Completion, Coding stuffs
+Plug 'pangloss/vim-javascript'
+Plug 'posva/vim-vue'
+Plug 'isRuslan/vim-es6'
 Plug 'editorconfig/editorconfig-vim'
 
 Plug 'sheerun/vim-polyglot'
