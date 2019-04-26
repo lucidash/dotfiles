@@ -827,4 +827,10 @@ map  <leader>s} ysiw}
 " gitgutter {{{
 
 " another alias for adding or staging hunk (same as <leader>ga)
+let g:gitgutter_highlight_lines = 1
 nmap <leader>ha  <Plug>GitGutterStageHunk
+nmap <leader>hr  <Plug>GitGutterUndoHunk
+
+" ---------------------------------------------------------------- }}}
+" other leader mapping {{{
+map <leader>js :%!python -m json.tool<CR>

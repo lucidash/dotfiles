@@ -30,3 +30,5 @@ for config_file ($HOME/.zsh/zsh.d/*.zsh) source $config_file
 #source $HOME/.LS_COLORS/ls_colors.zsh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
