@@ -14,3 +14,9 @@
 [submodule "zsh/zgen"]
   path = zsh/zgen
   url = https://github.com/tarjoilija/zgen
+[submodule "zplug"]
+	path = zplug
+	url = https://github.com/zplug/zplug
+[submodule "zgen"]
+	path = zgen
+	url = https://github.com/tarjoilija/zgen
