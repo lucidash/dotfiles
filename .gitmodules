@@ -8,12 +8,6 @@
   path = vim/bundle/vim-plug
   url = https://github.com/junegunn/vim-plug
 
-[submodule "zsh/zplug"]
-  path = zsh/zplug
-  url = https://github.com/zplug/zplug
-[submodule "zsh/zgen"]
-  path = zsh/zgen
-  url = https://github.com/tarjoilija/zgen
 [submodule "zplug"]
 	path = zplug
 	url = https://github.com/zplug/zplug
