@@ -1,9 +1,16 @@
 [submodule "zsh/zprezto"]
-	path = zsh/zprezto
-	url = https://github.com/sorin-ionescu/prezto
+  path = zsh/zprezto
+  url = https://github.com/sorin-ionescu/prezto
 [submodule "zsh/fasd"]
   path = zsh/fasd
   url = https://github.com/clvv/fasd.git
 [submodule "vim/bundle/vim-plug"]
   path = vim/bundle/vim-plug
   url = https://github.com/junegunn/vim-plug
+
+[submodule "zsh/zplug"]
+  path = zsh/zplug
+  url = https://github.com/zplug/zplug
+[submodule "zsh/zgen"]
+  path = zsh/zgen
+  url = https://github.com/tarjoilija/zgen
