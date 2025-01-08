@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 import os
 import shutil
 from optparse import OptionParser
@@ -77,7 +77,7 @@ for target, source in tasks.items():
 
 # if source does not exists...
     if not os.path.lexists(source):
-        print >> stderr, ("source %s : does not exists" % source)
+        print(f"source {source} : does not exists", file=sys.stderr)
         continue
 
 # if --force option is given, delete the previously existing symlink
@@ -90,19 +90,19 @@ for target, source in tasks.items():
 
 # make a symbolic link!
     if os.path.lexists(target):
-        print >> stderr, ("%s : already exists" % target) + (options.force and ' (not a symlink, hence --force option ignored)' or '')
+        print(f"{target} : already exists", file=sys.stderr)
     else:
         try:
             mkdir_target = os.path.split(target)[0]
             os.makedirs(mkdir_target)
-            print >> stderr, 'Created directory : {}'.format(mkdir_target)
+            print(f"Created directory : {mkdir_target}", file=sys.stderr)
         except:
             pass
     try :
         os.symlink(source, target)
     except:
         pass
-    print >> stderr, ("%s : symlink created from '%s'" % (target, source))
+    print(f"{target} : symlink created from '{source}'", file=sys.stderr)
 
 # install vim-plug
 os.system("curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim")
