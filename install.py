@@ -77,7 +77,7 @@ for target, source in tasks.items():
 
 # if source does not exists...
     if not os.path.lexists(source):
-        print(f"source {source} : does not exists", file=sys.stderr)
+        print(f"source {source} : does not exists", file=stderr)
         continue
 
 # if --force option is given, delete the previously existing symlink
@@ -90,19 +90,19 @@ for target, source in tasks.items():
 
 # make a symbolic link!
     if os.path.lexists(target):
-        print(f"{target} : already exists", file=sys.stderr)
+        print(f"{target} : already exists", file=stderr)
     else:
         try:
             mkdir_target = os.path.split(target)[0]
             os.makedirs(mkdir_target)
-            print(f"Created directory : {mkdir_target}", file=sys.stderr)
+            print(f"Created directory : {mkdir_target}", file=stderr)
         except:
             pass
     try :
         os.symlink(source, target)
     except:
         pass
-    print(f"{target} : symlink created from '{source}'", file=sys.stderr)
+    print(f"{target} : symlink created from '{source}'", file=stderr)
 
 # install vim-plug
 os.system("curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim")
