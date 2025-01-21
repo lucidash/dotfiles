@@ -1,4 +1,6 @@
 # vim: set ft=gitconfig:
+[branch]
+	sort=-committerdate
 
 [include]
 	# include external gitconfig file (requires git 1.7.10+)
