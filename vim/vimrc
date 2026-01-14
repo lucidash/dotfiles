@@ -874,3 +874,22 @@ nmap <leader>hr  <Plug>(GitGutterUndoHunk)
 " ---------------------------------------------------------------- }}}
 " other leader mapping {{{
 map <leader>js :%!python -m json.tool<CR>
+
+
+function! s:CopyAbsPathWithRange() range
+  let l1 = line("'<")
+  let l2 = line("'>")
+  if l1 > l2
+    let tmp = l1 | let l1 = l2 | let l2 = tmp
+  endif
+
+  let file = expand('%:p')
+  let text = printf('@%s:%d-%d', file, l1, l2)
+
+  call setreg('+', text)
+  call setreg('"', text)
+
+  echo text
+endfunction
+
+xnoremap <silent> <C-k> :<C-u>call <SID>CopyAbsPathWithRange()<CR>
