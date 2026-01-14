@@ -50,6 +50,9 @@ tasks = {
     # tmux
     '~/.tmux.conf' : 'tmux.conf',
 
+    # Claude
+    '~/.claude/settings.json' : 'claude/settings.json',
+
     # .config
     #	'~/.config/terminator' : 'config/terminator',
 }

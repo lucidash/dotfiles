@@ -1,0 +1,52 @@
+{
+  "language": "Korean",
+  "permissions": {
+    "defaultMode": "acceptEdits",
+    "allow": [
+      "Edit(${CLAUDE_PROJECT_DIR}/**)",
+      "Write(${CLAUDE_PROJECT_DIR}/**)",
+      "Bash(git status:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git show:*)",
+      "Bash(git branch:*)",
+      "Bash(git fetch:*)",
+      "Bash(git pull:*)",
+      "Bash(git checkout:*)",
+      "Bash(git switch:*)",
+      "Bash(git stash:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m:*)",
+      "Bash(git push origin:*)",
+      "Bash(git push -u:*)",
+      "Bash(npm run:*)",
+      "Bash(npm test:*)",
+      "Bash(npm install:*)"
+    ],
+    "deny": [
+      "Bash(npm run deploy:*)",
+      "Bash(npm run *deploy*:*)"
+    ],
+    "ask": [
+      "Edit(${CLAUDE_PROJECT_DIR}/**/.env)",
+      "Edit(${CLAUDE_PROJECT_DIR}/**/.env.*)",
+      "Edit(${CLAUDE_PROJECT_DIR}/**/*.conf)",
+      "Edit(${CLAUDE_PROJECT_DIR}/**/*.config)",
+      "Edit(${CLAUDE_PROJECT_DIR}/**/*.config.*)",
+      "Write(${CLAUDE_PROJECT_DIR}/**/.env)",
+      "Write(${CLAUDE_PROJECT_DIR}/**/.env.*)",
+      "Write(${CLAUDE_PROJECT_DIR}/**/*.conf)",
+      "Write(${CLAUDE_PROJECT_DIR}/**/*.config)",
+      "Write(${CLAUDE_PROJECT_DIR}/**/*.config.*)",
+      "Bash(git commit --amend:*)",
+      "Bash(git commit -a --amend:*)",
+      "Bash(git rebase:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git push origin --force:*)",
+      "Bash(git push origin -f:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git reset HEAD~:*)"
+    ]
+  }
+}
