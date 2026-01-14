@@ -61,3 +61,5 @@ alias tailf='tail -f'
 alias jj='python manage.py'
 alias l='ls -G'
 alias boj='python submit.py'
+
+alias gbd='git branch -D'

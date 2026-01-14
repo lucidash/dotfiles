@@ -9,7 +9,6 @@
 
 [core]
 	excludesfile = ~/.gitignore
-	pager = less -F
 
 [alias]
 	history = log --graph --pretty=format:'%C(yellow)%h%Creset \
@@ -55,3 +54,5 @@
 	required = true
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
+[branch]
+	sort = -committerdate
