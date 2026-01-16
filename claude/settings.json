@@ -1,10 +1,9 @@
 {
-  "language": "Korean",
   "permissions": {
-    "defaultMode": "acceptEdits",
     "allow": [
       "Edit(${CLAUDE_PROJECT_DIR}/**)",
       "Write(${CLAUDE_PROJECT_DIR}/**)",
+      "Bash(git --no-pager:*)",
       "Bash(git status:*)",
       "Bash(git log:*)",
       "Bash(git diff:*)",
@@ -17,11 +16,17 @@
       "Bash(git stash:*)",
       "Bash(git add:*)",
       "Bash(git commit -m:*)",
+      "Bash(git push *)",
       "Bash(git push origin:*)",
       "Bash(git push -u:*)",
       "Bash(npm run:*)",
       "Bash(npm test:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(ln:*)",
+      "Bash(gh pr*)",
+      "Bash(npx eslint*)",
+      "Bash(npx vitest*)",
+      "Bash(npx tsc*)"
     ],
     "deny": [
       "Bash(npm run deploy:*)",
@@ -47,10 +52,12 @@
       "Bash(git push origin -f:*)",
       "Bash(git reset --hard:*)",
       "Bash(git reset HEAD~:*)"
-    ]
+    ],
+    "defaultMode": "acceptEdits"
   },
   "statusLine": {
     "type": "command",
     "command": "input=$(cat); cwd=$(echo \"$input\" | jq -r '.workspace.current_dir'); username=$(whoami); hostname=$(hostname -s); git_info=\"\"; if git -C \"$cwd\" rev-parse --git-dir > /dev/null 2>&1; then branch=$(git -C \"$cwd\" symbolic-ref --short HEAD 2>/dev/null || git -C \"$cwd\" rev-parse --short HEAD 2>/dev/null); if [ -n \"$branch\" ]; then status=$(git -C \"$cwd\" status --porcelain 2>/dev/null); ind=\"\"; echo \"$status\" | grep -q \"^??\" && ind=\"${ind}?\"; echo \"$status\" | grep -q \"^ M\\|^M \" && ind=\"${ind}✱\"; echo \"$status\" | grep -q \"^A \" && ind=\"${ind}✚\"; echo \"$status\" | grep -q \"^D \\| D\" && ind=\"${ind}✖\"; git_info=\" :${branch}${ind}\"; fi; fi; node_info=\"\"; if command -v node > /dev/null 2>&1; then nv=$(node -v 2>/dev/null | sed 's/v//'); [ -n \"$nv\" ] && node_info=\" node:${nv}\"; fi; printf \"\\033[32m[\\033[33m%s\\033[32m@\\033[34m%s\\033[32m: \\033[31m%s\\033[0m\\033[32m%s\\033[32m]\\033[36m%s\\033[0m\" \"$username\" \"$hostname\" \"$cwd\" \"$git_info\" \"$node_info\""
-  }
+  },
+  "language": "Korean"
 }
