@@ -19,11 +19,12 @@
       "Bash(git push *)",
       "Bash(git push origin:*)",
       "Bash(git push -u:*)",
+      "Bash(git push -u*)",
       "Bash(npm run:*)",
       "Bash(npm test:*)",
       "Bash(npm install:*)",
       "Bash(ln:*)",
-      "Bash(gh pr*)",
+      "Bash(command gh*)",
       "Bash(npx eslint*)",
       "Bash(npx vitest*)",
       "Bash(npx tsc*)"
