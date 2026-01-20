@@ -1,63 +1,34 @@
 {
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/merge-permissions.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/auto-approve.py",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  },
   "permissions": {
-    "allow": [
-      "Edit(${CLAUDE_PROJECT_DIR}/**)",
-      "Write(${CLAUDE_PROJECT_DIR}/**)",
-      "Bash(git --no-pager:*)",
-      "Bash(git status:*)",
-      "Bash(git log:*)",
-      "Bash(git diff:*)",
-      "Bash(git show:*)",
-      "Bash(git branch:*)",
-      "Bash(git fetch:*)",
-      "Bash(git pull:*)",
-      "Bash(git checkout:*)",
-      "Bash(git switch:*)",
-      "Bash(git stash:*)",
-      "Bash(git add:*)",
-      "Bash(git commit -m:*)",
-      "Bash(git push *)",
-      "Bash(git push origin:*)",
-      "Bash(git push -u:*)",
-      "Bash(git push -u*)",
-      "Bash(npm run:*)",
-      "Bash(npm test:*)",
-      "Bash(npm install:*)",
-      "Bash(ln:*)",
-      "Bash(command gh pr create*)",
-      "Bash(command gh pr create*)",
-      "Bash(command gh pr view:*)",
-      "Bash(command gh pr view*)",
-      "Bash(npx eslint*)",
-      "Bash(npx vitest*)",
-      "Bash(npx tsc*)"
-    ],
-    "deny": [
-      "Bash(npm run deploy:*)",
-      "Bash(npm run *deploy*:*)"
-    ],
-    "ask": [
-      "Edit(${CLAUDE_PROJECT_DIR}/**/.env)",
-      "Edit(${CLAUDE_PROJECT_DIR}/**/.env.*)",
-      "Edit(${CLAUDE_PROJECT_DIR}/**/*.conf)",
-      "Edit(${CLAUDE_PROJECT_DIR}/**/*.config)",
-      "Edit(${CLAUDE_PROJECT_DIR}/**/*.config.*)",
-      "Write(${CLAUDE_PROJECT_DIR}/**/.env)",
-      "Write(${CLAUDE_PROJECT_DIR}/**/.env.*)",
-      "Write(${CLAUDE_PROJECT_DIR}/**/*.conf)",
-      "Write(${CLAUDE_PROJECT_DIR}/**/*.config)",
-      "Write(${CLAUDE_PROJECT_DIR}/**/*.config.*)",
-      "Bash(git commit --amend:*)",
-      "Bash(git commit -a --amend:*)",
-      "Bash(git rebase:*)",
-      "Bash(git rebase*)",
-      "Bash(git push --force:*)",
-      "Bash(git push -f:*)",
-      "Bash(git push origin --force:*)",
-      "Bash(git push origin -f:*)",
-      "Bash(git reset --hard:*)",
-      "Bash(git reset HEAD~:*)"
-    ],
+    "allow": [],
+    "deny": [],
+    "ask": [],
     "defaultMode": "acceptEdits"
   },
   "statusLine": {
