@@ -34,6 +34,7 @@
   - 이름: `{과제 제목}`
   - Product: `LIKEY`
   - Status: `기획 완료`
+  - PM: `["18fd872b-594c-81ab-8426-000241feca9b"]` (Carrot)
 - **내용 구조**:
   ```markdown
   ## 개요

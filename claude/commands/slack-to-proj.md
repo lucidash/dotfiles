@@ -114,6 +114,7 @@ mcp__slack__slack_get_thread_replies 사용
   - 프로젝트 이름: `{과제 제목}`
   - Product: `LIKEY`
   - Status: `기획 완료`
+  - PM: `["18fd872b-594c-81ab-8426-000241feca9b"]` (Carrot)
   - **관련자**: `{Notion User ID}` (매핑 성공 시)
 - **내용 구조**:
   ```markdown
@@ -173,6 +174,7 @@ mcp__slack__slack_reply_to_thread 사용
   - 파트: `{Server/Admin/Web}`
   - 작업 유형: `새피처` (버그면 `버그`)
   - Product: `LIKEY`
+  - PM: `["18fd872b-594c-81ab-8426-000241feca9b"]` (Carrot)
   - **과제**: `null` (과제 없는 단독 작업)
 - **내용 구조**:
   ```markdown

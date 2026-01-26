@@ -38,6 +38,7 @@ git log master..HEAD --oneline
   - 파트: `Admin`
   - 작업 유형: `새피처` (버그면 `버그`)
   - Product: `LIKEY`
+  - PM: `["18fd872b-594c-81ab-8426-000241feca9b"]` (Carrot)
 - **내용 구조**:
   ```
   ## 개요
@@ -118,6 +119,7 @@ rg "{키워드}" /Users/muzi/projects/likey-admin-v2/app -g "*.vue" | head -20
   - 파트: `Admin`
   - 작업 유형: `새피처`
   - Product: `LIKEY`
+  - PM: `["18fd872b-594c-81ab-8426-000241feca9b"]` (Carrot)
   - **과제**: `{개발과제 URL}` ← Relation 자동 연결
 - **내용 구조** (v2 이관 필요 시):
   ```

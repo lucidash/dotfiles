@@ -91,11 +91,8 @@ PR로 확인되지 않는 로컬 브랜치 작업도 확인:
 # - /Users/muzi/projects/likey-web
 # - /Users/muzi/projects/likey-admin
 
-# 1. fetch 후 모든 브랜치의 최근 커밋 확인
-cd {repo_path} && git fetch origin && git log --author="muzi" --since="{직전 스크럼 날짜}" --oneline --all --no-merges | head -30
-
-# 2. lucidash 계정 커밋도 확인 (likey-admin-v2 등)
-git log --author="lucidash" --since="{직전 스크럼 날짜}" --oneline --all --no-merges | head -30
+# 1. fetch 후 모든 브랜치의 최근 커밋 확인 (muzi, lucidash 모두 검색 - 모든 레포에서)
+cd {repo_path} && git fetch origin && git log --author="muzi" --author="lucidash" --since="{직전 스크럼 날짜}" --oneline --all --no-merges | head -30
 
 # 3. 현재 작업 중인 로컬 브랜치 확인
 git branch --sort=-committerdate | head -5

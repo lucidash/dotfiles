@@ -44,6 +44,7 @@ git log master..HEAD --oneline
 - 공통 속성:
   - 작업 유형: `새피처` (버그면 `버그`)
   - Product: `LIKEY`
+  - PM: `["18fd872b-594c-81ab-8426-000241feca9b"]` (Carrot)
 
 - **내용 구조**:
   ```
