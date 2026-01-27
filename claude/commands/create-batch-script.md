@@ -371,6 +371,13 @@ npm run batch src/batch/{category}/{script}.ts -- --dry-run --limit=10 --no-slac
 ```
 
 ### 운영 환경 (real)
+
+**⚠️ 전제조건**: real 환경 실행 전 별도 터미널에서 프록시 실행 필요
+- Cloud SQL Proxy 실행 중
+- Redis 연결 가능 (VPN 또는 SSH 터널)
+
+`[PROXY] waiting for redis & mysql` 메시지에서 멈추면 프록시가 실행되지 않은 상태입니다.
+
 ```bash
 npm run batch-real src/batch/{category}/{script}.ts -- --dry-run --limit=10  # Slack 알림 O
 npm run batch-real src/batch/{category}/{script}.ts  # 실제 실행

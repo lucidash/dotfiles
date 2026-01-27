@@ -1,10 +1,24 @@
+---
+name: backend-review
+description: PR을 리뷰할 때, 코드 리뷰해달라고 할 때, PR 봐달라고 할 때, GitHub PR URL이 대화에 등장할 때, 이 PR 확인해달라고 할 때 사용. PR 번호나 URL을 보고 코드 리뷰가 필요한 상황에서 자동으로 활성화됩니다.
+allowed-tools: Bash, Glob, Grep, Read, Task
+---
+
 # Backend PR 코드 리뷰
 
 PR을 분석하고 코드 리뷰를 수행합니다.
 - 전체 요약 코멘트 + 각 파일/라인별 인라인 코멘트를 함께 작성합니다.
 - CLAUDE.md와 `.codex/review-guide.md` 규칙을 기반으로 검토합니다.
 
+## 트리거 키워드
+
+- "리뷰해줘", "코드 리뷰", "PR 봐줘"
+- "이 PR 확인해줘", "리뷰 부탁"
+- GitHub PR URL 감지: `github.com/.../pull/...`
+- PR 번호와 함께 "확인", "검토" 언급
+
 ## 인자
+
 - `$ARGUMENTS`: 다음 중 하나
   - PR 번호 (예: `6381`)
   - GitHub PR URL (예: `https://github.com/TPC-Internet/likey-backend/pull/6381`)

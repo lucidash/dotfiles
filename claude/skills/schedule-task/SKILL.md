@@ -1,7 +1,7 @@
 ---
 name: schedule-task
-description: Backend + Admin (일부 Web) 엔지니어를 위한 다음 작업 스케줄링. 노션 개발과제 DB에서 미진행 과제를 찾아 슬랙으로 추천합니다. 슬랙 스레드 URL과 함께 사용하세요.
-tools: Read, Grep, Glob, Bash
+description: 다음 작업을 찾을 때, 할 일이 없을 때, 다음 과제를 추천받고 싶을 때, 작업이 끝났을 때, 뭐 하면 되냐고 물을 때 사용. "다음 뭐해", "할 일 없어", "다음 작업", "뭐 하면 돼" 같은 요청에 자동으로 활성화됩니다. 노션 개발과제 DB에서 미진행 과제를 찾아 슬랙으로 추천합니다.
+allowed-tools: Read, Grep, Glob, Bash
 ---
 
 # 개발 작업 스케줄링
