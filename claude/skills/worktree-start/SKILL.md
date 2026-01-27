@@ -1,7 +1,7 @@
 ---
 name: worktree-start
 description: 브랜치 작업 시작 - Worktree 생성/전환 + 변경사항 분석을 한 번에 수행
-tools: Read, Bash, Glob, Grep
+tools: Read, Bash, Glob, Grep, Skill
 ---
 
 # Worktree 작업 시작
@@ -77,48 +77,7 @@ else
 fi
 ```
 
-### 4단계: 이전 세션 확인
-
-해당 worktree 경로에서 이전 Claude Code 세션이 있는지 확인합니다:
-
-```bash
-# 프로젝트 경로 해시 기반 세션 디렉토리 확인
-# Claude Code는 프로젝트 경로를 기반으로 세션을 저장함
-ls -la ~/.claude/projects/ | grep -i "{프로젝트명}" || echo "세션 없음"
-```
-
-### 5단계: 세션 전환 안내
-
-Worktree 경로와 세션 옵션을 사용자에게 안내합니다:
-
-```markdown
-## Worktree 준비 완료
-
-| 항목 | 값 |
-|------|-----|
-| 브랜치 | `{브랜치명}` |
-| 경로 | `{worktree_경로}` |
-| 상태 | {새로 생성됨 / 기존 사용} |
-
-### 세션 전환
-
-**이전 세션 이어서 작업** (권장):
-\`\`\`bash
-cd {worktree_경로} && claude -c
-\`\`\`
-
-**새 세션 시작**:
-\`\`\`bash
-cd {worktree_경로} && claude
-\`\`\`
-
-**세션 선택해서 재개**:
-\`\`\`bash
-cd {worktree_경로} && claude --resume
-\`\`\`
-```
-
-### 6단계: 변경사항 분석 (Checkout 역할)
+### 4단계: 변경사항 분석
 
 해당 브랜치의 컨텍스트를 분석합니다:
 
@@ -136,40 +95,7 @@ git -C {worktree_경로} diff --name-status main...HEAD
 git -C {worktree_경로} status --short
 ```
 
-### 7단계: 컨텍스트 요약
-
-```markdown
-## 브랜치 컨텍스트
-
-### 커밋 현황
-main 대비 **+{N}** 커밋
-
-| 커밋 | 메시지 |
-|------|--------|
-| abc1234 | feat: ... |
-| def5678 | fix: ... |
-
-### 변경된 파일
-| 상태 | 파일 |
-|------|------|
-| M | src/components/Foo.vue |
-| A | src/utils/bar.ts |
-
-### 작업 상태
-- 수정된 파일: {N}개
-- 스테이징된 파일: {N}개
-- Untracked: {N}개
-
-### 관련 PR
-{PR 정보 또는 "PR 없음 - `/open-pr`로 생성 가능"}
-
----
-
-### 작업 재개 포인트
-{마지막 커밋 메시지와 변경 파일을 기반으로 현재 작업 상태 요약}
-```
-
-### 8단계: 관련 PR 확인
+### 5단계: 관련 PR 확인
 
 ```bash
 command gh pr list --head {브랜치명} --json number,title,state,url
@@ -177,7 +103,9 @@ command gh pr list --head {브랜치명} --json number,title,state,url
 
 PR이 있으면 정보 표시, 없으면 `/open-pr` 안내
 
-## 출력 형식
+### 6단계: 컨텍스트 요약 출력
+
+브랜치 컨텍스트, 커밋 현황, 변경 파일, 작업 상태, 관련 PR 정보를 요약하여 출력합니다.
 
 ```markdown
 ## Worktree 작업 시작: `{브랜치명}`
@@ -189,37 +117,43 @@ PR이 있으면 정보 표시, 없으면 `/open-pr` 안내
 | 브랜치 | `{브랜치명}` |
 | 상태 | {새로 생성 / 기존 사용} |
 
-### 세션 전환
-
-**이전 세션 이어서 작업** (권장):
-\`\`\`bash
-cd {경로} && claude -c
-\`\`\`
-
-**새 세션 시작**:
-\`\`\`bash
-cd {경로} && claude
-\`\`\`
-
 ### 브랜치 컨텍스트
 - main 대비: **+{N}** 커밋
 - 변경 파일: **{N}**개
 - 작업 상태: {clean / {N}개 수정됨}
 
-### 최근 커밋
-{커밋 목록}
+### 커밋 현황
+| 커밋 | 메시지 |
+|------|--------|
+| abc1234 | feat: ... |
+| def5678 | fix: ... |
 
-### 변경 파일 요약
-{파일별 변경 상태}
+### 변경된 파일
+| 상태 | 파일 |
+|------|------|
+| M | src/components/Foo.vue |
+| A | src/utils/bar.ts |
 
 ### 관련 PR
-{PR 정보 또는 생성 안내}
+{PR 정보 또는 "PR 없음 - `/open-pr`로 생성 가능"}
 
 ---
 
 ### 작업 재개 추천
-{현재 상태 기반 다음 작업 제안}
+{마지막 커밋 메시지와 변경 파일을 기반으로 현재 작업 상태 요약}
 ```
+
+### 7단계: 세션 전환 스킬 호출 (자동)
+
+**중요**: 모든 분석과 출력이 완료된 후, `/worktree-handoff` 스킬을 호출하여 세션 복사 및 CLI 안내를 수행합니다.
+
+```
+/worktree-handoff {worktree_경로}
+```
+
+이렇게 분리함으로써:
+- 모든 대화 내용이 세션 파일에 확실히 포함됨
+- 세션 전환 로직이 독립적으로 재사용 가능
 
 ## 주의사항
 
