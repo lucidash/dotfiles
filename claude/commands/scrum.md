@@ -110,15 +110,18 @@ git log {branch_name} --oneline -10 --since="{직전 스크럼 날짜}"
 ### 4. Notion 개발과제/작업 DB 최근 변경 확인
 
 ```
-1. mcp__notion__notion-search로 최근 내 작업 검색
-   - query: 작업 키워드
-   - data_source_url: collection://af0b1e4c-6a3f-4d94-81c6-396f86e61574
-   - filters.created_by_user_ids: [내 Notion User ID]
+1. mcp__tpc-notion__API-query-data-source로 최근 내 작업 검색
+   - data_source_id: af0b1e4c-6a3f-4d94-81c6-396f86e61574
+   - filter: {"property": "작업자", "people": {"contains": "0b245cd5-2c61-423b-a74f-3a45435a8fea"}}
+   - sorts: [{"timestamp": "last_edited_time", "direction": "descending"}]  ← 최근 수정순 정렬 필수!
+   - page_size: 20
 
 2. 주요 과제/작업 상태 확인
    - Status 변경 여부
    - 진행률 파악
 ```
+
+**중요**: Notion API 쿼리 시 반드시 `sorts: [{"timestamp": "last_edited_time", "direction": "descending"}]` 옵션을 사용하여 최근 수정된 항목이 먼저 조회되도록 합니다.
 
 ### 5. 변경점 분석
 

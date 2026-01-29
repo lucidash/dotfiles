@@ -47,17 +47,45 @@ git log --author="muzi" --since="{이번주 월요일}" --oneline --no-merges
 
 ### 4. GitHub PR 정보 수집
 
-```bash
-# Merged PR (지난주/이번주)
-command gh pr list --author="@me" --state=merged --json number,title,body,mergedAt --limit 50
+**주의**: `--author="@me"` 옵션이 동작하지 않을 수 있음. 전체 조회 후 필터링 권장.
 
-# Open PR (이번주 업데이트된 것)
-command gh pr list --author="@me" --state=open --json number,title,updatedAt
+```bash
+# Merged PR 전체 조회 후 author로 필터링
+command gh pr list --repo TPC-Internet/likey-backend --state=merged --limit 100 \
+  --json number,title,author,mergedAt,commits \
+  | jq '[.[] | select(.author.login == "lucidash")]'
+
+# Open PR
+command gh pr list --repo TPC-Internet/likey-backend --state=open --limit 50 \
+  --json number,title,author \
+  | jq '[.[] | select(.author.login == "lucidash")]'
 ```
+
+### 4-1. 마지막 커밋 날짜 기준 분류
+
+**중요**: PR의 merge 날짜가 아닌 **마지막 커밋 날짜**를 기준으로 지난주/이번주를 분류합니다.
+이는 실제 작업 시점을 더 정확히 반영합니다.
+
+```bash
+# 각 PR의 마지막 커밋 날짜 조회
+command gh pr view {PR번호} --repo TPC-Internet/likey-backend \
+  --json commits --jq '.commits[-1].committedDate'
+```
+
+### 4-2. 코드 변경 PR만 필터링
+
+실제 코드 변경이 발생한 PR만 포함합니다:
+- **포함**: `feat:`, `fix:`, `refactor:`, `perf:`
+- **제외**: `docs:`, `test:`, `chore:`, `ci:`, `l10n:`
 
 ### 5. 노션 문서 검색 (우선순위)
 
 각 PR/커밋에 대해 다음 우선순위로 노션 문서를 검색합니다:
+
+**중요**: Notion API 쿼리 시 반드시 최근 수정순 정렬을 사용합니다:
+```
+sorts: [{"timestamp": "last_edited_time", "direction": "descending"}]
+```
 
 #### 우선순위 1: 개발 과제 DB 검색
 - 커밋 메시지나 PR 제목에서 LK-XXXXX 티켓 번호 추출
@@ -66,6 +94,13 @@ command gh pr list --author="@me" --state=open --json number,title,updatedAt
 
 #### 우선순위 2: 개발 작업 DB 검색
 - 개발 과제가 없는 경우, 개발 작업 DB에서 검색
+- `mcp__tpc-notion__API-query-data-source` 사용:
+  ```
+  - data_source_id: af0b1e4c-6a3f-4d94-81c6-396f86e61574
+  - filter: {"property": "작업자", "people": {"contains": "0b245cd5-2c61-423b-a74f-3a45435a8fea"}}
+  - sorts: [{"timestamp": "last_edited_time", "direction": "descending"}]  ← 최근 수정순 필수!
+  - page_size: 20
+  ```
 - PR 제목이나 커밋 메시지로 검색
 - **개발 작업 문서가 있으면**: `<mention-page>` 로 멘션
 
@@ -127,3 +162,6 @@ command gh pr view {PR번호} --json files --jq '.files[].path' | grep -E '^src/
 - 다른 팀원의 작업 내역은 수정하지 않음
 - 노션 문서 멘션 우선순위: 개발과제 > 개발작업 > PR 링크
 - GitHub PR 링크는 마크다운 형식으로 작성: `[#번호](URL)`
+- **노션 페이지 접근 실패 시**: 복사용 마크다운 형식으로 출력하여 사용자가 직접 붙여넣을 수 있도록 함
+- **날짜 분류**: merge 날짜가 아닌 **마지막 커밋 날짜** 기준으로 지난주/이번주 분류
+- **PR 필터링**: 코드 변경 PR만 포함 (feat/fix/refactor/perf), CI/docs/test/chore 제외

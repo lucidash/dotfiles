@@ -91,3 +91,25 @@ EOF
 - 커밋 메시지는 Conventional Commits 형식 사용
 - PR 본문에 Summary와 Test plan 포함
 - push 전 빌드/린트 확인 (CLAUDE.md 규칙)
+
+---
+
+## 체이닝: 다음 단계 제안
+
+PR 생성이 완료되면 사용자에게 다음 단계를 제안합니다:
+
+```markdown
+---
+
+### 다음 단계
+
+PR이 생성되었습니다! Notion 개발 작업과 연결할까요?
+
+`/link-pr-task <Notion 작업 URL 또는 LK-ID>`
+```
+
+**자동 연결 조건**:
+- 브랜치명에 `LK-XXXX` 패턴이 포함된 경우
+- 커밋 메시지에 `LK-XXXX` 패턴이 포함된 경우
+
+이 경우 사용자 확인 후 자동으로 `/link-pr-task` 실행을 제안합니다.

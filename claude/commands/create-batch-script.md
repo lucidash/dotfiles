@@ -325,6 +325,39 @@ for (const idsBatch of chunks) {
 }
 ```
 
+### ⚠️ Entity Key 주의사항
+Entity key는 `name` (문자열) 또는 `id` (숫자) 중 하나를 사용합니다. 둘 다 처리하려면:
+```typescript
+// ❌ 잘못된 예시: name만 사용 (id를 사용하는 엔티티 누락)
+const key = entity.entityKey.name as string;
+
+// ✅ 올바른 예시: name과 id 모두 처리
+const key = (entity.entityKey.name ?? entity.entityKey.id?.toString()) as string;
+```
+
+### 병렬 처리 (대량 데이터)
+순차 처리가 느릴 때 `executeInSize`로 병렬 처리:
+```typescript
+import {executeInSize} from '@/lib/fixed-size-executor.js';
+
+const CONCURRENCY = 20;  // 동시 실행 수
+
+// 배열 항목을 병렬로 처리 (최대 20개씩)
+await executeInSize(CONCURRENCY, items, async (item) => {
+  try {
+    // 개별 처리 로직
+    await processItem(item);
+  } catch (err) {
+    console.error(`Failed: ${item.id}`, err);
+  }
+});
+```
+
+**사용 시점:**
+- 개별 API 호출이 많은 경우
+- 독립적인 Entity 저장이 많은 경우
+- I/O 바운드 작업이 많은 경우
+
 ### 사용자 정보 배치 조회
 ```typescript
 import {getUsers} from '@likey/user/index.js';

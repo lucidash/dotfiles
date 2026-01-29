@@ -109,14 +109,19 @@ command gh search issues --repo=TPC-Internet/{repo} --mentions={github_username}
 
 ### 3. Notion 최근 변경 확인
 
+**중요**: Notion API 쿼리 시 반드시 최근 수정순 정렬을 사용합니다:
+```
+sorts: [{"timestamp": "last_edited_time", "direction": "descending"}]
+```
+
 #### 3-1. 대상 사용자가 변경한 개발 작업 검색
 
 ```
-1. mcp__notion__notion-search 호출
-   - query: 최근 작업 키워드 또는 빈 쿼리
-   - data_source_url: collection://af0b1e4c-6a3f-4d94-81c6-396f86e61574
-   - filters.created_date_range.start_date: {어제 날짜}
-   - filters.created_by_user_ids: ["{notion_user_id}"]
+1. mcp__tpc-notion__API-query-data-source 호출
+   - data_source_id: af0b1e4c-6a3f-4d94-81c6-396f86e61574
+   - filter: {"property": "작업자", "people": {"contains": "{notion_user_id}"}}
+   - sorts: [{"timestamp": "last_edited_time", "direction": "descending"}]  ← 최근 수정순 필수!
+   - page_size: 20
 
 2. 주요 작업 상태 확인
    - Status 확인 (진행중, 대기중, 완료 등)
@@ -126,10 +131,11 @@ command gh search issues --repo=TPC-Internet/{repo} --mentions={github_username}
 #### 3-2. 대상 사용자가 변경한 개발 과제 검색
 
 ```
-1. mcp__notion__notion-search 호출
-   - data_source_url: collection://e2591524-aa7d-454e-86eb-b925b110aeca
-   - filters.created_date_range.start_date: {어제 날짜}
-   - filters.created_by_user_ids: ["{notion_user_id}"]
+1. mcp__tpc-notion__API-query-data-source 호출
+   - data_source_id: e2591524-aa7d-454e-86eb-b925b110aeca
+   - filter: {"property": "관련자", "people": {"contains": "{notion_user_id}"}}
+   - sorts: [{"timestamp": "last_edited_time", "direction": "descending"}]  ← 최근 수정순 필수!
+   - page_size: 20
 ```
 
 ### 4. Slack 활동 수집
