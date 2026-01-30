@@ -67,7 +67,7 @@ Git worktree의 생성, 전환, 목록, 상태, 정리를 통합 관리합니다
 | 환경 파일 복사 | ✅ | ✅ |
 | 커밋/변경 분석 | ✅ | ❌ |
 | PR 정보 조회 | ✅ | ❌ |
-| 세션 복사 + CLI 안내 | ✅ | ✅ |
+| Handoff 파일 생성 + CLI 안내 | ✅ | ✅ |
 
 ### 워크플로우
 
@@ -112,6 +112,10 @@ MAIN=$(git worktree list | head -1 | awk '{print $1}')
 for f in .env .env.local; do
     [ -f "${MAIN}/${f}" ] && [ ! -f "${f}" ] && cp "${MAIN}/${f}" .
 done
+
+# datastore emulator 데이터 복사 (backend 프로젝트)
+[ -d "${MAIN}/.datastore-emulator" ] && [ ! -d ".datastore-emulator" ] && \
+    cp -r "${MAIN}/.datastore-emulator" .
 ```
 
 #### Step 4: 변경사항 분석 (전체 모드만)
@@ -124,83 +128,77 @@ git status --short
 command gh pr list --head {브랜치} --json number,title,state,url
 ```
 
-#### Step 5: 세션 전환 (handoff)
+#### Step 5: Handoff 파일 생성 및 CLI 안내
 
-> **중요**: 세션 복사는 반드시 handoff summary 출력 **후**에 수행해야 합니다.
-> 세션 파일은 현재 대화의 스냅샷이므로, summary가 포함된 상태에서 복사해야
-> 새 세션에서 브랜치 컨텍스트를 볼 수 있습니다.
+> **방식**: 세션 파일 복사 대신 `./.claude/handoff.md` 파일을 worktree에 생성합니다.
+> 새 세션 시작 시 Claude가 이 파일을 자동으로 읽어 컨텍스트를 파악합니다.
 
-**5-1. Session Clear**
-
-먼저 현재 세션을 정리합니다:
-```
-/clear
-```
-
-**5-2. 브랜치 컨텍스트 요약 (먼저 출력)**
-
-대상 브랜치의 상태를 요약하여 **텍스트로 출력**합니다:
+**5-1. 브랜치 정보 수집**
 
 ```bash
 cd "${WORKTREE_PATH}"
 
-# 브랜치 정보
 BRANCH=$(git branch --show-current)
 COMMITS=$(git rev-list --count master..HEAD 2>/dev/null || echo "0")
-
-# PR 정보
+BEHIND=$(git rev-list --count HEAD..master 2>/dev/null || echo "0")
 PR_INFO=$(command gh pr list --head "$BRANCH" --json number,title,state,url,body --jq '.[0]' 2>/dev/null)
-
-# 최근 커밋 (최대 5개)
 RECENT_COMMITS=$(git log --oneline -5 master..HEAD 2>/dev/null)
-
-# 변경된 파일
 CHANGED_FILES=$(git diff --name-status master...HEAD 2>/dev/null | head -20)
-
-# uncommitted 변경사항
 UNCOMMITTED=$(git status --short 2>/dev/null)
 ```
 
-**출력 형식 (Handoff Summary)**:
+**5-2. `.claude/handoff.md` 파일 생성**
+
+worktree의 .claude 디렉토리에 handoff 파일을 생성합니다:
+
+```bash
+mkdir -p "${WORKTREE_PATH}/.claude"
+cat > "${WORKTREE_PATH}/.claude/handoff.md" << 'EOF'
+# Handoff Context
+
+> 이 파일은 `/wt` 명령으로 자동 생성되었습니다.
+> 작업 완료 후 삭제해도 됩니다.
+
+## 브랜치: {브랜치명}
+
+| 항목 | 값 |
+|------|-----|
+| master 대비 | +{N} commits (behind {M}) |
+| PR | #{number} - {title} ({state}) |
+| URL | {pr_url} |
+
+## 최근 커밋
+{최근 커밋 목록}
+
+## 변경된 파일 ({N}개)
+{파일 목록 - A/M/D 표시}
+
+## 미커밋 변경사항
+{있으면 표시, 없으면 "없음"}
+
+## PR 설명
+{PR body - Summary 섹션}
+EOF
+```
+
+> **참고**: `.claude/handoff.md`는 `.gitignore`에 추가하는 것을 권장합니다.
+
+**5-3. CLI 안내 출력**
 
 ```markdown
 ---
 
-## Worktree 전환: `{브랜치명}`
+### 세션 전환
 
-### 브랜치 상태
-- **커밋 수**: master 대비 +{N}개
-- **PR**: #{number} - {title} ({state})
-  - URL: {url}
+Handoff 파일이 생성되었습니다: `{WORKTREE_PATH}/.claude/handoff.md`
 
-### 최근 작업 내역
-{최근 커밋 목록}
-
-### 변경된 파일 ({N}개)
-{파일 목록 - 추가/수정/삭제 표시}
-
-### 미커밋 변경사항
-{있으면 표시, 없으면 "없음"}
-
-### PR 설명 (작업 컨텍스트)
-{PR body 내용 - 있으면 표시}
+**새 터미널에서 실행**:
+```bash
+cd {WORKTREE_PATH} && claude
+```
 
 ---
 ```
-
-**5-3. 세션 복사 (summary 출력 후)**
-
-> ⚠️ **반드시 위 summary를 출력한 후에 세션 복사 수행**
-
-```bash
-# summary 출력 완료 후 세션 복사
-SESSION_DIR="$HOME/.claude/projects/-Users-muzi-projects-$(basename $CURRENT_DIR)"
-# ... 복사 로직
-```
-
-**5-4. CLI 안내 출력**
-
-세션 복사 완료 후 CLI 명령어 안내
 
 ---
 
@@ -314,42 +312,35 @@ git branch -d {branch}  # 로컬 브랜치도 삭제
 
 ## 5. handoff (내부용)
 
-세션을 대상 worktree로 복사하고 CLI 전환 명령어를 안내합니다.
+Worktree에 `.claude/handoff.md` 파일을 생성하여 컨텍스트를 전달합니다.
 
-> **실행 순서 (중요):**
-> 1. Handoff summary 텍스트 출력 (브랜치 상태, PR 정보 등)
-> 2. 세션 파일 복사 (summary가 포함된 상태)
-> 3. CLI 명령어 안내
+> **장점:**
+> - 세션 파일 조작 불필요
+> - 깨끗한 새 세션으로 시작
+> - handoff 파일이 worktree에 남아 언제든 참조 가능
+> - `.gitignore`에 추가하면 커밋되지 않음
 
-```bash
-# 1. 먼저 summary 출력 완료 후...
+### 워크플로우
 
-# 2. 세션 복사
-CURRENT_DIR=$(pwd)
-SESSION_DIR="$HOME/.claude/projects/$(echo $CURRENT_DIR | sed 's|/|-|g')"
-SESSION_ID=$(ls -t "$SESSION_DIR"/*.jsonl | head -1 | xargs basename | sed 's/.jsonl$//')
-
-TARGET_SESSION_DIR="$HOME/.claude/projects/$(echo $TARGET | sed 's|/|-|g')"
-mkdir -p "$TARGET_SESSION_DIR"
-cp "$SESSION_DIR/$SESSION_ID.jsonl" "$TARGET_SESSION_DIR/"
-
-# 3. CLI 안내 출력
-```
+1. 브랜치 정보 수집 (git, gh CLI)
+2. `.claude/handoff.md` 파일 생성
+3. CLI 전환 명령어 안내
 
 ### 출력
 
 ```markdown
+---
+
 ### 세션 전환
 
-**현재 세션 유지하며 전환** (권장):
-```bash
-cd {경로} && claude --resume {세션ID}
-```
+Handoff 파일이 생성되었습니다: `{WORKTREE_PATH}/.claude/handoff.md`
 
-**새 세션 시작**:
+**새 터미널에서 실행**:
 ```bash
 cd {경로} && claude
 ```
+
+---
 ```
 
 ---

@@ -36,7 +36,7 @@ $ARGUMENTS 에서 슬랙 URL을 파싱합니다:
 **개발 과제 DB ID**: `7e65336e-8ea1-4a85-a034-5afe0a6ccb81`
 **Data Source URL**: `collection://e2591524-aa7d-454e-86eb-b925b110aeca`
 
-`mcp__notion__notion-search` 도구로 다음 조건의 과제를 검색:
+`mcp__tpc-notion__API-post-search` 도구로 다음 조건의 과제를 검색:
 
 ```
 query: "기획 완료 어드민 개발 대기"
@@ -54,7 +54,7 @@ Backend + Admin 엔지니어에게 적합한 과제 조건:
 
 ### 4단계: 과제 상세 확인
 
-`mcp__notion__notion-fetch` 도구로 후보 과제들의 상세 정보 확인:
+`mcp__tpc-notion__API-retrieve-a-page` 도구로 후보 과제들의 상세 정보 확인:
 - 작업 상태 (실제로 미진행인지)
 - 우선순위
 - QA빌드목표/배포목표

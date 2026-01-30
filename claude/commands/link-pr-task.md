@@ -25,7 +25,7 @@ command gh pr list --head $(git branch --show-current) --json url,number,title
 
 ### 2. Notion 개발 작업 정보 가져오기
 ```
-mcp__notion__notion-fetch 사용
+mcp__tpc-notion__API-retrieve-a-page 사용
 - id: $ARGUMENTS (URL 또는 ID)
 ```
 - `userDefined:ID` 속성에서 LK-XXXX 형식의 ID 추출

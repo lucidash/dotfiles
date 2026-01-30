@@ -17,7 +17,7 @@
 ## 실행 순서
 
 ### 1. 소스 정보 가져오기
-- **노션 링크인 경우**: `mcp__notion__notion-fetch` 사용
+- **노션 링크인 경우**: `mcp__tpc-notion__API-retrieve-a-page` 사용
 - **슬랙 링크인 경우**: `mcp__slack__slack_get_thread_replies` 사용
 - 가져온 내용을 분석하여 요구사항 파악
 - 핵심 키워드, 기능명, API 엔드포인트 등 추출

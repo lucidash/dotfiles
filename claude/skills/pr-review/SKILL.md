@@ -14,6 +14,7 @@ PR을 분석하고 **Repository를 자동 감지**하여 프로젝트별 맞춤 
 |------------|-------------|------|
 | `likey-backend` | `guides/backend.md` | Node.js Express 백엔드 |
 | `likey-admin-v2` | `guides/admin-v2.md` | Vue 3 어드민 프론트엔드 |
+| `likey-web` | `guides/likey-web.md` | Nuxt.js 2 프론트엔드 |
 | 기타 | `guides/common.md` | 공통 체크리스트만 적용 |
 
 ## 트리거 키워드
@@ -72,6 +73,7 @@ command gh pr view {PR} --json url | grep -oP '(?<=github.com/)[^/]+/[^/]+'
 |-----------------|--------------|
 | `likey-backend` | `guides/backend.md` + `guides/common.md` |
 | `likey-admin-v2` | `guides/admin-v2.md` + `guides/common.md` |
+| `likey-web` | `guides/likey-web.md` + `guides/common.md` |
 | 기타 | `guides/common.md` 만 적용 |
 
 ### 3. 프로젝트별 가이드 로딩
@@ -81,6 +83,7 @@ command gh pr view {PR} --json url | grep -oP '(?<=github.com/)[^/]+/[^/]+'
 ```
 /Users/muzi/.claude/skills/pr-review/guides/backend.md
 /Users/muzi/.claude/skills/pr-review/guides/admin-v2.md
+/Users/muzi/.claude/skills/pr-review/guides/likey-web.md
 /Users/muzi/.claude/skills/pr-review/guides/common.md
 ```
 
@@ -113,6 +116,10 @@ diff를 분석하여 다음을 파악:
 - `src/api/` - 자동 생성 API 타입
 - `auto-imports.d.ts`, `components.d.ts`
 
+**likey-web 제외**:
+- `models/spec/likey-api.ts` - 백엔드 OpenAPI 스펙에서 자동 생성
+- `locales/*.json` - Lokalise에서 자동 동기화
+
 ### 6. 관련 코드 탐색
 
 변경된 코드를 이해하기 위해 필요시 추가 탐색:
@@ -125,7 +132,7 @@ diff를 분석하여 다음을 파악:
 **로딩한 가이드 파일의 체크리스트를 적용하여 리뷰합니다.**
 
 1. `guides/common.md`의 공통 체크리스트 적용
-2. 프로젝트별 가이드 체크리스트 적용 (backend.md 또는 admin-v2.md)
+2. 프로젝트별 가이드 체크리스트 적용 (backend.md, admin-v2.md, 또는 likey-web.md)
 3. 자동 검사 패턴 실행 (가이드에 정의된 grep 패턴)
 
 ### 8. 인라인 코멘트용 라인 번호 계산

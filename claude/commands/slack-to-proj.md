@@ -62,7 +62,7 @@ mcp__slack__slack_get_thread_replies 사용
 1. 스레드 첫 메시지의 user ID 추출
 2. mcp__slack__slack_get_users로 Slack 사용자 정보 조회
    - display_name, real_name, email 추출
-3. mcp__notion__notion-search로 Notion 사용자 검색
+3. mcp__tpc-notion__API-post-search로 Notion 사용자 검색
    - query: {email}
    - query_type: "user"
 4. 매핑 결과 저장
@@ -246,7 +246,7 @@ mcp__slack__slack_get_users
 email 추출 (예: min@tpcinternet.com)
     │
     ▼
-mcp__notion__notion-search
+mcp__tpc-notion__API-post-search
   - query: {email}
   - query_type: "user"
     │

@@ -4,7 +4,9 @@
 "" =========================================================
 
 syntax on
-scriptencoding utf-8
+if !has('nvim')
+  scriptencoding utf-8
+endif
 set nocompatible
 
 set visualbell
@@ -140,7 +142,9 @@ function! s:fzf_smart(qargs) abort
   let l:git_dir = s:get_git_dir()
   if ! empty(l:git_dir)
     let l:old_cwd = getcwd()
-    execute ':cd ' . l:git_dir . '/..'
+    " Use --show-toplevel to get correct working directory (supports git worktree)
+    let l:toplevel = system('git -C ' . l:old_cwd . ' rev-parse --show-toplevel')[:-2]
+    execute ':cd ' . l:toplevel
     GFiles -c -o --exclude-standard
     execute ':cd ' . l:old_cwd
   " (3) not in git repo, invoke :Files <args> by fallback
@@ -293,11 +297,14 @@ scripte utf-8
 
 
 " terminal encoding (always use utf-8 if possible)
-if !has("win32") || has("gui_running")
-  set enc=utf-8 tenc=utf-8
-  if has("win32")
-    set tenc=cp949
-    let $LANG = substitute($LANG, '\(\.[^.]\+\)\?$', '.utf-8', '')
+
+if !has('nvim')
+  if !has("win32") || has("gui_running")
+    set enc=utf-8 tenc=utf-8
+    if has("win32")
+      set tenc=cp949
+      let $LANG = substitute($LANG, '\(\.[^.]\+\)\?$', '.utf-8', '')
+    endif
   endif
 endif
 

@@ -6,8 +6,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "$HOME/.claude/hooks/merge-permissions.sh",
-            "timeout": 10
+            "command": "$HOME/.claude/hooks/inject-handoff.sh",
+            "timeout": 5
           }
         ]
       }
@@ -19,18 +19,6 @@
           {
             "type": "command",
             "command": "$HOME/.claude/hooks/check-worktree.sh",
-            "timeout": 5
-          }
-        ]
-      }
-    ],
-    "PermissionRequest": [
-      {
-        "matcher": ".*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.claude/hooks/auto-approve.py",
             "timeout": 5
           }
         ]

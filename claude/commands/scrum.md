@@ -24,6 +24,9 @@ GitHub 작업사항, Notion 개발과제/작업 DB 변경, 직전 스크럼 대�
 | likey-web | TPC-Internet/likey-web |
 | likey-admin | TPC-Internet/likey-admin |
 | likey-admin-v2 | TPC-Internet/likey-admin-v2 |
+| tpc-agent | TPC-Internet/tpc-agent |
+| tpc-workspace | tpcint/tpc-workspace |
+| workflow-storage | TPC-Internet/workflow-storage |
 
 ## 스크럼 형식
 
@@ -90,16 +93,38 @@ PR로 확인되지 않는 로컬 브랜치 작업도 확인:
 # - /Users/muzi/projects/likey-admin-v2
 # - /Users/muzi/projects/likey-web
 # - /Users/muzi/projects/likey-admin
+# - /Users/muzi/projects/tpc-agent
+# - /Users/muzi/projects/workflow-storage
 
 # 1. fetch 후 모든 브랜치의 최근 커밋 확인 (muzi, lucidash 모두 검색 - 모든 레포에서)
-cd {repo_path} && git fetch origin && git log --author="muzi" --author="lucidash" --since="{직전 스크럼 날짜}" --oneline --all --no-merges | head -30
+cd {repo_path} && git fetch origin && git log --author="muzi" --author="lucidash" --since="{직전 스크럼 날짜} 00:00" --format="%h %s" --all --no-merges
 
-# 3. 현재 작업 중인 로컬 브랜치 확인
+# 2. 현재 작업 중인 로컬 브랜치 확인
 git branch --sort=-committerdate | head -5
 
-# 4. 진행 중인 브랜치의 최근 커밋 확인
+# 3. 진행 중인 브랜치의 최근 커밋 확인
 git log {branch_name} --oneline -10 --since="{직전 스크럼 날짜}"
 ```
+
+**중요: 커밋 로그 분석 가이드**
+
+커밋 메시지 prefix로 작업 유형 분류:
+
+| Prefix | 의미 | 스크럼 반영 |
+|--------|------|------------|
+| `feat:` | 새 기능 | 주요 작업으로 반영 |
+| `fix:` | 버그 수정 | 수정사항으로 반영 |
+| `refactor:` | 리팩토링 | 개선사항으로 반영 |
+| `test:` | 테스트 | 품질 개선으로 반영 |
+| `docs:` | 문서 | 필요시 반영 |
+| `chore:` | 기타 | 중요도에 따라 선택 |
+
+**커밋 분석 체크리스트:**
+1. 각 레포별 커밋 수 확인 - 5개 이상이면 주요 작업으로 간주
+2. `feat:`, `fix:` 커밋은 반드시 스크럼에 포함
+3. 같은 기능의 여러 커밋은 하나로 묶어서 표현
+4. WIP/Revert 커밋은 최종 상태만 반영
+5. PR 머지와 중복되는 커밋은 PR 기준으로 표현
 
 #### 3-3. 진행 중인 작업 파악
 
@@ -150,7 +175,7 @@ git log {branch_name} --oneline -10 --since="{직전 스크럼 날짜}"
 각 작업 항목에 대해 Notion 개발작업 DB에서 관련 문서 검색:
 
 ```
-1. mcp__notion__notion-search로 작업 키워드 검색
+1. mcp__tpc-notion__API-post-search로 작업 키워드 검색
    - data_source_url: collection://af0b1e4c-6a3f-4d94-81c6-396f86e61574
 
 2. 검색 결과에서 관련 작업 문서 URL 추출
@@ -240,6 +265,9 @@ https://tpc-internet.slack.com/archives/C01GNUU7Z8A/p{thread_ts (점 제거)}
 | likey-admin-v2 | `/Users/muzi/projects/likey-admin-v2` |
 | likey-web | `/Users/muzi/projects/likey-web` |
 | likey-admin | `/Users/muzi/projects/likey-admin` |
+| tpc-agent | `/Users/muzi/projects/tpc-agent` |
+| tpc-workspace | `/Users/muzi/projects/tpc-workspace` |
+| workflow-storage | `/Users/muzi/projects/workflow-storage` |
 
 ## 주의사항
 
