@@ -210,16 +210,24 @@ npm run build && npm run lint:prod
 ## 코멘트 답글 달기
 
 ```bash
-# 수정 완료 시
-command gh api repos/{owner}/{repo}/pulls/comments/{comment_id}/replies \
-  -X POST \
-  -f body="수정했습니다. {변경 내용 요약}"
+# 수정 완료 시 (GraphQL - 리뷰 스레드 ID 사용)
+command gh api graphql -f query='
+mutation($body: String!, $threadId: ID!) {
+  addPullRequestReviewThreadReply(input: {body: $body, pullRequestReviewThreadId: $threadId}) {
+    comment { id body }
+  }
+}' -f body="수정했습니다. {변경 내용 요약}" -f threadId={THREAD_ID}
 
 # 기존 패턴 유지 시 (반박)
-command gh api repos/{owner}/{repo}/pulls/comments/{comment_id}/replies \
-  -X POST \
-  -f body="기존 패턴을 유지합니다. {사유}"
+command gh api graphql -f query='
+mutation($body: String!, $threadId: ID!) {
+  addPullRequestReviewThreadReply(input: {body: $body, pullRequestReviewThreadId: $threadId}) {
+    comment { id body }
+  }
+}' -f body="기존 패턴을 유지합니다. {사유}" -f threadId={THREAD_ID}
 ```
+
+**참고**: `THREAD_ID`는 리뷰 스레드 조회 시 반환되는 `id` 필드 값 (예: `PRRT_kwDOI5PQj85sJRaA`)
 
 ## 스레드 Resolve
 
@@ -315,12 +323,15 @@ Claude: [analyze-repo-patterns 실행...]
 분석 결과 기존 코드가 이미 프로젝트 패턴을 따르고 있다면, 근거와 함께 답글:
 
 ```bash
-command gh api repos/{owner}/{repo}/pulls/comments/{comment_id}/replies \
-  -X POST \
-  -f body="분석 결과 현재 구현이 프로젝트 패턴과 일치합니다.
+command gh api graphql -f query='
+mutation($body: String!, $threadId: ID!) {
+  addPullRequestReviewThreadReply(input: {body: $body, pullRequestReviewThreadId: $threadId}) {
+    comment { id body }
+  }
+}' -f body="분석 결과 현재 구현이 프로젝트 패턴과 일치합니다.
 - 동일 패턴 사용 파일: 45개
 - 참고 PR: #1091, #1088
-기존 방식을 유지합니다."
+기존 방식을 유지합니다." -f threadId={THREAD_ID}
 ```
 
 ---
