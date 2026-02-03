@@ -100,15 +100,16 @@ git worktree add -b "$BRANCH" "$WORKTREE_PATH"       # 없으면
 ```
 
 #### Step 3: 의존성 설치 및 환경 복사
-
 ```bash
 cd "${WORKTREE_PATH}"
+MAIN=$(git worktree list | head -1 | awk '{print $1}')
 
-# npm install
-[ -f "package.json" ] && npm install
+# node_modules: main에서 링크 (main은 항상 최신 상태 유지)
+if [ -f "package.json" ] && [ ! -d "node_modules" ] && [ -d "${MAIN}/node_modules" ]; then
+    ln -s "${MAIN}/node_modules" .
+fi
 
 # .env 복사
-MAIN=$(git worktree list | head -1 | awk '{print $1}')
 for f in .env .env.local; do
     [ -f "${MAIN}/${f}" ] && [ ! -f "${f}" ] && cp "${MAIN}/${f}" .
 done
@@ -117,7 +118,6 @@ done
 [ -d "${MAIN}/.datastore-emulator" ] && [ ! -d ".datastore-emulator" ] && \
     cp -r "${MAIN}/.datastore-emulator" .
 ```
-
 #### Step 4: 변경사항 분석 (전체 모드만)
 
 ```bash
