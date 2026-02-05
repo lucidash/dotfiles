@@ -207,38 +207,52 @@ npm run build && npm run lint:prod
 
 ---
 
-## 코멘트 답글 달기
+## 코멘트 답글 달기 (필수!)
+
+> ⚠️ **중요**: 모든 리뷰 코멘트에는 반드시 답글을 달아야 합니다!
+> - 반영한 경우: 무엇을 어떻게 수정했는지 답글 + resolve
+> - 반영하지 않은 경우: **반드시** 그 이유를 답글로 설명 (resolve 하지 않음)
+
+### GraphQL Mutation 사용 (REST API는 ID 호환 문제로 사용 불가)
 
 ```bash
-# 수정 완료 시 (GraphQL - 리뷰 스레드 ID 사용)
+# 수정 완료 시 → 답글 + resolve
 command gh api graphql -f query='
 mutation($body: String!, $threadId: ID!) {
-  addPullRequestReviewThreadReply(input: {body: $body, pullRequestReviewThreadId: $threadId}) {
-    comment { id body }
+  addPullRequestReviewThreadReply(input: {
+    body: $body,
+    pullRequestReviewThreadId: $threadId
+  }) {
+    comment { id }
   }
-}' -f body="수정했습니다. {변경 내용 요약}" -f threadId={THREAD_ID}
+}' -f body="수정했습니다. {변경 내용 요약}" -f threadId="{THREAD_ID}"
 
-# 기존 패턴 유지 시 (반박)
-command gh api graphql -f query='
-mutation($body: String!, $threadId: ID!) {
-  addPullRequestReviewThreadReply(input: {body: $body, pullRequestReviewThreadId: $threadId}) {
-    comment { id body }
-  }
-}' -f body="기존 패턴을 유지합니다. {사유}" -f threadId={THREAD_ID}
-```
-
-**참고**: `THREAD_ID`는 리뷰 스레드 조회 시 반환되는 `id` 필드 값 (예: `PRRT_kwDOI5PQj85sJRaA`)
-
-## 스레드 Resolve
-
-```bash
+# 이후 resolve
 command gh api graphql -f query='
 mutation($threadId: ID!) {
   resolveReviewThread(input: {threadId: $threadId}) {
     thread { isResolved }
   }
-}' -f threadId={THREAD_ID}
+}' -f threadId="{THREAD_ID}"
 ```
+
+```bash
+# 반영하지 않는 경우 → 반드시 사유 답글 (resolve 하지 않음!)
+command gh api graphql -f query='
+mutation($body: String!, $threadId: ID!) {
+  addPullRequestReviewThreadReply(input: {
+    body: $body,
+    pullRequestReviewThreadId: $threadId
+  }) {
+    comment { id }
+  }
+}' -f body="반영하지 않습니다. {구체적인 사유}" -f threadId="{THREAD_ID}"
+```
+
+**주의사항**:
+- Thread ID는 `PRRT_` 접두사로 시작하는 GraphQL ID 사용
+- REST API의 `/pulls/comments/{id}/replies`는 GraphQL ID와 호환되지 않음
+- 반영하지 않는 리뷰에 답글 없이 넘어가면 안 됨!
 
 ## 자동 Resolve 대상
 
@@ -325,13 +339,16 @@ Claude: [analyze-repo-patterns 실행...]
 ```bash
 command gh api graphql -f query='
 mutation($body: String!, $threadId: ID!) {
-  addPullRequestReviewThreadReply(input: {body: $body, pullRequestReviewThreadId: $threadId}) {
-    comment { id body }
+  addPullRequestReviewThreadReply(input: {
+    body: $body,
+    pullRequestReviewThreadId: $threadId
+  }) {
+    comment { id }
   }
 }' -f body="분석 결과 현재 구현이 프로젝트 패턴과 일치합니다.
 - 동일 패턴 사용 파일: 45개
 - 참고 PR: #1091, #1088
-기존 방식을 유지합니다." -f threadId={THREAD_ID}
+기존 방식을 유지합니다." -f threadId="{THREAD_ID}"
 ```
 
 ---
@@ -341,8 +358,17 @@ mutation($body: String!, $threadId: ID!) {
 - CLAUDE.md의 컨벤션을 우선 따름
 - 프로젝트 전반의 기존 패턴 확인 후 일관성 유지
 - 수정 전 반드시 타입 체크/린트 통과 확인
-- 반박 시에도 정중하게 사유 설명
 - **패턴 확인이 필요하면 analyze-repo-patterns 스킬을 호출할 것 (사용자 confirm 필수)**
+
+### ⚠️ 리뷰 답글 필수 규칙
+
+| 상황 | 필수 행동 |
+|------|----------|
+| 제안 수락/반영 | 답글 달기 ("수정했습니다. {내용}") + **resolve** |
+| 제안 거절/미반영 | **반드시** 답글로 사유 설명 + resolve 하지 않음 |
+| 나중에 처리 예정 | 답글 달기 ("별도 작업으로 진행 예정입니다. {사유}") |
+
+> 🚫 **금지**: 리뷰 코멘트를 답글 없이 무시하거나, 사유 설명 없이 resolve 하는 것
 
 ## Usage
 
