@@ -70,12 +70,38 @@ EOF
 git push -u origin $(git branch --show-current)
 ```
 
+### 5.5단계: Admin v2 확인 경로 감지 (likey-admin-v2 레포인 경우)
+
+레포가 `likey-admin-v2`인 경우, 변경된 파일 중 `app/pages/` 하위 파일을 분석하여 QA가 확인해야 할 어드민 페이지 경로를 추출합니다.
+
+```bash
+# 변경된 페이지 파일 목록 추출
+git diff master..HEAD --name-only | grep '^app/pages/'
+```
+
+**경로 변환 규칙**:
+1. `app/pages/` 접두사 제거
+2. `/index.vue`, `.vue` 확장자 제거
+3. `[[param]]` → `:param` (선택 파라미터)
+4. `[param]` → `:param` (필수 파라미터)
+
+예시: `app/pages/app/app-version.vue` → `/app/app-version`
+
+**페이지 파일이 없고 컴포넌트만 변경된 경우**: `app/components/` 하위 파일의 도메인 디렉토리명으로 관련 페이지 경로를 추정합니다.
+
 ### 6단계: PR 생성
 
 ```bash
 command gh pr create --title "PR 제목" --body "$(cat <<'EOF'
 ## Summary
 - 변경사항 요약
+
+## 확인 경로 (Admin v2인 경우에만 포함)
+| 경로 | 설명 |
+|------|------|
+| `/app/app-version` | 앱 버전 관리 페이지 |
+
+> Preview URL에 `?_preview={route}` 파라미터를 추가하면 해당 페이지로 바로 이동합니다.
 
 ## Test plan
 - [ ] 테스트 항목
