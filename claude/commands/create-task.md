@@ -97,6 +97,13 @@ git log master..HEAD --oneline
   ## PR
   - [#{PR번호} {PR제목}]({PR URL})
 
+  ## 확인 경로 (Admin v2인 경우에만 포함)
+  | 경로 | 설명 |
+  |------|------|
+  | `/{route}` | {페이지 설명} |
+
+  > Preview URL에 `?_preview={route}` 파라미터를 추가하면 해당 페이지로 바로 이동합니다.
+
   ## 변경사항
   1. {주요 변경사항 1}
   2. {주요 변경사항 2}
@@ -105,6 +112,12 @@ git log master..HEAD --oneline
   - [ ] {QA 테스트 항목 1}
   - [ ] {QA 테스트 항목 2}
   ```
+
+  **Admin v2 확인 경로 감지 방법**:
+  변경된 파일 중 `app/pages/` 하위 파일을 찾아 URL 경로로 변환합니다.
+  - `app/pages/` 접두사 제거, `/index.vue` 또는 `.vue` 확장자 제거
+  - `[[param]]` → `:param`, `[param]` → `:param`
+  - 페이지 파일이 없으면 `app/components/` 도메인 디렉토리로 관련 페이지 추정
 
 ### A-4. PR 타이틀에 LK-ID 추가
 
@@ -215,6 +228,13 @@ rg "{키워드}" /Users/muzi/projects/likey-admin-v2/app -g "*.vue" | head -20
   ```markdown
   ## 개요
   {작업 요약}
+
+  ## 확인 경로 (Admin v2인 경우에만 포함)
+  | 경로 | 설명 |
+  |------|------|
+  | `/{route}` | {페이지 설명} |
+
+  > Preview URL에 `?_preview={route}` 파라미터를 추가하면 해당 페이지로 바로 이동합니다.
 
   ## 코드 분석 결과
   ### 관련 파일
