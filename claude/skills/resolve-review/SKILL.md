@@ -215,25 +215,24 @@ npm run build && npm run lint:prod
 
 ### GraphQL Mutation 사용 (REST API는 ID 호환 문제로 사용 불가)
 
-```bash
-# 수정 완료 시 → 답글 + resolve
-command gh api graphql -f query='
-mutation($body: String!, $threadId: ID!) {
-  addPullRequestReviewThreadReply(input: {
-    body: $body,
-    pullRequestReviewThreadId: $threadId
-  }) {
-    comment { id }
-  }
-}' -f body="수정했습니다. {변경 내용 요약}" -f threadId="{THREAD_ID}"
+> **주의**: GraphQL 멀티라인 쿼리 + 변수 조합은 `gh api graphql`에서 파싱 에러 발생 가능.
+> 안정적인 방법으로 `gh pr comment`를 사용하거나, 한 줄 쿼리로 작성.
 
-# 이후 resolve
-command gh api graphql -f query='
-mutation($threadId: ID!) {
-  resolveReviewThread(input: {threadId: $threadId}) {
-    thread { isResolved }
-  }
-}' -f threadId="{THREAD_ID}"
+```bash
+# 방법 1: gh pr comment 사용 (권장 - 가장 안정적)
+command gh pr comment {PR_NUMBER} --repo {OWNER}/{REPO} --body "리뷰 피드백 반영 완료: {변경 내용 요약}"
+
+# 방법 2: GraphQL 한 줄 쿼리 (변수 없이 직접 값 삽입)
+command gh api graphql -f query='mutation { addPullRequestReviewThreadReply(input: {body: "수정했습니다.", pullRequestReviewThreadId: "{THREAD_ID}"}) { comment { id } } }'
+```
+
+**참고**: `THREAD_ID`는 리뷰 스레드 조회 시 반환되는 `id` 필드 값 (예: `PRRT_kwDOI5PQj85sJRaA`)
+
+## 스레드 Resolve
+
+```bash
+# 변수 없이 직접 threadId 삽입 (안정적)
+command gh api graphql -f query='mutation { resolveReviewThread(input: {threadId: "{THREAD_ID}"}) { thread { isResolved } } }'
 ```
 
 ```bash
