@@ -1,8 +1,15 @@
+---
+name: create-batch-script
+description: 데이터 추출 배치 스크립트 생성. "배치 스크립트 만들어줘", "데이터 추출 스크립트", "배치 작성", "dump 스크립트" 같은 요청에 자동으로 활성화됩니다.
+allowed-tools: Bash, Read, Glob, Grep, AskUserQuestion
+argument-hint: "추출하려는 데이터 설명 (예: JP 크리에이터 구독 결제 내역)"
+---
+
 # 데이터 추출 배치 스크립트 생성
 
 데이터 추출/분석을 위한 배치 스크립트를 작성합니다.
 
-## 입력
+## 인자
 - `$ARGUMENTS`: 추출하려는 데이터 설명 (예: "JP 크리에이터 구독 결제 내역", "특정 기간 채팅 메시지 통계")
 
 ---
@@ -325,7 +332,7 @@ for (const idsBatch of chunks) {
 }
 ```
 
-### ⚠️ Entity Key 주의사항
+### Entity Key 주의사항
 Entity key는 `name` (문자열) 또는 `id` (숫자) 중 하나를 사용합니다. 둘 다 처리하려면:
 ```typescript
 // ❌ 잘못된 예시: name만 사용 (id를 사용하는 엔티티 누락)
