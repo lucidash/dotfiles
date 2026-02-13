@@ -118,6 +118,21 @@ done
 [ -d "${MAIN}/.datastore-emulator" ] && [ ! -d ".datastore-emulator" ] && \
     cp -r "${MAIN}/.datastore-emulator" .
 ```
+#### Step 3.5: CLAUDE.md 컨텍스트 적재 (repo 변경 시)
+
+현재 작업 중인 프로젝트와 대상 worktree의 프로젝트가 다른 경우에만 실행합니다.
+
+```bash
+CURRENT_REPO=$(basename "$(git rev-parse --show-toplevel 2>/dev/null)" | sed 's/-[^/]*$//')
+TARGET_REPO=$(basename "${WORKTREE_PATH}" | sed 's/-[^/]*$//')
+```
+
+**repo가 변경된 경우** (`CURRENT_REPO != TARGET_REPO`):
+1. `${WORKTREE_PATH}/CLAUDE.md` 파일이 존재하면 Read 도구로 읽기
+2. 읽은 내용을 "이 프로젝트의 CLAUDE.md를 컨텍스트에 적재했습니다" 라고 안내
+
+> 같은 repo의 worktree 간 전환 시에는 CLAUDE.md가 동일하므로 스킵합니다.
+
 #### Step 4: 변경사항 분석 (전체 모드만)
 
 ```bash
