@@ -242,6 +242,23 @@ command gh pr list --head {branch_name} --state all --json state,mergedAt --jq '
   └─ 정보 없음 → 사용자에게 확인
 ```
 
+### 3-5단계: 배포 상태 확인 (이전 수정이 있는 경우)
+
+해당 QA 이슈에 대한 이전 수정 커밋이 이미 존재하는 경우 (예: Notion 댓글에 "수정 완료" + commit hash가 있는 경우), QA가 "여전히 발생"이라고 보고할 때 **코드를 재조사하기 전에 배포 여부부터 확인**한다.
+
+```bash
+# 1. 로컬에 push되지 않은 커밋이 있는지 확인
+git log origin/{branch}..HEAD --oneline
+
+# 2. push되지 않은 커밋이 있다면 사용자에게 알림
+```
+
+미push 커밋이 발견되면:
+- 사용자에게 "수정 커밋이 push되지 않아 preview에 배포되지 않은 상태입니다. push할까요?" 확인
+- push 후 preview 배포가 트리거되면 QA에게 재확인 요청
+
+> **핵심**: QA가 "수정 후에도 재현됨"이라고 할 때, 로그 분석이나 코드 재조사보다 **배포 여부 확인이 최우선**이다. 이 단계를 생략하면 불필요한 조사 시간이 소요될 수 있다.
+
 ### 4단계: (코드 수정은 사용자/에이전트가 수행)
 
 이 단계는 스킬 범위 밖입니다. 스킬 호출 시점에 이미 수정이 완료된 경우도 있고, 이 스킬을 통해 worktree 설정만 먼저 한 뒤 수정을 시작하는 경우도 있습니다.
@@ -292,7 +309,46 @@ commit: {short hash} ({branch name})
 - 비개발자도 이해할 수 있는 수준으로 작성
 - 기술적 세부사항보다 "무엇이 문제였고 어떻게 해결했는지"에 초점
 
-### 6단계: Notion 상태 업데이트
+### 6단계: Push 및 배포 대기
+
+Notion 상태 변경과 댓글은 **배포가 완료된 후** 남긴다. QA가 댓글을 보고 바로 확인할 수 있어야 하므로.
+
+**6-1. Push**
+
+```bash
+# 미push 커밋 확인
+git log origin/{branch}..HEAD --oneline
+
+# 미push 커밋이 있으면 빌드/린트 확인 후 push
+npm run build-all
+npm run lint:prod
+git push origin {branch}
+```
+
+미push 커밋이 없으면 (이미 push된 상태) → 6-2로 진행.
+
+**6-2. PR checks를 통한 배포 완료 대기**
+
+push 후 PR의 checks에서 **deploy 관련 check만** 대기한다:
+
+```bash
+# PR의 checks 상태 조회
+command gh pr checks {pr_number_or_branch} --json name,state,description
+
+# deploy 관련 check만 확인 (이름에 deploy, preview, pull 등 포함)
+# state: pending, success, failure
+```
+
+배포 완료 확인 방법:
+1. `command gh pr checks`로 현재 PR의 check 목록 조회
+2. deploy/preview 관련 check만 대상으로 함 (lint, test 등은 무시)
+3. state가 `pending`이면 주기적으로 재조회하며 대기
+4. state가 `success`이면 다음 단계로 진행 (pass)
+5. state가 `failure`이면 사용자에게 알리고 중단
+
+> **타임아웃**: 5분 이상 대기 시 사용자에게 "배포가 오래 걸리고 있습니다. Notion 업데이트를 먼저 진행할까요?" 확인
+
+### 7단계: Notion 상태 업데이트
 
 ```
 mcp__tpc-notion__API-patch-page
@@ -300,7 +356,7 @@ mcp__tpc-notion__API-patch-page
 - properties: {"상태": {"status": {"name": "QA 필요"}}}
 ```
 
-### 7단계: 댓글 작성
+### 8단계: 댓글 작성
 
 ```
 mcp__tpc-notion__API-create-a-comment
@@ -312,7 +368,7 @@ mcp__tpc-notion__API-create-a-comment
   }]
 ```
 
-### 8단계: 결과 보고
+### 9단계: 결과 보고
 
 ```markdown
 ## QA 이슈 업데이트 완료
@@ -323,6 +379,7 @@ mcp__tpc-notion__API-create-a-comment
 | 상태 | {이전상태} → **QA 필요** |
 | 브랜치 | `{branch}` |
 | 커밋 | `{short_hash}` |
+| 배포 | ✅ preview 배포 완료 |
 | 댓글 | 수정 내용 작성됨 |
 ```
 
