@@ -162,13 +162,13 @@ CHANGED_FILES=$(git diff --name-status master...HEAD 2>/dev/null | head -20)
 UNCOMMITTED=$(git status --short 2>/dev/null)
 ```
 
-**5-2. `.claude/handoff.md` 파일 생성**
+**5-2. `.claude/handoff.md` 파일 생성 및 이동**
 
-worktree의 .claude 디렉토리에 handoff 파일을 생성합니다:
+먼저 master worktree의 `.claude/` 에 handoff 파일을 생성한 뒤, `mv`로 대상 worktree에 이동합니다:
 
 ```bash
-mkdir -p "${WORKTREE_PATH}/.claude"
-cat > "${WORKTREE_PATH}/.claude/handoff.md" << 'EOF'
+# 1. master worktree의 .claude/ 에 임시 생성
+cat > ".claude/handoff.md" << 'EOF'
 # Handoff Context
 
 > 이 파일은 `/wt` 명령으로 자동 생성되었습니다.
@@ -194,6 +194,10 @@ cat > "${WORKTREE_PATH}/.claude/handoff.md" << 'EOF'
 ## PR 설명
 {PR body - Summary 섹션}
 EOF
+
+# 2. 대상 worktree로 이동 (복사가 아닌 mv)
+mkdir -p "${WORKTREE_PATH}/.claude"
+mv ".claude/handoff.md" "${WORKTREE_PATH}/.claude/handoff.md"
 ```
 
 > **참고**: `.claude/handoff.md`는 `.gitignore`에 추가하는 것을 권장합니다.
