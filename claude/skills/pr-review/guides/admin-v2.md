@@ -195,3 +195,35 @@ import {UserResponse} from '~/api/schema';
 // ✅ Good - 타입 전용 import
 import type {UserResponse} from '~/api/schema';
 ```
+
+### 5. createEditableModel 패턴 - 별도 loading guard 불필요
+`createEditableModel`은 내부적으로 `updating` ref를 관리하며, `EditableSelect` 컴포넌트의 UX 흐름(편집 진입 → 값 선택 → confirm → 저장 → 편집 종료)이 자연스럽게 중복 호출을 방지합니다. `update` 콜백에 별도의 `isLoading` 체크를 추가할 필요 없습니다.
+
+```typescript
+// ❌ 과잉 - createEditableModel 내부에서 이미 updating 상태 관리
+const model = createEditableModel({
+  update: async (v) => {
+    if (isLoading.value) return; // 불필요
+    await updateUserProps({field: v});
+  },
+});
+
+// ✅ Good - createEditableModel이 updating 상태를 관리
+const model = createEditableModel({
+  update: v => updateUserProps({field: v}),
+});
+```
+
+### 6. API enum 값은 매직넘버가 아님
+`items` 배열에 나열된 API enum 값(예: `SexualLevel`의 `[0, 17, 19, 29, 39]`)은 도메인 고유 값이므로, 한 함수 내에서 로컬하게 사용되는 경우 상수 추출을 강제하지 않습니다. 여러 파일/함수에서 반복 사용되는 경우에만 상수화를 권장합니다.
+
+```typescript
+// ✅ OK - items 배열과 같은 스코프에서 사용되는 enum 값
+const sexualLevelModel = createEditableModel<SexualLevel>({
+  items: [0, 17, 19, 29, 39],
+  update: async (sexualLevel) => {
+    const isDownFromAdult = prevLevel >= 19 && sexualLevel < 19;
+    // ...
+  },
+});
+```

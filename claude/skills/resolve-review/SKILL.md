@@ -253,6 +253,48 @@ mutation($body: String!, $threadId: ID!) {
 - REST API의 `/pulls/comments/{id}/replies`는 GraphQL ID와 호환되지 않음
 - 반영하지 않는 리뷰에 답글 없이 넘어가면 안 됨!
 
+## API 타입 하드코딩 리뷰 처리 (노션 추적)
+
+API 응답 타입 하드코딩 리뷰가 나왔는데 `npm run update-spec`으로 해결되지 않는 경우 (서버 PR이 아직 main에 미머지), 노션을 통해 서버 PR을 추적하여 스펙을 업데이트합니다.
+
+### 추적 흐름
+
+```
+PR 제목의 [LK-XXXX] → 노션 검색 → Tasks relation → 개발작업
+→ 과제 relation → 상위 개발과제 → 작업 relation → 서버 작업
+→ PR Link → 서버 PR 번호
+```
+
+### 단계별 실행
+
+```bash
+# 1. npm run update-spec 먼저 시도 (main 브랜치 기준)
+npm run update-spec
+# → 스펙에 엔드포인트가 있으면 바로 타입 교체
+
+# 2. 없으면: PR 제목에서 LK-ID 추출 후 노션 검색
+# mcp__tpc-notion__API-post-search로 "LK-XXXX" 검색
+
+# 3. 검색 결과에서 Tasks relation ID 추출
+# → mcp__tpc-notion__API-retrieve-a-page로 개발작업 조회
+
+# 4. 개발작업의 "과제" relation → 상위 개발과제 조회
+# → 개발과제의 "작업" relation에서 서버 파트 작업 찾기 (파트: "Server")
+
+# 5. 서버 작업의 "PR Link" rollup에서 PR 번호 추출 (예: #6721)
+
+# 6. 서버 PR 기반 스펙 업데이트
+./tools/gen-admin-api-types.sh -p {서버PR번호}
+```
+
+### 주의사항
+- `npm run update-spec`은 main 브랜치 기준이므로 미머지 서버 PR의 새 엔드포인트는 포함되지 않음
+- `-p` 옵션은 해당 PR의 브랜치에서 스펙을 가져옴
+- 스펙 업데이트 시 이 PR과 무관한 변경도 포함될 수 있으므로 diff 확인 필요
+- 서버 PR에도 스펙이 없으면 서버 작업 완료까지 대기 (답글로 사유 설명)
+
+---
+
 ## 자동 Resolve 대상
 
 CI에서 검증되는 항목은 자동 resolve:
