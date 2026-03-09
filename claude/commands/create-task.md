@@ -81,13 +81,53 @@ git log master..HEAD --oneline
 
 ### A-3. Notion 개발 작업 DB에 티켓 생성
 
-- **Data Source**: `collection://af0b1e4c-6a3f-4d94-81c6-396f86e61574`
-- **속성** (감지/지정된 파트에 따라 설정):
-  - 작업 이름: `{접두사} {작업 설명}`
-  - 파트: `{파트}`
-  - 작업 유형: `새피처` (버그면 `버그`)
-  - Product: `LIKEY`
-  - PM: `["18fd872b-594c-81ab-8426-000241feca9b"]` (Carrot)
+- **Database ID**: `cdebd8ad-0608-4688-ba55-fee0f33c50e3`
+  - (Data Source ID `af0b1e4c-6a3f-4d94-81c6-396f86e61574`와 다름, post-page에는 Database ID 사용)
+
+#### 3단계 API 호출 절차
+
+**Step 1. `post-page`** — 페이지 생성 (select/title 속성만)
+```json
+{
+  "parent": {"database_id": "cdebd8ad-0608-4688-ba55-fee0f33c50e3"},
+  "properties": {
+    "title": [{"text": {"content": "{접두사} {작업 설명}"}}],
+    "파트": {"name": "{파트}"},
+    "작업 유형": {"name": "{작업 유형}"},
+    "Product": {"name": "LIKEY"}
+  }
+}
+```
+> ⚠️ select는 `{"name": "..."}` 형식. `{"select": {"name": "..."}}` 사용 금지
+> ⚠️ properties에 `"type": "title"` 포함 금지
+> ⚠️ property `id` 포함 금지 (data source ID와 DB ID가 다름)
+
+**Step 2. `patch-block-children`** — 본문 내용 추가
+- `block_id`에 생성된 page ID 사용
+- children은 object 배열로 전달
+
+**Step 3. `patch-page`** — people 속성 설정
+```json
+{
+  "page_id": "{생성된 page ID}",
+  "properties": {
+    "PM": {"people": [{"object": "user", "id": "18fd872b-594c-81ab-8426-000241feca9b"}]}
+  }
+}
+```
+> ⚠️ people 속성은 post-page에서 거부됨 → patch-page 필수
+
+#### 속성 값 가이드
+- **작업 유형** (select):
+  - 새피처: 신규 기능
+  - 서비스 개선: 기존 기능 개선
+  - 인입 이슈: 외부 제보/CS 인입 버그
+  - QA 버그: QA 과정에서 발견된 버그
+  - 코드 리팩토링, 성능/비용 개선, 보안강화, 운영 개선, 개발 환경 개선, 데이터 마이그레이션
+  - ⚠️ "버그"라는 옵션은 없음
+- **파트** (select): Server, Admin, Web, iOS, Android, PM, 디자인, QA, AI
+- **Product** (select): LIKEY, Tixee
+- **PM** (people): Carrot `18fd872b-594c-81ab-8426-000241feca9b`
 
 - **내용 구조**:
   ```markdown
@@ -215,13 +255,8 @@ rg "{키워드}" /Users/muzi/projects/likey-admin-v2/app -g "*.vue" | head -20
 
 ### B-4. Notion 개발 작업 DB에 티켓 생성
 
-- **Data Source**: `collection://af0b1e4c-6a3f-4d94-81c6-396f86e61574`
-- **속성**:
-  - 작업 이름: `{접두사} {작업 설명}`
-  - 파트: `{파트}`
-  - 작업 유형: `새피처`
-  - Product: `LIKEY`
-  - PM: `["18fd872b-594c-81ab-8426-000241feca9b"]` (Carrot)
+- **A-3과 동일한 3단계 API 호출 절차 사용** (post-page → patch-block-children → patch-page)
+- **추가 속성**:
   - **과제**: `{개발과제 URL}` ← Relation 자동 연결
 
 - **내용 구조** (일반):

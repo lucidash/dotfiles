@@ -71,8 +71,23 @@ mcp__slack__slack_reply_to_thread({
 /notify PR 생성 완료: https://github.com/likey-team/likey-backend/pull/6483
 ```
 
+## Slack 멘션 문법
+
+메시지에 멘션이 필요한 경우 다음 형식을 사용:
+
+| 대상 | 형식 | 예시 |
+|------|------|------|
+| 유저 | `<@USER_ID>` | `<@U01GYELMU2D>` |
+| 유저 그룹 | `<!subteam^GROUP_ID>` | `<!subteam^S0502PUDGJD>` (@pm) |
+| 채널 전체 | `<!channel>` | |
+| 온라인 멤버 | `<!here>` | |
+
+### 주요 유저 그룹 ID
+- @pm: `S0502PUDGJD`
+
 ## 주의사항
 
 - 슬랙 스레드를 찾지 못하면 사용자에게 URL을 요청
 - 메시지는 간결하게 작성 (핵심 정보만)
 - 이모지는 사용하지 않음
+- 유저 그룹 멘션 시 `@그룹명`이 아닌 `<!subteam^ID>` 형식을 사용해야 함

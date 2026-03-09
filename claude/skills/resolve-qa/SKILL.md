@@ -13,7 +13,15 @@ QA 이슈를 분석하고, 적절한 브랜치/worktree를 설정한 뒤, 수정
 
 ## 인자 파싱
 
-`$ARGUMENTS`는 다음 중 하나:
+`$ARGUMENTS`에서 플래그와 대상을 분리합니다.
+
+### 플래그
+
+| 플래그 | 별칭 | 설명 |
+|--------|------|------|
+| `--interactive` | `-i` | 대화형 모드. Notion 상태 변경 및 댓글 작성 전에 사용자 확인을 받음 |
+
+플래그를 제거한 나머지가 대상이며, 다음 중 하나:
 
 1. **Notion permalink**: `https://www.notion.so/...` 형태의 URL
 2. **LK-ID**: `LK-10258` 형태의 ID
@@ -348,7 +356,35 @@ command gh pr checks {pr_number_or_branch} --json name,state,description
 
 > **타임아웃**: 5분 이상 대기 시 사용자에게 "배포가 오래 걸리고 있습니다. Notion 업데이트를 먼저 진행할까요?" 확인
 
-### 7단계: Notion 상태 업데이트
+### 7단계: Notion 상태 업데이트 및 댓글 작성
+
+**대화형 모드 (`-i`)인 경우:**
+
+5단계에서 준비한 댓글 내용과 상태 변경 계획을 사용자에게 보여주고 AskUserQuestion으로 확인을 받습니다:
+
+```
+다음 Notion 업데이트를 진행할까요?
+
+- 상태: {이전상태} → **QA 필요**
+- 댓글:
+  수정 완료되었습니다.
+  원인: {원인}
+  수정: {수정 내용}
+  commit: {hash} ({branch})
+```
+
+선택지:
+1. **상태 변경 + 댓글 모두 진행**
+2. **댓글만 작성** (상태 변경 스킵)
+3. **스킵** (Notion 업데이트 없이 종료)
+
+사용자가 스킵을 선택하면 → 9단계(결과 보고)로 바로 진행하되, Notion 업데이트 항목은 "스킵됨"으로 표시.
+
+**기본 모드 (플래그 없음)인 경우:**
+
+확인 없이 바로 실행:
+
+**7-1. 상태 업데이트**
 
 ```
 mcp__tpc-notion__API-patch-page
@@ -356,7 +392,7 @@ mcp__tpc-notion__API-patch-page
 - properties: {"상태": {"status": {"name": "QA 필요"}}}
 ```
 
-### 8단계: 댓글 작성
+**7-2. 댓글 작성**
 
 ```
 mcp__tpc-notion__API-create-a-comment
@@ -368,7 +404,7 @@ mcp__tpc-notion__API-create-a-comment
   }]
 ```
 
-### 9단계: 결과 보고
+### 8단계: 결과 보고
 
 ```markdown
 ## QA 이슈 업데이트 완료
@@ -382,6 +418,8 @@ mcp__tpc-notion__API-create-a-comment
 | 배포 | ✅ preview 배포 완료 |
 | 댓글 | 수정 내용 작성됨 |
 ```
+
+> 대화형 모드에서 스킵한 항목은 해당 행에 "⏭️ 스킵됨"으로 표시.
 
 ---
 
@@ -408,8 +446,12 @@ mcp__tpc-notion__API-create-a-comment
 # LK-ID 사용
 /resolve-qa LK-10258
 
+# 대화형 모드 - Notion 업데이트 전에 확인 받기
+/resolve-qa -i LK-10258
+/resolve-qa --interactive https://www.notion.so/QA-2fd61056ee1280a4ab14e37ce2261ead
+
 # 워크플로우 예시:
 # 1. /resolve-qa LK-10258  → worktree 설정 + QA 이슈 내용 확인
 # 2. (코드 수정 & 커밋 & 푸시)
-# 3. /resolve-qa LK-10258  → Notion 상태 업데이트 + 댓글
+# 3. /resolve-qa -i LK-10258  → 확인 후 Notion 상태 업데이트 + 댓글
 ```
