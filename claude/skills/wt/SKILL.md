@@ -79,15 +79,18 @@ git worktree list
 
 #### Step 2: Worktree 준비
 
-**기존 존재 시**: 해당 경로 사용
+> **핵심 원칙**: 작업은 반드시 메인 디렉토리가 아닌 별도의 worktree 디렉토리에서 수행한다.
+> 메인 worktree에서 `git checkout <branch>` 후 작업하는 것은 절대 금지.
 
-**메인 Worktree가 해당 브랜치일 때**:
+**기존 worktree 존재 시**: 해당 worktree 경로 사용 (메인 디렉토리가 아닌 별도 경로여야 함)
+
+**메인 Worktree가 해당 브랜치일 때** (메인에서 먼저 master로 복귀 후 worktree 분리):
 ```bash
 git checkout master
 git worktree add "$PARENT_DIR/${PROJECT_NAME}-${BRANCH}" "$BRANCH"
 ```
 
-**새로 생성 시**:
+**새로 생성 시** (항상 별도 디렉토리에 생성):
 ```bash
 PROJECT_ROOT=$(git rev-parse --show-toplevel)
 PROJECT_NAME=$(basename $PROJECT_ROOT)
@@ -97,6 +100,16 @@ WORKTREE_PATH="$PARENT_DIR/${PROJECT_NAME}-${BRANCH}"
 # 브랜치 존재 여부에 따라
 git worktree add "$WORKTREE_PATH" "$BRANCH"          # 있으면
 git worktree add -b "$BRANCH" "$WORKTREE_PATH"       # 없으면
+```
+
+**⚠️ 금지 패턴** (절대 하지 말 것):
+```bash
+# ❌ 메인 디렉토리에서 브랜치 전환 후 작업
+cd /path/to/main-repo && git checkout feature/xxx && # 여기서 작업...
+
+# ✅ 반드시 별도 worktree 디렉토리에서 작업
+git worktree add /path/to/main-repo-feature-xxx feature/xxx
+cd /path/to/main-repo-feature-xxx && # 여기서 작업
 ```
 
 #### Step 3: 의존성 설치 및 환경 복사
@@ -366,6 +379,8 @@ cd {경로} && claude
 
 ## 주의사항
 
-- 메인 worktree는 항상 `master` 브랜치 유지 권장
+- **절대 금지**: 메인 worktree (master 디렉토리)에서 `git checkout <branch>`로 브랜치 전환하여 작업하지 말 것. 반드시 `git worktree add`로 별도 디렉토리에 생성해야 함
+- **절대 금지**: 메인 worktree 경로에서 브랜치를 만들고 그 자리에서 작업하는 것. 작업은 항상 별도의 worktree 디렉토리에서 수행
+- 메인 worktree는 항상 `master` 브랜치 유지 **필수** (다른 브랜치로 전환 금지)
 - uncommitted 변경사항 있으면 경고
 - 숫자 1~9는 worktree 인덱스로 해석

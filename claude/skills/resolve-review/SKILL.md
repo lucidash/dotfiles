@@ -1,7 +1,7 @@
 ---
 name: resolve-review
 description: PR 리뷰 피드백을 처리합니다. "리뷰 반영해줘", "피드백 처리해줘", "change request 해결해줘" 같은 요청에 자동으로 활성화됩니다.
-argument-hint: "[-i | --interactive] [PR번호 또는 URL]"
+argument-hint: "[-i | --interactive] [PR번호 또는 URL 또는 silent review 파일 경로]"
 allowed-tools: Bash, Glob, Grep, Read, Edit, Write, AskUserQuestion
 ---
 
@@ -17,6 +17,19 @@ Arguments에서 옵션을 파싱합니다:
 
 - `--interactive` 또는 `-i`: **Interactive Mode** - 각 코멘트를 하나씩 확인
 - 옵션 없음: **Batch Mode** - 모든 코멘트를 한번에 처리
+- **Silent Review 파일 경로** (예: `/tmp/pr-review-6381.md`): **Silent Mode** - `pr-review --silent`로 생성된 파일을 읽어 GitHub 흔적 없이 코드만 수정
+
+### Silent Mode 감지
+
+다음 중 하나라도 해당하면 Silent Mode로 진입합니다:
+
+1. `$ARGUMENTS`에 `/tmp/pr-review-*.md` 파일 경로가 명시된 경우
+2. **같은 대화에서 `pr-review --silent`가 실행되어 파일이 생성된 경우** — 인자 없이 `/resolve-review`만 호출해도 해당 파일을 자동으로 사용
+
+자동 감지 시 터미널에 사용할 파일 경로를 표시합니다:
+```
+Silent Review 파일 감지: /tmp/pr-review-6381.md
+```
 
 ---
 
@@ -411,6 +424,91 @@ mutation($body: String!, $threadId: ID!) {
 
 > 🚫 **금지**: 리뷰 코멘트를 답글 없이 무시하거나, 사유 설명 없이 resolve 하는 것
 
+## Silent Mode (파일 기반)
+
+`pr-review --silent`로 생성된 리뷰 파일을 읽어, **GitHub에 코멘트/resolve 없이** 코드만 수정합니다.
+
+### 실행 흐름
+
+1. **파일 읽기**: Read tool로 지정된 md 파일 읽기
+2. **구조화 데이터 추출**: 파일 하단의 ` ```json ` 블록에서 리뷰 데이터 파싱
+3. **각 코멘트 처리**: 코멘트의 path, line, body를 분석하여 코드 수정
+4. **GitHub API 호출 없음**: 댓글 작성, thread resolve 모두 스킵
+5. **커밋 & push**: 수정사항만 커밋
+
+### 상세 절차
+
+#### 1. Silent Review 파일 읽기
+
+```bash
+# Read tool로 파일 내용 읽기
+# 파일 경로 예: /tmp/pr-review-6381.md
+```
+
+#### 2. 구조화 데이터 파싱
+
+파일 하단의 `## 구조화 데이터` 섹션에서 JSON 블록을 추출합니다:
+
+```json
+{
+  "pr": { "number": 6381, "title": "...", "headRefName": "...", "baseRefName": "..." },
+  "repository": "TPC-Internet/likey-backend",
+  "comments": [
+    { "path": "src/path.ts", "line": 123, "side": "RIGHT", "severity": "...", "title": "...", "body": "..." }
+  ]
+}
+```
+
+#### 3. 코멘트 분석 및 코드 수정
+
+각 코멘트에 대해:
+1. 해당 파일 읽기 (Read tool)
+2. 코멘트 본문에서 문제점과 수정 제안 파악
+3. 코드 수정 제안이 있으면 수정 (Edit tool)
+4. 수정이 불필요하거나 의도적 설계인 경우 스킵 (터미널에만 사유 출력)
+
+#### 4. GitHub API 호출 없음
+
+> **핵심**: Silent Mode에서는 GitHub API를 일절 호출하지 않습니다.
+> - ❌ `addPullRequestReviewThreadReply` 없음
+> - ❌ `resolveReviewThread` 없음
+> - ❌ `gh pr comment` 없음
+
+#### 5. 커밋 & push
+
+```bash
+git add {modified_files}
+git commit -m "fix: 코드 리뷰 피드백 반영 (silent)
+
+- {수정 내용 요약}
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
+git push
+```
+
+### 출력 형식
+
+```markdown
+## PR #{번호} Silent Review 처리 완료
+
+**제목**: {PR 제목}
+**소스 파일**: {silent review 파일 경로}
+
+### 처리 결과
+
+| # | 파일 | 라인 | 심각도 | 처리 | 내용 |
+|---|------|------|--------|------|------|
+| 1 | `src/path.ts` | 123 | 🔴 Critical | ✅ 수정 | 에러 name 추가 |
+| 2 | `src/other.ts` | 456 | 🟡 Minor | ⏭️ 스킵 | 의도적 설계 |
+
+### 요약
+- 수정: {N}건
+- 스킵: {M}건
+- 커밋: {있음/없음}
+```
+
+---
+
 ## Usage
 
 ```bash
@@ -422,4 +520,7 @@ mutation($body: String!, $threadId: ID!) {
 /resolve-review -i
 /resolve-review --interactive 123
 /resolve-review -i https://github.com/org/repo/pull/123
+
+# Silent Mode (pr-review --silent 출력 파일)
+/resolve-review /tmp/pr-review-6381.md
 ```

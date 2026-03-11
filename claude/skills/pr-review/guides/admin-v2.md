@@ -127,7 +127,36 @@ await confirmDialog.open({
 });
 ```
 
-## 9. 반응성
+## 9. Composable / URL 쿼리 동기화
+
+| 항목 | 검사 내용 | 심각도 |
+|------|----------|--------|
+| URL 직렬화 | 수동 `encodeURIComponent` 대신 `router.resolve().href` 사용 | 🟠 Major |
+| 경계값 처리 | 빈 문자열(`""`), `null`, `undefined` 등 조건 분기에서 의도대로 동작하는지 확인 | 🟠 Major |
+| truthy/falsy 주의 | `if (value)` 체크가 빈 문자열/0을 의도치 않게 걸러내지 않는지 확인 | 🟠 Major |
+
+```typescript
+// ❌ Bad - 수동 직렬화 (인코딩 불일치 위험)
+const queryParts: string[] = [];
+for (const [key, value] of Object.entries(query)) {
+  queryParts.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`);
+}
+const fullUrl = `${origin}${path}?${queryParts.join('&')}`;
+
+// ✅ Good - 라우터가 실제로 사용하는 인코딩과 동일
+const resolvedHref = router.resolve({path, query}).href;
+const fullUrl = `${origin}${resolvedHref}`;
+```
+
+```typescript
+// ❌ Bad - truthy 체크가 빈 문자열을 놓침
+if (newQueryValue) { /* 빈 문자열 ?key= 에서 실행 안 됨 */ }
+
+// ✅ Good - null/undefined만 제외
+if (newQueryValue != null) { /* 빈 문자열도 정상 통과 */ }
+```
+
+## 10. 반응성
 
 | 항목 | 검사 내용 | 심각도 |
 |------|----------|--------|
