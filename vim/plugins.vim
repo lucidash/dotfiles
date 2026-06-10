@@ -38,7 +38,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'majutsushi/tagbar'
-Plug 'rking/ag.vim'
 Plug 'kshenoy/vim-signature'
 Plug 'junegunn/vim-easy-align'
 

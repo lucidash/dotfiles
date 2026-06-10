@@ -99,9 +99,10 @@ endif
 " FZF {{{
 
 " Inside vim, set environment variable FZF_DEFAULT_COMMAND
-" so that it can list the files by 'git ls-files' or 'ag'.
-if executable("ag")
-    "let $FZF_DEFAULT_COMMAND = '(git ls-files ":/" || ag -l -g "") | LC_COLLATE=C sort | uniq  2> /dev/null'
+" so that it can list the files by ripgrep (falls back to ag).
+if executable("rg")
+    let $FZF_DEFAULT_COMMAND = 'rg --files 2> /dev/null'
+elseif executable("ag")
     let $FZF_DEFAULT_COMMAND = 'ag -l -g "" 2> /dev/null'
 endif
 
@@ -481,12 +482,13 @@ nnoremap ]l :lnext<CR>
 " comma is the <Leader> key now.
 map <C-_> <leader>ci
 
-" Plugin ag.vim
-" <leader>ag (or rg): Ag (search file contents)
-nnoremap <leader>ag :Ag! -i ""<Left>
-xnoremap <silent> <leader>ag y:Ag <C-R>"<CR>
-nnoremap <leader>rg :Ag! -i ""<Left>
-xnoremap <silent> <leader>rg y:Ag <C-R>"<CR>
+" Plugin: ripgrep via fzf.vim (replaces ag.vim, faster than the silver searcher)
+" <leader>rg (or ag): run :Rg immediately and open the fzf TUI; type to search live.
+" Visual mode seeds the fzf query with the current selection.
+nnoremap <leader>rg :Rg<CR>
+xnoremap <silent> <leader>rg y:Rg <C-R>"<CR>
+nnoremap <leader>ag :Rg<CR>
+xnoremap <silent> <leader>ag y:Rg <C-R>"<CR>
 
 "" tabline plugin settings
 "" {{{{{
