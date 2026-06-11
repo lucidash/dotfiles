@@ -111,3 +111,48 @@ for target, source in tasks.items():
 # install vim-plug
 os.system("curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim")
 zsh = os.system("which zsh")
+
+
+# ---- Neovim bootstrap (macOS only) ----
+# install.py only symlinks files; the nvim config needs a few external tools and
+# a one-time plugin/LSP install. On macOS we do that here so `python3 install.py`
+# alone gives a working setup.
+import platform
+
+if platform.system() == "Darwin":
+    print("\n=== Neovim bootstrap (macOS) ===", file=stderr)
+
+    # 1. external CLI tools (Homebrew)
+    if os.system("command -v brew >/dev/null 2>&1") == 0:
+        os.system("brew install lazygit fd ruff")
+    else:
+        print("Homebrew not found; skipping lazygit/fd/ruff", file=stderr)
+
+    # 2. tree-sitter CLI 0.25.x — nvim-treesitter needs it to build the swift
+    #    parser; 0.26+ is incompatible (the --no-bindings flag was removed).
+    if os.system("command -v npm >/dev/null 2>&1") == 0:
+        os.system("npm install -g tree-sitter-cli@0.25.8")
+    else:
+        print("npm not found; skipping tree-sitter-cli (swift parser)", file=stderr)
+
+    # 3. nvim: plugins (lazy) + LSP servers/formatters (mason). ruff is from brew
+    #    (mason's pip-based ruff fails on Python 3.14), so it is not listed here.
+    if os.system("command -v nvim >/dev/null 2>&1") == 0:
+        print("Syncing nvim plugins (this clones repos and builds parsers)...", file=stderr)
+        os.system("nvim --headless '+Lazy! sync' +qa")
+        mason_pkgs = (
+            "pyright clangd typescript-language-server lua-language-server "
+            "html-lsp css-lsp json-lsp bash-language-server vim-language-server "
+            "intelephense kotlin-language-server stylua prettier"
+        )
+        print("Installing LSP servers + formatters via mason (may take a few minutes)...", file=stderr)
+        os.system(
+            "nvim --headless "
+            "'+lua require(\"mason\").setup()' "
+            "'+MasonInstall " + mason_pkgs + "' "
+            "'+lua vim.wait(420000, function() "
+            "return #require(\"mason-registry\").get_installed_package_names() >= 13 end)' "
+            "+qa"
+        )
+    else:
+        print("nvim not found; skipping plugin/LSP bootstrap", file=stderr)
