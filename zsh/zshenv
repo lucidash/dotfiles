@@ -19,8 +19,8 @@ fi
 # Editors
 #
 
-export EDITOR='vim'
-export VISUAL='vim'
+export EDITOR='nvim'
+export VISUAL='nvim'
 export PAGER='less'
 
 #
@@ -102,3 +102,4 @@ export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
 
 # python startup
 export PYTHONSTARTUP=$HOME/.pythonrc.py
+# . "$HOME/.cargo/env"  # Rust 삭제됨
