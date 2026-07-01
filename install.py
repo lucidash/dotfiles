@@ -54,6 +54,9 @@ tasks = {
     '~/.claude/settings.json' : 'claude/settings.json',
     '~/.claude/CLAUDE.md' : 'claude/CLAUDE.md',
 
+    # cmux
+    '~/.config/cmux/cmux.json' : 'cmux/cmux.json',
+
     # .config
     #	'~/.config/terminator' : 'config/terminator',
 }
