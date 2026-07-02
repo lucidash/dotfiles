@@ -42,9 +42,10 @@
 [credential]
 	helper = osxkeychain
 [diff]
-	tool = vimdiff
+	tool = nvimdiff
 [difftool]
 	prompt = false
+	trustExitCode = true
 [mergetool "fugitive"]
 	cmd = vim -f -c \"Gvdiff\" \"$MERGED\"
 [merge]
