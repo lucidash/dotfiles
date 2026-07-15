@@ -76,8 +76,35 @@ alias ba='npm run build-all'
 alias rd='npm run dev'
 alias rdr='npm run dev-real'
 alias clc='claude --dangerously-skip-permissions '
+alias cls='clc --model sonnet'
 alias claude='claude --dangerously-skip-permissions'
 alias codex='codex --dangerously-bypass-approvals-and-sandbox'
+
+# cmux's shell integration unaliases `claude` and installs its own
+# `claude()` function (rebuilt again by _cmux_fix_path on the first prompt),
+# which drops --dangerously-skip-permissions. Rather than fight that function,
+# wrap the dispatcher it always calls, `_cmux_claude_wrapper_command`. cmux
+# defines that dispatcher once (during .zshenv, before this file) and never
+# rebuilds it, so wrapping it here survives every claude() rebuild and needs no
+# precmd hook. We must NOT redefine `claude()` directly here: with the alias
+# above still active, `claude() { ... }` triggers alias expansion at parse time
+# and errors ("parse error near '()'"), which is what silently broke the old
+# precmd approach. No-op outside cmux (dispatcher absent), where the alias
+# already applies the flag; idempotent and safe to re-source.
+if typeset -f _cmux_claude_wrapper_command >/dev/null 2>&1 \
+   && ! typeset -f _muzi_orig_cmux_claude_wrapper >/dev/null 2>&1; then
+  functions[_muzi_orig_cmux_claude_wrapper]=$functions[_cmux_claude_wrapper_command]
+  _cmux_claude_wrapper_command() {
+    local arg
+    for arg in "$@"; do
+      if [[ "$arg" == "--dangerously-skip-permissions" ]]; then
+        _muzi_orig_cmux_claude_wrapper "$@"
+        return
+      fi
+    done
+    _muzi_orig_cmux_claude_wrapper --dangerously-skip-permissions "$@"
+  }
+fi
 
 # opencode
 export PATH=/Users/muzi/.opencode/bin:$PATH
