@@ -3,3 +3,6 @@
 .netrwhist
 Session.vim
 zsh/secrets.local.zsh
+
+# system-actions 빌드 산출물
+bin/system-actions/build/
