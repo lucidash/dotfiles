@@ -6,7 +6,20 @@
       "focusLeft": "cmd+ctrl+h",
       "focusDown": "cmd+ctrl+j",
       "focusUp": "cmd+ctrl+k",
-      "focusRight": "cmd+ctrl+l"
+      "focusRight": "cmd+ctrl+l",
+      "equalizeSplits": "cmd+ctrl+="
+    }
+  },
+  "actions": {
+    "rename-workspace-to-pr-title": {
+      "type": "command",
+      "title": "Rename Workspace to PR Title",
+      "subtitle": "Clipboard PR URL first, else the current branch PR",
+      "keywords": ["pr", "rename", "title", "github", "clipboard", "paste"],
+      "command": "c=$(pbpaste 2>/dev/null); case \"$c\" in https://github.com/*/pull/*) t=$(command gh pr view \"$c\" --json title -q .title 2>/dev/null) ;; *) t=$(command gh pr view --json title -q .title 2>/dev/null) ;; esac; if [ -n \"$t\" ]; then \"${CMUX_BUNDLED_CLI_PATH:-cmux}\" workspace rename --workspace \"$CMUX_WORKSPACE_ID\" --title \"$t\"; else echo 'no PR found (copy a GitHub PR URL, or run from a branch that has an open PR)'; fi",
+      "target": "newTabInCurrentPane",
+      "shortcut": "cmd+ctrl+r",
+      "palette": true
     }
   }
 }
