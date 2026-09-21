@@ -79,6 +79,10 @@ alias clc='claude --dangerously-skip-permissions '
 alias cls='clc --model sonnet'
 alias claude='claude --dangerously-skip-permissions'
 alias codex='codex --dangerously-bypass-approvals-and-sandbox'
+alias codexa='codex --model gpt-6-astra --config '\''model_reasoning_effort="xhigh"'\'''
+alias codext='codex --model gpt-5.6-terra --config '\''model_reasoning_effort="max"'\'''
+alias codexs='codex --model gpt-5.6-sol --config '\''model_reasoning_effort="xhigh"'\'''
+alias codxs='codexs'
 
 # cmux's shell integration unaliases `claude` and installs its own
 # `claude()` function (rebuilt again by _cmux_fix_path on the first prompt),
